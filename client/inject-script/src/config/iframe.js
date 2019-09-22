@@ -2,8 +2,7 @@
 // except for iframe src url
 const localhostUrl = "localhost:3210"
 const localChatboxUrl = "http://localhost:3000"
-const remoteChatboxUrl =
-  "https://yiyesite.s3-ap-southeast-1.amazonaws.com/open-source/build/index.html"
+const remoteChatboxUrl = "https://yiyechat.com/open-source/build/index.html"
 
 const localOrWeb =
   window.location.href.indexOf(localhostUrl) > -1 ||
