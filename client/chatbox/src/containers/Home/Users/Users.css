@@ -1,0 +1,9 @@
+.sp-home-users {
+  margin: 10px;
+}
+/* .sp-home-users:hover {
+  background: lightgray;
+} */
+.sp-home-users .sp-username {
+  margin-left: 15px;
+}

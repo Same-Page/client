@@ -1,0 +1,30 @@
+.sp-toggle-online {
+  float: left;
+  display: none;
+}
+.sp-toggle-page-site-chat {
+  z-index: 0;
+  position: relative;
+}
+.ant-tooltip-inner {
+  /* this is for tooltip of page/site toggle
+  sometimes the url is tooo long
+  TODO: This general css is dangerous!
+  */
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.sp-online-user {
+  display: inline-block;
+  margin: 5px;
+  cursor: pointer;
+}
+.sp-online-user-username {
+  font-size: 10px;
+  max-width: 64px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+}

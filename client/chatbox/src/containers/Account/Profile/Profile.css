@@ -1,0 +1,7 @@
+.sp-follow-stats {
+  cursor: pointer;
+}
+.sp-follow-stats:hover {
+  color: rgb(0, 153, 255);
+  text-decoration: underline;
+}

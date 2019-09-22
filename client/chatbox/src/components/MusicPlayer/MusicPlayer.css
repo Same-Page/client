@@ -1,0 +1,16 @@
+.wmp-title {
+  /* text-align: center; */
+  /* margin: 20px; */
+}
+/* .wmp-container {
+  min-height: 200px;
+} */
+/* .wmp-container div span img {
+  width: 100%;
+  height: auto;
+} */
+
+.video-js {
+  width: 100%;
+  height: calc(100% - 180px);
+}

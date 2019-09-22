@@ -1,0 +1,8 @@
+div.sp-image-modal {
+  z-index: 2147483647;
+  /* iframe is 2147483646; */
+}
+
+.sp-image-modal img {
+  width: 100%;
+}

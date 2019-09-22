@@ -1,0 +1,15 @@
+.sp-comment-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #eceff1;
+}
+
+.sp-comment-footer textarea.ant-input {
+  border-left: 0;
+  border-right: 0;
+}
+
+.sp-comment-message-avatar {
+  cursor: pointer;
+}

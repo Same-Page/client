@@ -1,0 +1,108 @@
+.fileContainer {
+  background: none;
+  box-shadow: none;
+  position: unset;
+  border-radius: unset;
+  padding: unset;
+  display: unset;
+  -webkit-align-items: unset;
+  align-items: unset;
+  -webkit-justify-content: unset;
+  justify-content: unset;
+  -webkit-flex-direction: unset;
+  flex-direction: unset;
+  margin: unset;
+  transition: unset;
+}
+.fileContainer .uploadPicturesWrapper {
+  display: block;
+  -webkit-flex-wrap: unset;
+  flex-wrap: unset;
+  -webkit-justify-content: unset;
+  justify-content: unset;
+  width: 100px;
+}
+.fileContainer .chooseFileButton {
+  height: 32px;
+  padding: 0 15px;
+  font-size: 14px;
+  border-radius: 4px;
+  line-height: 1.499;
+  position: relative;
+  display: inline-block;
+  font-weight: 400;
+  margin: 0;
+  white-space: nowrap;
+  text-align: center;
+  background-image: none;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
+  cursor: pointer;
+  transition: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  color: rgba(0, 0, 0, 0.65);
+  background-color: #fff;
+  border-color: #d9d9d9;
+}
+
+.fileContainer .chooseFileButton:hover {
+  color: #40a9ff;
+  background-color: #fff;
+  border-color: #40a9ff;
+}
+
+.fileContainer .deleteImage {
+  /* display: none; */
+  background: #d0d0d0;
+  font-size: 20px;
+  top: -5px;
+  right: -15px;
+  /* font-weight: bold; */
+}
+.fileContainer .deleteImage:hover {
+  background: #a0a0a0;
+}
+
+.fileContainer .uploadPictureContainer {
+  width: unset;
+  height: unset;
+  margin: unset;
+  padding: unset;
+  background: unset;
+  display: unset;
+  -webkit-align-items: unset;
+  align-items: unset;
+  -webkit-justify-content: unset;
+  justify-content: unset;
+  height: unset;
+  box-shadow: unset;
+  border: unset;
+  position: unset;
+}
+
+.fileContainer .uploadPictureContainer img.uploadPicture {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.uploadPicturesWrapper div {
+  /* reverse order so last selected one shows up first */
+  /* display: flex; */
+  /* flex-direction: column-reverse; */
+}
+
+.sp-selected-avatar .fileContainer .chooseFileButton {
+  display: none;
+}
+
+.sp-selected-avatar .fileContainer .errorsContainer {
+  display: none;
+}
