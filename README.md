@@ -34,6 +34,7 @@ First, run the chat box app
 
 ```
 cd client/chatbox
+npm install .
 npm start
 ```
 
@@ -41,6 +42,7 @@ The first time you run this will be slower, because it needs to install all the 
 
 ```
 cd client/injection-script
+npm install .
 npm start
 ```
 

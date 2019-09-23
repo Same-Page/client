@@ -23,8 +23,8 @@
     "videojs-youtube": "^2.6.0"
   },
   "scripts": {
-    "start-ssl": "export HTTPS=true&&PORT=3000 react-scripts start",
-    "start": "PORT=3000 react-scripts start",
+    "start-ssl": "export HTTPS=true react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject-nonono": "react-scripts eject",
