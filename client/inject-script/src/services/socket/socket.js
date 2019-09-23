@@ -169,6 +169,7 @@ const socketManager = {
 
 export default socketManager
 
+
 window.addEventListener(
   "message",
   e => {
