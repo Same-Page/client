@@ -169,13 +169,12 @@ const socketManager = {
 
 export default socketManager
 
-
 window.addEventListener(
   "message",
   e => {
-    if (!e || !e.data || !e.data.type === "sp-socket") return
+    if (!e || !e.data || e.data.type !== "sp-socket") return
     const data = e.data
-    if (data.action === "send message") {
+    if (data.action === "send message v2") {
       const payload = data.msg
       if (payload.type === "invite") {
         payload.title = document.title

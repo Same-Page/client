@@ -23,7 +23,7 @@ const socketManager = {
   },
   sendMessage: msg => {
     window.parent.postMessage(
-      { type: "sp-socket", msg: msg, action: "send message" },
+      { type: "sp-socket", msg: msg, action: "send message v2" },
       "*"
     )
   },
