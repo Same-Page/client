@@ -1,8 +1,10 @@
 // localhost and web version should have everything the same
 // except for iframe src url
+import { spConfig } from "config"
 const localhostUrl = "localhost:3210"
 const localChatboxUrl = "http://localhost:3000"
-const remoteChatboxUrl = "https://yiyechat.com/open-source/build/index.html"
+const remoteChatboxUrl =
+  spConfig.chatboxUrl || "https://yiyechat.com/open-source/build/index.html"
 
 const localOrWeb =
   window.location.href.indexOf(localhostUrl) > -1 ||

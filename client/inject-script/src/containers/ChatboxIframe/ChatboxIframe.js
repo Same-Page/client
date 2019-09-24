@@ -6,6 +6,7 @@ import { Rnd } from "react-rnd"
 import { mockUrl, getDomain } from "utils/url"
 import { postMsgToIframe } from "utils/iframe"
 import storage from "storage.js"
+import { spConfig } from "config"
 
 import "./ChatboxIframe.css"
 import {
@@ -61,7 +62,7 @@ function ChatboxIframe(props) {
           storage.set(data.key, data.value)
         }
         if (data.action === "getConfig") {
-          postMsgToIframe("config", "config", window.spConfig || {})
+          postMsgToIframe("config", "config", spConfig)
         }
       },
       false
