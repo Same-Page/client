@@ -28,3 +28,9 @@
   white-space: nowrap;
   text-align: center;
 }
+
+.yiyelink {
+  float: right;
+  margin-top: 30px;
+  color: yellowgreen;
+}

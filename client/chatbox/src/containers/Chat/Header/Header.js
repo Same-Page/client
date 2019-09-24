@@ -196,6 +196,9 @@ function ChatHeader(props) {
           bodyStyle={{ maxHeight: "calc(100% - 55px)", overflowY: "auto" }}
         >
           {helpContent}
+          <a className="yiyelink" target="_blank" href="https://yiyechat.com">
+            一叶
+          </a>
         </Modal>
 
         <Button
