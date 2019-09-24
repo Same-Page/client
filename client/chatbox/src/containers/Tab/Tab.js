@@ -9,7 +9,7 @@ import Comment from "containers/Comment"
 import Account from "containers/Account"
 import OtherProfile from "containers/OtherProfile"
 import Inbox from "containers/Inbox"
-import Home from "containers/Home"
+import Discover from "containers/Home/Discover"
 
 import TabContext from "context/tab-context"
 import storageManager from "utils/storage"
@@ -78,12 +78,12 @@ function Tab(props) {
             <TabPane
               tab={
                 <Tooltip title="发现" placement="bottom">
-                  <Icon type="home" />
+                  <Icon type="compass" />
                 </Tooltip>
               }
               key="home"
             >
-              <Home />
+              <Discover />
             </TabPane>
           )}
           {tabList.includes("chat") && (
