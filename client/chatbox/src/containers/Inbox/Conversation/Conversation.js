@@ -13,7 +13,8 @@ import InputWithPicker from "components/InputWithPicker"
 
 const conversationBodyStyle = {
   height: "calc(100% - 107px)",
-  overflow: "auto",
+  overflowY: "auto",
+  overflowX: "hidden",
   width: "100%",
   position: "fixed",
   background: "#f6f9fc",
