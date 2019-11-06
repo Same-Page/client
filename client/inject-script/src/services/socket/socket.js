@@ -63,7 +63,6 @@ const _connect = () => {
   _socket.on("login", data => {
     console.debug("connected, will login as " + accountManager.getAccount().id)
     _postSocketMsgToIframe("login", data)
-
     _socket.emit("login", {
       // TODO: shouldn't need to pass username, userId
       // any more, socket server always gets the user from token
