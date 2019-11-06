@@ -288,6 +288,7 @@ io.on("connection", function(socket) {
     socket.username = utils.stripHtml(data.username)
     socket.userId = utils.stripHtml(data.userId)
     socket.pageTitle = utils.stripHtml(data.pageTitle)
+    console.log(socket.pageTitle)
     // language added in 2.3.3
     socket.lang = utils.stripHtml(data.lang)
     // url field is added in v2.6.0

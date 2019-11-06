@@ -70,7 +70,7 @@ function App(props) {
                       }
                     },
                     response => {
-                      if (response.ok) {
+                      if (response && response.ok) {
                         if (getMessageOffset(response.data)) {
                           storage.set(unreadKey, true)
                         }
