@@ -1,19 +1,22 @@
 "use strict"
 // var fs = require("fs")
-var express = require("express")
+const express = require("express")
 const request = require("request")
 const urls = require("./cfg/urls")
-var metrics = require("./metrics")
+const metrics = require("./metrics")
+const stopword = require('stopword')
+const cnTokenizer = require("nodejieba")
+const containsChinese = require('contains-chinese')
 
-var app = express()
-var server = require("http").createServer(app)
-var port = process.env.PORT || 8081
+const app = express()
+const server = require("http").createServer(app)
+const port = process.env.PORT || 8081
 
-var io = require("socket.io")(server)
-var utils = require("./utils.js")
+const io = require("socket.io")(server)
+const utils = require("./utils.js")
 
-var userManager = require("./user.js")
-var roomManager = require("./room.js")
+const userManager = require("./user.js")
+const roomManager = require("./room.js")
 var invitationManager = require("./invitation.js")
 
 const MSG_FREQUENCY_LIMIT = 3 * 1000
@@ -88,6 +91,12 @@ function addMsgToRoomHistory(message, roomId) {
   if (room.messages.length > 50) {
     room.messages.shift()
   }
+}
+function insert_spacing(str) {
+  //将汉字与英文、数字、下划线之间添加一个空格
+  var p1=/([A-Za-z_])([\u4e00-\u9fa5]+)/gi;
+  var p2=/([\u4e00-\u9fa5]+)([A-Za-z_])/gi;
+  return str.replace(p1, "$1 $2").replace(p2, "$1 $2")
 }
 function addSocketToRoom(socket, roomId, readOnly) {
   // Add socket to room, track socket under user
@@ -287,8 +296,22 @@ io.on("connection", function(socket) {
     // socket.shareLocation = data.shareLocation
     socket.username = utils.stripHtml(data.username)
     socket.userId = utils.stripHtml(data.userId)
-    socket.pageTitle = utils.stripHtml(data.pageTitle)
+    socket.pageTitle = data.pageTitle
     console.log(socket.pageTitle)
+    const pageTitlePatchedWithSpace = insert_spacing(socket.pageTitle)
+    let tokens = pageTitlePatchedWithSpace.split(/(?:,|:|：|-| )+/) 
+    let pageTags = []
+    tokens.forEach((token) => {
+      if (containsChinese(token)) {
+        let cnTokens = cnTokenizer.cut(token)
+        pageTags.push(...cnTokens)
+      } else {
+        pageTags.push(token)
+      }
+    })
+    pageTags = stopword.removeStopwords(pageTags)
+    console.log(pageTags)
+
     // language added in 2.3.3
     socket.lang = utils.stripHtml(data.lang)
     // url field is added in v2.6.0

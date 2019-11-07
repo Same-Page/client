@@ -9,11 +9,14 @@
   },
   "author": "ArchiTech",
   "dependencies": {
+    "contains-chinese": "^1.0.0",
     "express": "^4.16.3",
     "node-cache": "^4.2.0",
     "node-statsd": "^0.1.1",
+    "nodejieba": "^2.3.3",
     "request": "^2.88.0",
     "sanitize-html": "^1.20.0",
-    "socket.io": "^2.1.1"
+    "socket.io": "^2.1.1",
+    "stopword": "^0.3.4"
   }
 }
