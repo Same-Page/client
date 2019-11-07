@@ -16,8 +16,8 @@ const io = require("socket.io")(server)
 const utils = require("./utils.js")
 
 const userManager = require("./user.js")
-const roomManager = require("./room.js")
-var invitationManager = require("./invitation.js")
+// const roomManager = require("./room.js")
+// var invitationManager = require("./invitation.js")
 
 const MSG_FREQUENCY_LIMIT = 3 * 1000
 const MIN_CLIENT_VERSION = "4.1.0" // >= this version
@@ -111,7 +111,8 @@ function addSocketToRoom(socket, roomId, readOnly) {
   //          sockets: set of socket ids
   //          }
   //     },
-  //     messages: []
+  //     messages: [],
+  //     tags: ['Nike', 'shoes', 'discount']
   //   }
   // }
   let addingUser = false
@@ -120,7 +121,8 @@ function addSocketToRoom(socket, roomId, readOnly) {
     roomDict[roomId] = {
       id: roomId,
       messages: [],
-      users: {} // userId as key
+      users: {}, // userId as key
+      tags: socket.pageTags
     }
   }
   const room = roomDict[roomId]
@@ -212,6 +214,14 @@ function getUserFromRoom(userId, roomId) {
   return null
 }
 
+function findRoomToJoin(pageTags) {
+  // decide which room to join
+  // or no room to join
+
+  // what should be room id?
+  return 123
+}
+
 app.get("/api/health_check", function(req, res) {
   metrics.increment("socket.api.health_check")
   res.send("ok")
@@ -220,29 +230,29 @@ app.get("/", function(req, res) {
   metrics.increment("socket.root")
   res.send("ok")
 })
-app.get("/api/refresh_site_to_room_mapping", function(req, res) {
-  roomManager.setSiteToRoom(res)
-})
+// app.get("/api/refresh_site_to_room_mapping", function(req, res) {
+//   roomManager.setSiteToRoom(res)
+// })
 
 app.get("/api/popular_rooms", function(req, res) {
   metrics.increment("socket.api.popular_rooms")
-  roomManager.getRooms(req.headers.token, rooms => {
-    if (rooms) {
-      rooms.forEach(room => {
-        const roomId = room.id
-        room.userCount =
-          roomId in roomDict ? Object.keys(roomDict[roomId].users).length : 0
-      })
-      rooms.sort((b, a) => {
-        return a.userCount - b.userCount
-      })
-      res.send(rooms)
-    } else {
-      res.send(500)
-    }
-  })
-
-  // res.send(rooms)
+  // roomManager.getRooms(req.headers.token, rooms => {
+  //   if (rooms) {
+  //     rooms.forEach(room => {
+  //       const roomId = room.id
+  //       room.userCount =
+  //         roomId in roomDict ? Object.keys(roomDict[roomId].users).length : 0
+  //     })
+  //     rooms.sort((b, a) => {
+  //       return a.userCount - b.userCount
+  //     })
+  //     res.send(rooms)
+  //   } else {
+  //     res.send(500)
+  //   }
+  // })
+  // TODO: return pop rooms
+  res.send([])
 })
 
 function countSocketAndUsers() {
@@ -263,8 +273,8 @@ function keepCountingSocketAndUsers() {
   }, 10 * 1000)
 }
 
-roomManager.setSiteToRoom()
-roomManager.loadRooms()
+// roomManager.setSiteToRoom()
+// roomManager.loadRooms()
 if (process.env.CHATBOX_ENV === "prod") keepCountingSocketAndUsers()
 
 function isClientVersionOK(version) {
@@ -311,7 +321,7 @@ io.on("connection", function(socket) {
     })
     pageTags = stopword.removeStopwords(pageTags)
     console.log(pageTags)
-
+    socket.pageTags = pageTags
     // language added in 2.3.3
     socket.lang = utils.stripHtml(data.lang)
     // url field is added in v2.6.0
@@ -321,25 +331,29 @@ io.on("connection", function(socket) {
     // User manager decides if socket can join or not
     userManager.loginUser(socket, function(allowJoin) {
       if (allowJoin) {
-        // const roomId = utils.stripHtml(data.roomId)
-        const mode = socket.user.mode
-        let roomId = socket.user.room || LOBBY_ROOM_ID
-        socket.spMode = mode
-        if (mode === "page") {
-          roomId = socket.url
-          socket.spMode = "page"
-        } else if (mode === "site") {
-          const roomForSite = roomManager.siteToRoom(data.roomId)
-          if (roomForSite) {
-            roomId = roomForSite.id
-            socket.spMode = "room"
-            // console.debug("site should go to room " + roomId)
-          } else {
-            roomId = data.roomId
-            socket.spMode = "site"
-          }
-        }
-        roomId = roomId.toString()
+
+        // Below is legacy code for joining page/site/room 
+        // const mode = socket.user.mode
+        // let roomId = socket.user.room || LOBBY_ROOM_ID
+        // socket.spMode = mode
+        // if (mode === "page") {
+        //   roomId = socket.url
+        //   socket.spMode = "page"
+        // } else if (mode === "site") {
+        //   const roomForSite = roomManager.siteToRoom(data.roomId)
+        //   if (roomForSite) {
+        //     roomId = roomForSite.id
+        //     socket.spMode = "room"
+        //     // console.debug("site should go to room " + roomId)
+        //   } else {
+        //     roomId = data.roomId
+        //     socket.spMode = "site"
+        //   }
+        // }
+        // roomId = roomId.toString()
+        // Above is legacy code for joining page/site/room
+        const roomId = findRoomToJoin(pageTags)
+
         const newUserJoined = addSocketToRoom(socket, roomId)
         // console.log(roomId)
         // Tell everyone new user joined
@@ -470,6 +484,7 @@ io.on("connection", function(socket) {
         pageTitle: data.title,
         pageUrl: data.url
       }
+      // TODO: no need to change room for v5.0
       const readOnly = true
       addSocketToRoom(socket, data.url, readOnly)
     }
@@ -550,7 +565,7 @@ io.on("connection", function(socket) {
     socket.emit("recent messages", room.messages)
     socket.emit("*", {
       eventName: "room info",
-      room: roomManager.getRoomInfo(socket.roomId),
+      // room: roomManager.getRoomInfo(socket.roomId),
       mode: socket.spMode
     })
 
@@ -588,7 +603,8 @@ io.on("connection", function(socket) {
     })
     socket.emit("*", {
       eventName: "room info",
-      room: roomManager.getRoomInfo(socket.roomId),
+      // room: roomManager.getRoomInfo(socket.roomId),
+      room: roomDict[roomId], // entire room object, too much data?
       mode: socket.spMode
     })
     socket.emit("recent messages", roomDict[roomId].messages)
