@@ -49,7 +49,7 @@ app.use(function(req, res, next) {
   // Pass to next layer of middleware
   next()
 })
-
+let roomIdCount = 0
 var roomDict = {} // key: roomId, value: dict of sockets
 
 var popularRooms = []
@@ -214,12 +214,34 @@ function getUserFromRoom(userId, roomId) {
   return null
 }
 
+function similarityScore(inputTags, baseTags) {
+  let matchCount = 0
+  inputTags.forEach((tag)=>{
+    if (baseTags.includes(tag)) {
+      matchCount ++;
+    }
+  })
+  return matchCount / inputTags.length
+}
+
 function findRoomToJoin(pageTags) {
   // decide which room to join
   // or no room to join
-
-  // what should be room id?
-  return 123
+  let closestRoom = null
+  let threashold = 0.5
+  roomDict.forEach((roomId)=>{
+    const room = roomDict[roomId]
+    const roomTags = room.tags
+    const score = similarityScore(pageTags, roomTags)
+    if (score > threashold) {
+      closestRoom = room
+      threashold = score
+    }
+  })
+  if (room) {
+    return room.id
+  }
+  return roomIdCount++
 }
 
 app.get("/api/health_check", function(req, res) {
@@ -352,7 +374,7 @@ io.on("connection", function(socket) {
         // }
         // roomId = roomId.toString()
         // Above is legacy code for joining page/site/room
-        const roomId = findRoomToJoin(pageTags)
+        let roomId = findRoomToJoin(pageTags)
 
         const newUserJoined = addSocketToRoom(socket, roomId)
         // console.log(roomId)
