@@ -124,6 +124,7 @@ function addSocketToRoom(socket, roomId, readOnly) {
       users: {}, // userId as key
       tags: socket.pageTags
     }
+    console.log('create room '+roomId)
   }
   const room = roomDict[roomId]
   const users = room.users
@@ -228,18 +229,20 @@ function findRoomToJoin(pageTags) {
   // decide which room to join
   // or no room to join
   let closestRoom = null
-  let threashold = 0.5
-  roomDict.forEach((roomId)=>{
-    const room = roomDict[roomId]
+  let threashold = 0.05
+  Object.values(roomDict).forEach((room)=>{
     const roomTags = room.tags
     const score = similarityScore(pageTags, roomTags)
+    console.log(pageTags)
+    console.log(roomTags)
+    console.log('score: ' + score)
     if (score > threashold) {
       closestRoom = room
       threashold = score
     }
   })
-  if (room) {
-    return room.id
+  if (closestRoom) {
+    return closestRoom.id
   }
   return roomIdCount++
 }
@@ -330,7 +333,8 @@ io.on("connection", function(socket) {
     socket.userId = utils.stripHtml(data.userId)
     socket.pageTitle = data.pageTitle
     console.log(socket.pageTitle)
-    const pageTitlePatchedWithSpace = insert_spacing(socket.pageTitle)
+    const pageTitleLower = socket.pageTitle.toLowerCase()
+    const pageTitlePatchedWithSpace = insert_spacing(pageTitleLower)
     let tokens = pageTitlePatchedWithSpace.split(/(?:,|:|：|-| )+/) 
     let pageTags = []
     tokens.forEach((token) => {
@@ -342,6 +346,9 @@ io.on("connection", function(socket) {
       }
     })
     pageTags = stopword.removeStopwords(pageTags)
+    const customStopwords = ['google', 'baidu']
+    pageTags = pageTags.filter( (tag) => !customStopwords.includes(tag) )
+
     console.log(pageTags)
     socket.pageTags = pageTags
     // language added in 2.3.3
@@ -375,7 +382,7 @@ io.on("connection", function(socket) {
         // roomId = roomId.toString()
         // Above is legacy code for joining page/site/room
         let roomId = findRoomToJoin(pageTags)
-
+        socket.spMode = "tags"
         const newUserJoined = addSocketToRoom(socket, roomId)
         // console.log(roomId)
         // Tell everyone new user joined
