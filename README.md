@@ -48,7 +48,7 @@ npm start
 
 Now you should see the client running on localhost:3210, the chatbox should also show up there.
 
-The client is talking to the official backend by default. If you want the client to talk to your local backend, it's very easy. Instead of `npm start`, type `npm start --local-backend`. Then it will be talking to your localhost:8080 for websocket connections for live chat feature and localhost:8081 for ajax calls for all other purposes. So you need to have those running. Please read the next section to learn how to run backend locally.
+The client is talking to the official backend by default. If you want the client to talk to your local backend, it's very easy. Instead of `npm start`, type `npm start:dev`. Then it will be talking to your localhost:8080 for websocket connections for live chat feature and localhost:8081 for ajax calls for all other purposes. So you need to have those running. Please read the next section to learn how to run backend locally.
 
 ### Run websocket server locally for live chat
 

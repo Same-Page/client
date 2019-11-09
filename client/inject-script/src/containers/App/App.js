@@ -1,3 +1,4 @@
+import spDebug from "config/logger"
 import React, { useEffect } from "react"
 // AnimationDanmu is a confusing name, it means realtime chat danmu
 // powered by css + js, different from video danmu that's powered by canvas
@@ -25,6 +26,7 @@ function getMessageOffset(conversations) {
   })
   return offset
 }
+spDebug('starting injection script...')
 
 function App(props) {
   useEffect(() => {

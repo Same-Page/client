@@ -10,7 +10,7 @@ import TabContext from "context/tab-context"
 import ChatContext from "context/chat-context"
 import { getUrl, getDomain } from "utils/url"
 import storageManager from "utils/storage"
-
+import spDebug from "config/logger"
 function ChatHeader(props) {
   const chatModes = window.spConfig.chatModes || ["room", "site", "page"]
   const [showUsers, toggleUsers] = useState(false)
@@ -96,6 +96,11 @@ function ChatHeader(props) {
         chatContext.setRoom(data.room)
         chatContext.setRealRoom(data.room)
       }
+      if (data.mode === "tags") {
+        spDebug(data)
+        chatContext.setRoom(data.room)
+        chatContext.setRealRoom(data.room)
+      }
     })
     // window.setMode = setMode
     return () => {
@@ -173,6 +178,15 @@ function ChatHeader(props) {
         <div>
           <h4>介绍</h4>
           和其他也在{getUrl()}的用户聊天。
+        </div>
+      )
+    }
+    if (mode === "tags") {
+      helpTitle = "同兴趣聊天室 "+room.id
+      helpContent = (
+        <div>
+          <h4>关键词</h4>
+          {room.tags && room.tags.join(', ')}
         </div>
       )
     }

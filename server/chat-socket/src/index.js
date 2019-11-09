@@ -594,6 +594,10 @@ io.on("connection", function(socket) {
     socket.emit("recent messages", room.messages)
     socket.emit("*", {
       eventName: "room info",
+      room: {
+        id: room.id,
+        tags: room.tags
+      },
       // room: roomManager.getRoomInfo(socket.roomId),
       mode: socket.spMode
     })

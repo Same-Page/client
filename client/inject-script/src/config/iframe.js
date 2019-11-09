@@ -1,6 +1,6 @@
 // localhost and web version should have everything the same
 // except for iframe src url
-import { spConfig } from "config"
+import spConfig from "config"
 const localhostUrl = "localhost:3210"
 const localChatboxUrl = "http://localhost:3000"
 const remoteChatboxUrl =
