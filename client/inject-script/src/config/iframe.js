@@ -2,7 +2,7 @@
 // except for iframe src url
 import spConfig from "config"
 const localhostUrl = "localhost:3210"
-const localChatboxUrl = "http://localhost:3000"
+const localChatboxUrl = "https://localhost:3000"
 const remoteChatboxUrl =
   spConfig.chatboxUrl || "https://yiyechat.com/open-source/build/index.html"
 
@@ -15,7 +15,8 @@ export const createIframeByDefault = false
 // If content script is running on localhost, use local iframe
 // We can also force using local iframe even for extension
 
-let useLocalIframe = window.location.href.indexOf(localhostUrl) > -1
+let useLocalIframe = process.env.REACT_APP_SP_ENV === 'dev' || 
+                     window.location.href.indexOf(localhostUrl) > -1
 // useLocalIframe = false
 
 const iframeSrc = useLocalIframe ? localChatboxUrl : remoteChatboxUrl

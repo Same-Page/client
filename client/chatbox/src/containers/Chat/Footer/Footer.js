@@ -1,7 +1,7 @@
 import "./Footer.css"
 
 import React, { useContext, useState } from "react"
-import { message, Button, Modal, Radio, Tooltip } from "antd"
+import { message, Button, Modal, Tooltip } from "antd"
 
 import InputWithPicker from "components/InputWithPicker"
 import AccountContext from "context/account-context"
@@ -11,8 +11,8 @@ const MESSAGE_TIME_GAP = 3 * 1000
 let lastMsgTime = 0
 function Footer(props) {
   const [showInvitationModal, setShowInvitationModal] = useState(false)
-  const [invitationType, setInvitationType] = useState("room")
-  const [invitationPurpose, setInvitationPurpose] = useState("chat")
+  // const [invitationType, setInvitationType] = useState("room")
+  // const [invitationPurpose, setInvitationPurpose] = useState("chat")
   const accountContext = useContext(AccountContext)
   const account = accountContext.account
 
@@ -44,22 +44,22 @@ function Footer(props) {
         addonAfter={
           <span>
             <Modal
-              title="邀请大家来你所在的网页"
+              title="分享你所在的网页"
               visible={showInvitationModal}
               onOk={() => {
                 const payload = {
                   // url and title added by content script
                   type: "invite",
-                  invitationType: invitationType,
-                  invitationPurpose: invitationPurpose
+                  // invitationType: invitationType,
+                  // invitationPurpose: invitationPurpose
                 }
                 socketManager.sendMessage(payload)
                 setShowInvitationModal(false)
-                if (invitationType !== "room") {
-                  // room invitation is much faster
-                  // no db lookup
-                  message.loading("发送中")
-                }
+                // if (invitationType !== "room") {
+                //   // room invitation is much faster
+                //   // no db lookup
+                //   message.loading("发送中")
+                // }
               }}
               onCancel={() => {
                 setShowInvitationModal(false)
@@ -67,10 +67,10 @@ function Footer(props) {
               okText="确认"
               cancelText="取消"
             >
-              <p style={{ color: "gray" }}>
-                邀请到其他用户后便可以一同切换到网页聊天
+              <p>
+                分享网页时请注意保护个人隐私
               </p>
-              <b style={{ marginRight: 10 }}>邀请目的</b>
+              {/* <b style={{ marginRight: 10 }}>邀请目的</b>
               <Radio.Group
                 onChange={e => {
                   setInvitationPurpose(e.target.value)
@@ -99,8 +99,8 @@ function Footer(props) {
                   <Radio disabled style={{ display: "block" }} value="all">
                     全站用户（需20积分）
                   </Radio>
-                </Radio.Group>
-              </div>
+                </Radio.Group> 
+              </div>*/}
             </Modal>
             <Tooltip title="分享当前网页" placement="left">
               <Button

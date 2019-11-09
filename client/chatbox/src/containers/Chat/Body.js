@@ -4,6 +4,7 @@ import moment from "moment"
 import Message from "./Message"
 import socketManager from "socket/socket"
 import AccountContext from "context/account-context"
+import spDebug from "config/logger"
 
 const chatBodyStyle = {
   height: "calc(100% - 107px)",
@@ -35,6 +36,7 @@ function ChatBody(props) {
     // console.debug("[Body.js] register socket events")
     socketManager.addHandler("new message", "display_new_message", data => {
       data.time = moment()
+      spDebug('[chatbox] new message')
       setMessages(prevMessages => {
         return [...prevMessages, data]
       })

@@ -23,6 +23,7 @@ const MSG_FREQUENCY_LIMIT = 3 * 1000
 const MIN_CLIENT_VERSION = "4.1.0" // >= this version
 
 const LOBBY_ROOM_ID = "5"
+const SIMILARITY_THRESHOLD = 0.1
 
 let messageCount = 0
 server.listen(port, function() {
@@ -229,7 +230,7 @@ function findRoomToJoin(pageTags) {
   // decide which room to join
   // or no room to join
   let closestRoom = null
-  let threashold = 0.05
+  let threashold = SIMILARITY_THRESHOLD
   Object.values(roomDict).forEach((room)=>{
     const roomTags = room.tags
     const score = similarityScore(pageTags, roomTags)
@@ -346,7 +347,7 @@ io.on("connection", function(socket) {
       }
     })
     pageTags = stopword.removeStopwords(pageTags)
-    const customStopwords = ['google', 'baidu']
+    const customStopwords = ['google', 'baidu', 'search']
     pageTags = pageTags.filter( (tag) => !customStopwords.includes(tag) )
 
     console.log(pageTags)
@@ -506,7 +507,7 @@ io.on("connection", function(socket) {
         "[" + socket.roomId + "] " + socket.username + " invite: " + data.url
       )
       // return
-      cleanedMsg = "发出邀请"
+      cleanedMsg = "分享网页"
       metadata = {
         type: data.invitationType,
         purpose: data.invitationPurpose,
@@ -514,8 +515,8 @@ io.on("connection", function(socket) {
         pageUrl: data.url
       }
       // TODO: no need to change room for v5.0
-      const readOnly = true
-      addSocketToRoom(socket, data.url, readOnly)
+      // const readOnly = true
+      // addSocketToRoom(socket, data.url, readOnly)
     }
     const messageId = messageCount++
     var payload = {

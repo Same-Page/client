@@ -185,7 +185,8 @@ function ChatHeader(props) {
       helpTitle = "同兴趣聊天室 "+room.id
       helpContent = (
         <div>
-          <h4>关键词</h4>
+          <p>浏览相似内容的用户会进入该聊天室</p>
+          <h4>该聊天室的关键词有</h4>
           {room.tags && room.tags.join(', ')}
         </div>
       )
@@ -252,6 +253,9 @@ function ChatHeader(props) {
             </Tooltip>
           )}
         </Radio.Group>
+        <div style={{ maxWidth: '45%', display: 'inline-flex' }}>
+            <span style={{whiteSpace:'nowrap', textOverflow: 'ellipsis', overflow: 'hidden'}}>{room.tags && room.tags.join(', ')}</span>
+        </div>
         <Button
           style={{ border: "none" }}
           onClick={() => setShowHelp(true)}
