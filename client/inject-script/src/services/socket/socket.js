@@ -148,12 +148,12 @@ const socketManager = {
       console.error("socket not connected")
     }
   },
-  // updatePageInfo: data => {
-  //   if (_socket && _socket.connected) _socket.emit("page update", data)
-  //   else {
-  //     console.error("socket not connected")
-  //   }
-  // },
+  updatePageInfo: data => {
+    if (_socket && _socket.connected) _socket.emit("page update", data)
+    else {
+      console.error("socket not connected")
+    }
+  },
   connect: _connect,
   changeRoom: roomId => {
     console.debug("change room")

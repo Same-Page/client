@@ -4,9 +4,6 @@ const express = require("express")
 const request = require("request")
 const urls = require("./cfg/urls")
 const metrics = require("./metrics")
-const stopword = require('stopword')
-const cnTokenizer = require("nodejieba")
-const containsChinese = require('contains-chinese')
 
 const app = express()
 const server = require("http").createServer(app)
@@ -16,14 +13,15 @@ const io = require("socket.io")(server)
 const utils = require("./utils.js")
 
 const userManager = require("./user.js")
+const tagManager = require("./tag.js")
 // const roomManager = require("./room.js")
 // var invitationManager = require("./invitation.js")
 
 const MSG_FREQUENCY_LIMIT = 3 * 1000
 const MIN_CLIENT_VERSION = "4.1.0" // >= this version
+const SIMILARITY_THRESHOLD = 0.1
 
 const LOBBY_ROOM_ID = "5"
-const SIMILARITY_THRESHOLD = 0.1
 
 let messageCount = 0
 server.listen(port, function() {
@@ -93,12 +91,7 @@ function addMsgToRoomHistory(message, roomId) {
     room.messages.shift()
   }
 }
-function insert_spacing(str) {
-  //将汉字与英文、数字、下划线之间添加一个空格
-  var p1=/([A-Za-z_])([\u4e00-\u9fa5]+)/gi;
-  var p2=/([\u4e00-\u9fa5]+)([A-Za-z_])/gi;
-  return str.replace(p1, "$1 $2").replace(p2, "$1 $2")
-}
+
 function addSocketToRoom(socket, roomId, readOnly) {
   // Add socket to room, track socket under user
   // if adding user to room, return true
@@ -216,16 +209,6 @@ function getUserFromRoom(userId, roomId) {
   return null
 }
 
-function similarityScore(inputTags, baseTags) {
-  let matchCount = 0
-  inputTags.forEach((tag)=>{
-    if (baseTags.includes(tag)) {
-      matchCount ++;
-    }
-  })
-  return matchCount / inputTags.length
-}
-
 function findRoomToJoin(pageTags) {
   // decide which room to join
   // or no room to join
@@ -233,19 +216,16 @@ function findRoomToJoin(pageTags) {
   let threashold = SIMILARITY_THRESHOLD
   Object.values(roomDict).forEach((room)=>{
     const roomTags = room.tags
-    const score = similarityScore(pageTags, roomTags)
-    console.log(pageTags)
-    console.log(roomTags)
-    console.log('score: ' + score)
+    const score = tagManager.similarityScore(pageTags, roomTags)
+    // console.log(pageTags)
+    // console.log(roomTags)
+    // console.log('score: ' + score)
     if (score > threashold) {
       closestRoom = room
       threashold = score
     }
   })
-  if (closestRoom) {
-    return closestRoom.id
-  }
-  return roomIdCount++
+  return closestRoom
 }
 
 app.get("/api/health_check", function(req, res) {
@@ -320,6 +300,8 @@ io.on("connection", function(socket) {
     socket.clientVersion = data.version || "0.0.0"
     metrics.increment("client_version." + socket.clientVersion)
     if (!isClientVersionOK(socket.clientVersion)) {
+      // TODO: injection script isn't showing any alert
+      // about version too low in the UI
       socket.emit("alert", { errorCode: 426 })
       socket.disconnect()
       return
@@ -334,24 +316,7 @@ io.on("connection", function(socket) {
     socket.userId = utils.stripHtml(data.userId)
     socket.pageTitle = data.pageTitle
     console.log(socket.pageTitle)
-    const pageTitleLower = socket.pageTitle.toLowerCase()
-    const pageTitlePatchedWithSpace = insert_spacing(pageTitleLower)
-    let tokens = pageTitlePatchedWithSpace.split(/(?:,|:|：|-| )+/) 
-    let pageTags = []
-    tokens.forEach((token) => {
-      if (containsChinese(token)) {
-        let cnTokens = cnTokenizer.cut(token)
-        pageTags.push(...cnTokens)
-      } else {
-        pageTags.push(token)
-      }
-    })
-    pageTags = stopword.removeStopwords(pageTags)
-    const customStopwords = ['google', 'baidu', 'search']
-    pageTags = pageTags.filter( (tag) => !customStopwords.includes(tag) )
-
-    console.log(pageTags)
-    socket.pageTags = pageTags
+    socket.pageTags = tagManager.getTags(socket.pageTitle)
     // language added in 2.3.3
     socket.lang = utils.stripHtml(data.lang)
     // url field is added in v2.6.0
@@ -382,7 +347,13 @@ io.on("connection", function(socket) {
         // }
         // roomId = roomId.toString()
         // Above is legacy code for joining page/site/room
-        let roomId = findRoomToJoin(pageTags)
+        const room = findRoomToJoin(socket.pageTags)
+        let roomId = -1
+        if (room) {
+          roomId = room.id
+        } else {
+          roomId = roomIdCount++
+        }
         socket.spMode = "tags"
         const newUserJoined = addSocketToRoom(socket, roomId)
         // console.log(roomId)
@@ -566,7 +537,48 @@ io.on("connection", function(socket) {
     if (!socket.joined) return
 
     socket.pageTitle = data.title
+    socket.pageTags = tagManager.getTags(socket.pageTitle)
     socket.url = data.url
+
+    // leave current room then join the new room
+    const userLeft = removeSocketFromRoom(socket)
+    if (userLeft) {
+      io.in(socket.roomId).emit("user gone", {
+        user: socket.user
+      })
+    }
+    let room = findRoomToJoin(socket.pageTags)
+    let roomId = -1
+    if (room) {
+      roomId = room.id
+    } else {
+      roomId = roomIdCount++
+    }
+    socket.spMode = "tags"
+    const newUserJoined = addSocketToRoom(socket, roomId)
+    room = roomDict[roomId]
+
+    // Tell everyone new user joined
+    if (newUserJoined) {
+      io.in(roomId).emit("new user", {
+        user: socket.user
+      })
+    }
+    // Tell this new socket who are already in the room
+    socket.emit("users in room", {
+      users: getUsersInRoom(roomId)
+    })
+    socket.emit("*", {
+      eventName: "room info",
+      // room: roomManager.getRoomInfo(socket.roomId),
+      room: {
+        id: room.id,
+        tags: room.tags
+      },
+      mode: socket.spMode
+    })
+    // TODO?: no need to get this if chatbox not open
+    socket.emit("recent messages", roomDict[roomId].messages)
     metrics.increment("page_update")
   })
 

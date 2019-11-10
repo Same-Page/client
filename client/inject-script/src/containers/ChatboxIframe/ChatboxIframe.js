@@ -21,6 +21,33 @@ import socketManager from "services/socket"
 import accountManager from "services/account/account"
 
 let urlInput = window.location.href
+let fakeUrl = false
+let curUrl = window.location.href
+  
+function keepCheckingLocation() {
+  // Stop this timer if url is ever manually set because
+  // that's either local testing or the web version
+  if (fakeUrl) return
+  if (window.location.href === curUrl) {
+    // window.spDebug('url not changed')
+  } else {
+    window.spDebug('url changed')
+    curUrl = window.location.href
+    const msg = {
+      locationUpdate: true,
+      title: document.title,
+      url: window.location.href
+    }
+    // if (this.iframeRef.current) {
+    //   this.iframeRef.current.contentWindow.postMessage(msg, "*")
+    // }
+    socketManager.updatePageInfo(msg)
+  }
+  setTimeout(() => {
+    keepCheckingLocation()
+  }, 10*1000)
+}
+
 function ChatboxIframe(props) {
   const [createChatboxIframe, setCreateChatboxIframe] = useState(false)
   window.createChatboxIframe = createChatboxIframe
@@ -48,7 +75,7 @@ function ChatboxIframe(props) {
   window.toggleChatbox = toggleChatbox
 
   useEffect(() => {
-    //   this.keepCheckingLocation()
+    keepCheckingLocation()
     window.addEventListener(
       "message",
       e => {
@@ -97,29 +124,6 @@ function ChatboxIframe(props) {
     }
   }, [url])
 
-  // componentDidMount() {
-  //   this.keepCheckingLocation()
-  // }
-
-  // keepCheckingLocation = () => {
-  //   // always post title and url to iframe because
-  //   // the iframe may not listen and get the first event..
-  //   // TODO: is there better way?
-  //   // Stop this timer if url is ever manually set because
-  //   // that's either local testing or the web version
-  //   if (this.fakeUrl) return
-  //   var msg = {
-  //     locationUpdate: true,
-  //     title: document.title,
-  //     url: window.location.href
-  //   }
-  //   if (this.iframeRef.current) {
-  //     this.iframeRef.current.contentWindow.postMessage(msg, "*")
-  //   }
-  //   setTimeout(() => {
-  //     this.keepCheckingLocation()
-  //   }, 3000)
-  // }
 
   let iframeControl = ""
   if (showIframeControl) {
@@ -148,7 +152,7 @@ function ChatboxIframe(props) {
             size="small"
             onClick={() => {
               setUrl(urlInput)
-              // this.fakeUrl = true
+              fakeUrl = true
             }}
           >
             update!
