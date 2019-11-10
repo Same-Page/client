@@ -10,6 +10,7 @@ import ChatContext from "context/chat-context"
 
 import socketManager from "socket/socket"
 import storageManager from "utils/storage"
+import urls from "config/urls"
 // import { setPageTitle, getPageTitle } from "utils/pageTitle"
 
 require("moment/locale/zh-cn") //moment.js bug, has to manually include
@@ -173,7 +174,10 @@ class App extends React.Component {
       "message",
       e => {
         if (e && e.data && e.data.type === "config") {
-          window.spConfig = e.data.data
+          const spConfig = e.data.data
+          window.spConfig = spConfig
+          urls.dbAPI = spConfig.apiUrl || urls.dbAPI 
+          urls.socketAPI = spConfig.socketUrl || urls.socketAPI
           this.setState({ waitingForConfigFromParent: false })
         }
       },

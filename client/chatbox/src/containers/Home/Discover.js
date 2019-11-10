@@ -1,6 +1,5 @@
 import "./Home.css"
 import React, { useState, useEffect } from "react"
-
 import { Icon } from "antd"
 
 import Rooms from "./Rooms"
@@ -37,12 +36,23 @@ function Discover(props) {
     //   </div>
     // </div>
     <div className="sp-inbox-tab">
-        <center className="sp-tab-header">
-          热门房间
-        </center>
-        <div style={{padding: 10, paddingLeft: 20, paddingRight: 20}} className="sp-tab-body">
-          <Rooms rooms={rooms} />
-        </div>
+      <center className="sp-tab-header">
+        <span
+          style={{
+            position: "absolute",
+            left: 20
+          }}
+        >
+          {loadingRooms && <Icon type="loading" />}
+        </span>
+        热门房间
+      </center>
+      <div
+        style={{ padding: 10, paddingLeft: 20, paddingRight: 20 }}
+        className="sp-tab-body"
+      >
+        <Rooms rooms={rooms} />
+      </div>
     </div>
   )
 }

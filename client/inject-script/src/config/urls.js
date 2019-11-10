@@ -1,10 +1,7 @@
- let apiUrl = "https://api-v2.yiyechat.com"
- let socketUrl = "https://chat.yiyechat.com"
-if (process.env.REACT_APP_SP_ENV === 'dev') {
-    apiUrl = "http://localhost:8080"
-    socketUrl = "http://localhost:8081"
-}
+import spConfig from "./index.js"
 
+const apiUrl = spConfig.apiUrl
+const socketUrl = spConfig.socketUrl
 const stickersUrl = "https://yiyechat.com/build/chatbox/"
 
 export {apiUrl, socketUrl, stickersUrl}
