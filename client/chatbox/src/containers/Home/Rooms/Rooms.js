@@ -27,7 +27,7 @@ function Rooms(props) {
       //   placement="right"
       // >
         <div
-
+          key={roomId}
           title={room.about}
           className="sp-home-chatroom"
           onClick={() => {
@@ -50,7 +50,7 @@ function Rooms(props) {
             <span style={{ fontSize: "smaller" }}>{room.userCount}人</span>
           </span> */}
           
-            <span style={{marginRight:10}}><Icon type="user" />{room.userCount}</span>{room.about}
+            <span style={{marginRight:15}}><Icon type="user" />{room.userCount}</span>{room.about}
         </div>
       // </Tooltip>
     )
