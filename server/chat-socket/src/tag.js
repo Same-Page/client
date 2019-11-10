@@ -40,7 +40,4 @@ const tagManager = {
     }
 
 }
-
-
-
 module.exports = tagManager
