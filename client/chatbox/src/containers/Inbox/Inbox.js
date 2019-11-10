@@ -112,7 +112,7 @@ function Inbox(props) {
         offset = Math.max(offset, c.lastMsg.id)
       }
     })
-    // console.debug(offset)
+    // window.spDebug(offset)
 
     return offset
   }
@@ -122,11 +122,11 @@ function Inbox(props) {
     // TODO: account update shouldn't fetch mail
     // only if account changed
     if (activeTab === "inbox" && account) {
-      console.debug("[inbox] logged in, load from storage")
+      window.spDebug("[inbox] logged in, load from storage")
       storageManager.get(storageKey, conversations => {
         conversations = conversations || {}
         setConversations(conversations)
-        console.debug("[inbox] loaded from storage, fetch from server")
+        window.spDebug("[inbox] loaded from storage, fetch from server")
         const offset = getOffset(conversations)
         getMessagesFromServer(offset)
       })
@@ -137,18 +137,18 @@ function Inbox(props) {
   useEffect(() => {
     if (account) {
       if (!prevAccountRef.current) {
-        console.debug("register inbox storage listener")
+        window.spDebug("register inbox storage listener")
         // TODO: if same account login and logout and login again
         // this listener is registered multiple times, should unregister
         // when logout
         storageManager.addEventListener(storageKey, conversations => {
-          console.debug("[inbox] storage updated")
+          window.spDebug("[inbox] storage updated")
           conversations = conversations || {}
           setConversations(conversations)
         })
       }
     } else {
-      console.debug("[inbox] logged out")
+      window.spDebug("[inbox] logged out")
       setUser(null)
       setConversations({})
     }
@@ -192,25 +192,25 @@ function Inbox(props) {
 
   // if (login) {
   // let storageKey = "inbox-" + account.id
-  // console.debug("[inbox] logged in, load from storage")
+  // window.spDebug("[inbox] logged in, load from storage")
   // storageManager.get(storageKey, conversations => {
   //   conversations = conversations || {}
   //   setConversations(conversations)
-  //   console.debug("[inbox] loaded from storage, fetch from server")
+  //   window.spDebug("[inbox] loaded from storage, fetch from server")
   //   getMessagesFromServer(getOffset(conversations))
   // })
-  // console.debug("register inbox storage listener")
+  // window.spDebug("register inbox storage listener")
   // // TODO: if same account login and logout and login again
   // // this listener is registered multiple times, should unregister
   // // when logout
   // storageManager.addEventListener(storageKey, conversations => {
-  //   console.debug("[inbox] storage updated")
+  //   window.spDebug("[inbox] storage updated")
   //   setConversations(conversations)
   // })
   // }
 
   //   if (logout) {
-  //     console.debug("[inbox] logged out")
+  //     window.spDebug("[inbox] logged out")
   //     setUser(null)
   //     setConversations({})
   //     // Clear memory

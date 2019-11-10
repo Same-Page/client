@@ -11,7 +11,7 @@ class CreateRoomForm extends React.Component {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values)
+        window.spDebug("Received values of form: ", values)
         if (!(values.name && values.about)) {
           message.error("必须填写房间名与介绍")
           return

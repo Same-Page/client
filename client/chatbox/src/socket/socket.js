@@ -36,7 +36,7 @@ const socketManager = {
   // },
   changeRoom: (roomId, mode) => {
     if (roomId && mode) {
-      console.log("change room to " + roomId)
+      window.spDebug("change room to " + roomId)
       _sendEvent("change room", {
         roomId: roomId,
         mode: mode
@@ -51,7 +51,7 @@ window.addEventListener(
     if (e && e.data && e.data.type === "sp-socket") {
       const eventName = e.data.name
       const data = e.data.data
-      // console.debug(eventName)
+      // window.spDebug(eventName)
       if (eventName in _socketEventHanders) {
         const handlers = _socketEventHanders[eventName] || {}
         Object.values(handlers).forEach(handler => {

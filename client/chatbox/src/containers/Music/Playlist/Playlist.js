@@ -40,7 +40,7 @@ function Playlist(props) {
       window.player.play()
     }
     window.player.on("ended", data => {
-      console.debug("play ended")
+      window.spDebug("play ended")
       window.playNextMedia()
     })
     window.player.on("error", data => {

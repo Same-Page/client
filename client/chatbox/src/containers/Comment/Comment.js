@@ -95,7 +95,7 @@ class CommentTab extends React.Component {
         this.setState({ comments: [selfMsg].concat(this.state.comments) })
         this.clearInput()
         setTimeout(() => {
-          console.debug("[Comment] scroll to top")
+          window.spDebug("[Comment] scroll to top")
           this.bodyRef.current.scrollTop = 0
         }, 500)
       })

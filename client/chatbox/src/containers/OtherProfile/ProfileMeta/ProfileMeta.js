@@ -58,7 +58,7 @@ function ProfileMeta(props) {
     setLoading(true)
     getUser(user.id)
       .then(resp => {
-        // console.debug(resp.data)
+        // window.spDebug(resp.data)
         const userData = resp.data
         setLoaded(true)
         setUser(userData)

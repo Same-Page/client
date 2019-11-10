@@ -18,7 +18,7 @@ function MessageBody(props) {
     content = (
       <img
         onClick={() => {
-          console.debug("click on image")
+          window.spDebug("click on image")
           window.parent.postMessage({ imgSrc: imgSrc }, "*")
         }}
         className="sp-message-image"
@@ -45,7 +45,7 @@ function MessageBody(props) {
     // const purposeStr = invitationData.purpose === "chat" ? "聊天邀请" : "求助"
     // const iconType =
     //   invitationData.purpose === "chat" ? "message" : "question-circle"
-    const iconType = 'link'
+    const iconType = "link"
     content = (
       <div
         title="点击打开网页"

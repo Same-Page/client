@@ -18,7 +18,7 @@ class ResetPasswordForm extends React.Component {
           })
           .catch()
           .then()
-        console.log("Received values of form: ", values)
+        window.spDebug("Received values of form: ", values)
       }
     })
   }

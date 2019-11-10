@@ -50,7 +50,7 @@ const storage = {
     if (window.chrome && window.chrome.storage) {
       window.chrome.storage.onChanged.addListener((changes, area) => {
         if (key in changes) {
-          console.debug(changes[key])
+          window.spDebug(changes[key])
           callback(changes[key]["newValue"])
         }
       })

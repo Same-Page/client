@@ -83,7 +83,7 @@ function Conversation(props) {
   }, [])
 
   useEffect(() => {
-    console.debug("auto scroll down")
+    window.spDebug("auto scroll down")
     if (messages && messages.length) {
       const lastMsg = messages[messages.length - 1]
       let timeout = 50

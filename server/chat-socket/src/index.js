@@ -444,6 +444,7 @@ io.on("connection", function(socket) {
 
     // remember user's choice of room
     // do not remember mode
+    // TODO: do I need below code?
     const mode = data.mode
     if (mode === "room") {
       request.post(

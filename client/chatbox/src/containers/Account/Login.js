@@ -19,17 +19,17 @@ class NormalLoginForm extends React.Component {
   componentDidMount() {
     storageManager.get("login", values => {
       if (values) {
-        console.debug("found login in storage")
+        window.spDebug("found login in storage")
         this.props.form.setFieldsValue({
           userId: values.userId,
           password: values.password
         })
         if (this.context.autoLogin) {
           this.loginUser(values)
-          console.debug("auto login")
+          window.spDebug("auto login")
         }
       } else {
-        console.debug("no login found in storage, register now")
+        window.spDebug("no login found in storage, register now")
         const password = Math.random()
           .toString(36)
           .slice(-8)
@@ -62,7 +62,7 @@ class NormalLoginForm extends React.Component {
     this.setState({ loading: true })
     login(values.userId, values.password)
       .then(res => {
-        console.debug(res.data)
+        window.spDebug(res.data)
         const account = res.data
         this.setState({ loading: false })
         this.props.setAccount(account)
@@ -83,7 +83,7 @@ class NormalLoginForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
-      console.debug("Received values of form: ", values)
+      window.spDebug("Received values of form: ", values)
       if (!err) {
         this.loginUser(values)
       }

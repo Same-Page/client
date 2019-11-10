@@ -4,7 +4,7 @@
 
 const followEventHandler = {
   follow: () => {
-    console.log("follow not mounted")
+    console.warn("follow not mounted")
   }
 }
 

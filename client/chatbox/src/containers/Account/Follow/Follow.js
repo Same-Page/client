@@ -24,9 +24,9 @@ function Follow(props) {
     loadUsers(0)
 
     if (!showFollowers) {
-      console.debug("register follow handler")
+      window.spDebug("register follow handler")
       followEventHandler.follow = (followUser, user) => {
-        console.log("update followings")
+        window.spDebug("update followings")
         let updatedUsers = []
         if (!followUser) {
           updatedUsers = usersRef.current.filter(u => u.id !== user.id)
@@ -37,9 +37,9 @@ function Follow(props) {
       }
 
       return () => {
-        console.debug("unregister follow handler")
+        window.spDebug("unregister follow handler")
         followEventHandler.follow = () => {
-          console.debug("following handler isn't mounted")
+          window.spDebug("following handler isn't mounted")
         }
       }
     }

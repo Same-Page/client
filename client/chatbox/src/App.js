@@ -55,7 +55,7 @@ class App extends React.Component {
     if (locale.indexOf("zh") > -1) {
       moment.locale("zh-cn")
     }
-    // console.debug(locale)
+    // window.spDebug(locale)
     message.config({
       top: 80,
       duration: 2,
@@ -132,12 +132,12 @@ class App extends React.Component {
     // console.log("get account from storage, register account change listener")
     storageManager.get("account", account => {
       if (account) {
-        console.debug("found account in storage")
-        // console.debug(account)
+        window.spDebug("found account in storage")
+        // window.spDebug(account)
         this.setState({ account: account })
       } else {
         this.setState({ autoLogin: true })
-        console.debug("no account found in storage")
+        window.spDebug("no account found in storage")
       }
       this.setState({ loadingAccountFromStorage: false })
     })
@@ -176,7 +176,7 @@ class App extends React.Component {
         if (e && e.data && e.data.type === "config") {
           const spConfig = e.data.data
           window.spConfig = spConfig
-          urls.dbAPI = spConfig.apiUrl || urls.dbAPI 
+          urls.dbAPI = spConfig.apiUrl || urls.dbAPI
           urls.socketAPI = spConfig.socketUrl || urls.socketAPI
           this.setState({ waitingForConfigFromParent: false })
         }
@@ -191,11 +191,11 @@ class App extends React.Component {
     const login = !prevState.account && this.state.account
     const logout = prevState.account && !this.state.account
     if (login) {
-      console.debug("logged in")
+      window.spDebug("logged in")
       axios.defaults.headers.common["token"] = this.state.account.token
     }
     if (logout) {
-      console.debug("logged out")
+      window.spDebug("logged out")
       axios.defaults.headers.common["token"] = null
       // clear storage
       storageManager.set("unread", false)
@@ -206,7 +206,7 @@ class App extends React.Component {
   }
 
   setAccount = account => {
-    // console.debug("set account")
+    // window.spDebug("set account")
     storageManager.set("account", account)
   }
 

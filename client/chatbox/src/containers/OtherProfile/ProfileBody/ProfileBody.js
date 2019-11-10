@@ -80,10 +80,10 @@ function ProfileBody(props) {
                     thankUser(user.id)
                       .then(resp => {
                         message.success("点赞成功!")
-                        console.log(account)
+                        window.spDebug(account)
                         const newAccountData = { ...account }
                         newAccountData.credit = resp.data.credit
-                        console.log(newAccountData)
+                        window.spDebug(newAccountData)
                         accountContext.setAccount(newAccountData)
                       })
                       .catch(err => {})

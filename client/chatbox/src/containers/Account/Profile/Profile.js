@@ -93,7 +93,7 @@ function Profile(props) {
 
             logout()
               .then(res => {
-                console.debug("logout success")
+                window.spDebug("logout success")
               })
               .catch(err => {
                 console.error(err)

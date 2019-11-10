@@ -33,10 +33,10 @@ function ChatBody(props) {
       console.warn("[Body.js] no account, won't register socket events")
       return
     }
-    // console.debug("[Body.js] register socket events")
+    // window.spDebug("[Body.js] register socket events")
     socketManager.addHandler("new message", "display_new_message", data => {
       data.time = moment()
-      spDebug('[chatbox] new message')
+      spDebug("[chatbox] new message")
       setMessages(prevMessages => {
         return [...prevMessages, data]
       })
@@ -65,7 +65,7 @@ function ChatBody(props) {
         // Shoudn't display recent messages if there's
         // any messages already being displayed, e.g. joined
         // the room then went offline then back online
-        // console.debug(recentMessages)
+        // window.spDebug(recentMessages)
         recentMessages.forEach(msg => {
           msg.self = msg.userId.toString() === account.id.toString()
           msg.time = moment.utc(msg.timestamp)
@@ -76,7 +76,7 @@ function ChatBody(props) {
       }
     )
     return () => {
-      console.debug("[Body.js] unregister socket events")
+      window.spDebug("[Body.js] unregister socket events")
       socketManager.removeHandler("new message", "display_new_message")
       socketManager.removeHandler("invitation", "display_new_invitation")
       socketManager.removeHandler("recent messages", "display_recent_messages")

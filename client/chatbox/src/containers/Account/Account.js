@@ -28,7 +28,7 @@ function Account(props) {
     // is only loaded when login which becomes stale easily
     if (account) {
       setLoadingAccount(true)
-      console.debug("refresh account data")
+      window.spDebug("refresh account data")
       getAccount()
         .then(resp => {
           setAccount(resp.data)
