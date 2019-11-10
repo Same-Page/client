@@ -14,14 +14,11 @@ const utils = require("./utils.js")
 
 const userManager = require("./user.js")
 const tagManager = require("./tag.js")
-// const roomManager = require("./room.js")
+const roomManager = require("./room.js")
 // var invitationManager = require("./invitation.js")
 
 const MSG_FREQUENCY_LIMIT = 3 * 1000
 const MIN_CLIENT_VERSION = "4.1.0" // >= this version
-const SIMILARITY_THRESHOLD = 0.1
-
-const LOBBY_ROOM_ID = "5"
 
 let messageCount = 0
 server.listen(port, function() {
@@ -48,185 +45,6 @@ app.use(function(req, res, next) {
   // Pass to next layer of middleware
   next()
 })
-let roomIdCount = 0
-var roomDict = {} // key: roomId, value: dict of sockets
-
-var popularRooms = []
-// Note that lobby is a special case, room.url is
-// irrelevant to room.roomId for lobby
-// let's handle lobby separately
-function addToPopRoom(socket) {
-  if (!(socket.url && socket.pageTitle && socket.roomId)) return
-  if (socket.roomId === LOBBY_ROOM_ID) return
-  var room = {
-    url: socket.url,
-    roomId: socket.roomId,
-    title: socket.pageTitle
-    // this is actually socket count, not user count,
-    // but close enough, if we want to make this correct,
-    // instead of counting every time, we should add user count
-    // attribute to room object
-    // Set when api is called
-    // userCount: roomDict[socket.roomId].length
-  }
-  popularRooms = popularRooms.filter(function(r) {
-    // check all fields, no fields can be equal.
-    // If we only check room id, page and site on same url
-    // will show up twice with same page title, since we
-    // don't have site title
-    // E.g. {roomId: foo.com, url: foo.com/123} vs
-    // {roomId: foo.com/123, url: foo.com/123}
-    return r.roomId != room.roomId && r.url != room.url
-  })
-  popularRooms.unshift(room)
-  if (popularRooms.length > 5) {
-    popularRooms.pop()
-  }
-}
-function addMsgToRoomHistory(message, roomId) {
-  // Save message to room object, only keep latest ten
-  const room = roomDict[roomId]
-  room.messages.push(message)
-  if (room.messages.length > 50) {
-    room.messages.shift()
-  }
-}
-
-function addSocketToRoom(socket, roomId, readOnly) {
-  // Add socket to room, track socket under user
-  // if adding user to room, return true
-
-  // roomDict = {
-  //   roomId: {
-  //     id: roomId,
-  //     users: {
-  //        userId: {
-  //          user: {},
-  //          sockets: set of socket ids
-  //          }
-  //     },
-  //     messages: [],
-  //     tags: ['Nike', 'shoes', 'discount']
-  //   }
-  // }
-  let addingUser = false
-
-  if (!(roomId in roomDict)) {
-    roomDict[roomId] = {
-      id: roomId,
-      messages: [],
-      users: {}, // userId as key
-      tags: socket.pageTags
-    }
-    console.log('create room '+roomId)
-  }
-  const room = roomDict[roomId]
-  const users = room.users
-  const userId = socket.user.id
-
-  if (!(userId in users)) {
-    users[userId] = {
-      user: socket.user,
-      sockets: new Set()
-    }
-    addingUser = true
-  }
-
-  const userWithSockets = users[userId]
-  // always set user data from latest socket's user
-  userWithSockets.user = socket.user
-  userWithSockets.sockets.add(socket.id)
-
-  socket.join(roomId)
-  if (!readOnly) {
-    socket.joined = true
-    socket.roomId = roomId
-  }
-
-  return addingUser
-}
-
-function removeSocketFromRoom(socket) {
-  // If a user is leaving room entirely (all his sockets gone),
-  // return that user
-  let removingUser = false
-
-  const userId = socket.user.id
-  const roomId = socket.roomId
-  const room = roomDict[roomId]
-  const userWithSockets = room.users[userId]
-  const sockets = userWithSockets.sockets
-  sockets.delete(socket.id)
-
-  // after deleting the socket, check if need to also
-  // delete user from room, or even delete the room
-  if (sockets.size === 0) {
-    // delete user
-    delete room.users[userId]
-    removingUser = true
-  }
-
-  if (Object.keys(room.users).length === 0) {
-    // delete room
-    // 6/6/2019 9:00 am, commenting this out
-    // since we don't have many users and we want
-    // to keep recent messages of each room
-
-    if (room.messages.length === 0) {
-      // 6/11 memory goes to 2G super fast
-      delete roomDict[roomId]
-    }
-  }
-  socket.joined = false
-  // socket can leave room without disconnecting
-  socket.leave(roomId)
-  return removingUser
-}
-
-function getUsersInRoom(roomId) {
-  const room = roomDict[roomId]
-  if (!room) {
-    return []
-  }
-  const users = room.users
-  const res = []
-  Object.keys(users).forEach(function(userId) {
-    const user = users[userId].user
-    if (res.length < 50) {
-      res.push(user)
-    }
-  })
-  return res
-}
-
-function getUserFromRoom(userId, roomId) {
-  const room = roomDict[roomId]
-  const users = room.users
-  if (userId in users) {
-    const userWithSockets = users[userId]
-    return userWithSockets
-  }
-  return null
-}
-
-function findRoomToJoin(pageTags) {
-  // decide which room to join
-  // or no room to join
-  let closestRoom = null
-  let threashold = SIMILARITY_THRESHOLD
-  Object.values(roomDict).forEach((room)=>{
-    const roomTags = room.tags
-    const score = tagManager.similarityScore(pageTags, roomTags)
-    // console.log(pageTags)
-    // console.log(roomTags)
-    // console.log('score: ' + score)
-    if (score > threashold) {
-      closestRoom = room
-      threashold = score
-    }
-  })
-  return closestRoom
-}
 
 app.get("/api/health_check", function(req, res) {
   metrics.increment("socket.api.health_check")
@@ -239,7 +57,6 @@ app.get("/", function(req, res) {
 // app.get("/api/refresh_site_to_room_mapping", function(req, res) {
 //   roomManager.setSiteToRoom(res)
 // })
-
 app.get("/api/popular_rooms", function(req, res) {
   metrics.increment("socket.api.popular_rooms")
   // roomManager.getRooms(req.headers.token, rooms => {
@@ -311,7 +128,6 @@ io.on("connection", function(socket) {
       socket.disconnect()
       return
     }
-    // socket.shareLocation = data.shareLocation
     socket.username = utils.stripHtml(data.username)
     socket.userId = utils.stripHtml(data.userId)
     socket.pageTitle = data.pageTitle
@@ -326,49 +142,29 @@ io.on("connection", function(socket) {
     // User manager decides if socket can join or not
     userManager.loginUser(socket, function(allowJoin) {
       if (allowJoin) {
-
-        // Below is legacy code for joining page/site/room 
-        // const mode = socket.user.mode
-        // let roomId = socket.user.room || LOBBY_ROOM_ID
-        // socket.spMode = mode
-        // if (mode === "page") {
-        //   roomId = socket.url
-        //   socket.spMode = "page"
-        // } else if (mode === "site") {
-        //   const roomForSite = roomManager.siteToRoom(data.roomId)
-        //   if (roomForSite) {
-        //     roomId = roomForSite.id
-        //     socket.spMode = "room"
-        //     // console.debug("site should go to room " + roomId)
-        //   } else {
-        //     roomId = data.roomId
-        //     socket.spMode = "site"
-        //   }
-        // }
-        // roomId = roomId.toString()
-        // Above is legacy code for joining page/site/room
-        const room = findRoomToJoin(socket.pageTags)
-        let roomId = -1
-        if (room) {
-          roomId = room.id
-        } else {
-          roomId = roomIdCount++
-        }
         socket.spMode = "tags"
-        const newUserJoined = addSocketToRoom(socket, roomId)
-        // console.log(roomId)
-        // Tell everyone new user joined
-        if (newUserJoined) {
-          io.in(roomId).emit("new user", {
-            user: socket.user
-          })
+
+        const room = roomManager.findRoomToJoin(socket.pageTags)
+        if (room) {
+          const roomId = room.id
+          const newUserJoined = roomManager.addSocketToRoom(socket, roomId)
+          // Tell everyone new user joined
+          if (newUserJoined) {
+            io.in(roomId).emit("new user", {
+              user: socket.user
+            })
+          }
+
+        } else {
+          roomManager.createRoomForSocket(socket)
         }
+
         socket.emit("*", {
           eventName: "login success"
         })
         // Tell this new socket who are already in the room
         socket.emit("users in room", {
-          users: getUsersInRoom(roomId)
+          users: roomManager.getUsersInRoom(socket.roomId)
         })
 
         // TODO: recent messages and room info are not
@@ -394,7 +190,7 @@ io.on("connection", function(socket) {
     if (!socket.joined) {
       return
     }
-    const userLeft = removeSocketFromRoom(socket)
+    const userLeft = roomManager.removeSocketFromRoom(socket)
     // io.in(socket.roomId).emit("stop typing", { username: socket.username })
     if (userLeft) {
       io.in(socket.roomId).emit("user gone", {
@@ -502,7 +298,7 @@ io.on("connection", function(socket) {
       roomId: socket.roomId
     }
     io.in(socket.roomId).emit("new message", payload)
-    addMsgToRoomHistory(
+    roomManager.addMsgToRoomHistory(
       {
         ...payload,
         timestamp: Date.now()
@@ -539,34 +335,31 @@ io.on("connection", function(socket) {
     socket.pageTitle = data.title
     socket.pageTags = tagManager.getTags(socket.pageTitle)
     socket.url = data.url
-
+    socket.spMode = "tags"
     // leave current room then join the new room
-    const userLeft = removeSocketFromRoom(socket)
+    const userLeft = roomManager.removeSocketFromRoom(socket)
     if (userLeft) {
       io.in(socket.roomId).emit("user gone", {
         user: socket.user
       })
     }
-    let room = findRoomToJoin(socket.pageTags)
-    let roomId = -1
-    if (room) {
-      roomId = room.id
-    } else {
-      roomId = roomIdCount++
-    }
-    socket.spMode = "tags"
-    const newUserJoined = addSocketToRoom(socket, roomId)
-    room = roomDict[roomId]
 
-    // Tell everyone new user joined
-    if (newUserJoined) {
-      io.in(roomId).emit("new user", {
-        user: socket.user
-      })
+    let room = roomManager.findRoomToJoin(socket.pageTags)
+    if (room) {
+      const newUserJoined = roomManager.addSocketToRoom(socket, room.id)
+      // Tell everyone new user joined
+      if (newUserJoined) {
+        io.in(roomId).emit("new user", {
+          user: socket.user
+        })
+      }
+    } else {
+      room = roomManager.createRoomForSocket(socket)
     }
+
     // Tell this new socket who are already in the room
     socket.emit("users in room", {
-      users: getUsersInRoom(roomId)
+      users: roomManager.getUsersInRoom(room.id)
     })
     socket.emit("*", {
       eventName: "room info",
@@ -578,7 +371,7 @@ io.on("connection", function(socket) {
       mode: socket.spMode
     })
     // TODO?: no need to get this if chatbox not open
-    socket.emit("recent messages", roomDict[roomId].messages)
+    socket.emit("recent messages", room.messages)
     metrics.increment("page_update")
   })
 
@@ -591,12 +384,13 @@ io.on("connection", function(socket) {
     // because user might not have chat box open
     // and want to see the invitation
     if (!socket.joined) return
-    const room = roomDict[socket.roomId]
+    const room = roomManager.getRoom(socket.roomId)
     if (!room) {
+      console.error('room not exist!')
       return
     }
     socket.emit("users in room", {
-      users: getUsersInRoom(socket.roomId)
+      users: roomManager.getUsersInRoom(socket.roomId)
     })
     // deep copy so we don't modify room messages
     // const roomMessages = [...room.messages]
@@ -625,7 +419,7 @@ io.on("connection", function(socket) {
     if (socket.roomId === roomId) return
 
     // leave current room then join the new room
-    const userLeft = removeSocketFromRoom(socket)
+    const userLeft = roomManager.removeSocketFromRoom(socket)
 
     if (userLeft) {
       io.in(socket.roomId).emit("user gone", {
@@ -635,7 +429,7 @@ io.on("connection", function(socket) {
 
     socket.roomId = roomId
     socket.spMode = data.mode
-    const newUserJoined = addSocketToRoom(socket, roomId)
+    const newUserJoined = roomManager.addSocketToRoom(socket, roomId)
 
     // Tell everyone new user joined
     if (newUserJoined) {
@@ -645,15 +439,15 @@ io.on("connection", function(socket) {
     }
     // Tell this new socket who are already in the room
     socket.emit("users in room", {
-      users: getUsersInRoom(roomId)
+      users: roomManager.getUsersInRoom(roomId)
     })
     socket.emit("*", {
       eventName: "room info",
       // room: roomManager.getRoomInfo(socket.roomId),
-      room: roomDict[roomId], // entire room object, too much data?
+      room: roomManager.getRoom(roomId), // entire room object, too much data?
       mode: socket.spMode
     })
-    socket.emit("recent messages", roomDict[roomId].messages)
+    socket.emit("recent messages", roomManager.getRoom(roomId).messages)
 
     // remember user's choice of room
     // do not remember mode
@@ -692,7 +486,7 @@ io.on("connection", function(socket) {
     if (!socket.joined) return
     const receiverId = data.userId
     const roomId = socket.roomId
-    const receiver = getUserFromRoom(receiverId, roomId)
+    const receiver = roomManager.getUserFromRoom(receiverId, roomId)
     if (receiver) {
       receiver.sockets.forEach(sid => {
         const s = io.sockets.sockets[sid]
@@ -715,7 +509,7 @@ io.on("connection", function(socket) {
     }
     const userIdToBeKicked = data.userId
     const roomId = socket.roomId
-    const receiver = getUserFromRoom(userIdToBeKicked, roomId)
+    const receiver = roomManager.getUserFromRoom(userIdToBeKicked, roomId)
     if (receiver) {
       if (receiver.user.role >= user.role) {
         socket.emit("alert", { errorCode: 409 })
@@ -740,7 +534,7 @@ io.on("connection", function(socket) {
     const user = socket.user
     const messageId = data.messageId
     const roomId = socket.roomId
-    let messages = roomDict[roomId].messages
+    let messages = roomManager.getRoom(roomId).messages
     // the message we want to delete maybe no longer in memory
     const messageToBeDeleted = messages.find(msg => {
       return msg.id === messageId
@@ -755,7 +549,7 @@ io.on("connection", function(socket) {
     messages = messages.filter(msg => {
       return msg.id !== messageId
     })
-    roomDict[roomId].messages = messages
+    roomManager.getRoom(roomId).messages = messages
     io.in(roomId).emit("recent messages", messages)
     metrics.increment("delete message")
   })

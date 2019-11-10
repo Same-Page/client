@@ -1,145 +1,166 @@
-const request = require("request")
-const urls = require("./cfg/urls")
+const tagManager = require("./tag.js")
 
-let _sitesToRooms = {}
-let _roomsInfo = {}
+const SIMILARITY_THRESHOLD = 0.1
+const LOBBY_ROOM_ID = "5"
+
+let roomIdCount = 0
+const roomDict = {} // key: roomId, value: dict of sockets
 const roomManager = {
-  getRoomInfo: roomId => {
-    return _roomsInfo[roomId]
-  },
-  loadRooms: () => {
-    console.log("load rooms")
-    request.get(
-      {
-        url: urls.dbAPI + "/api/v1/rooms"
-      },
-      function optionalCallback(err, httpResponse, body) {
-        if (err) {
-          console.error("Failed to load rooms", err)
-          return
+    getRoom: (roomId) => {
+        return roomDict[roomId]
+    },
+    addMsgToRoomHistory: (message, roomId) => {
+        // Save message to room object, only keep latest ten
+        const room = roomDict[roomId]
+        room.messages.push(message)
+        if (room.messages.length > 50) {
+        room.messages.shift()
         }
-        if (httpResponse.statusCode === 200) {
-          rooms = JSON.parse(body)
-          rooms.forEach(r => {
-            _roomsInfo[r.id] = r
-          })
+    },
+    removeSocketFromRoom: (socket) => {
+        // If a user is leaving room entirely (all his sockets gone),
+        // return that user
+        let removingUser = false
+    
+        const userId = socket.user.id
+        const roomId = socket.roomId
+        const room = roomDict[roomId]
+        const userWithSockets = room.users[userId]
+        const sockets = userWithSockets.sockets
+        sockets.delete(socket.id)
+    
+        // after deleting the socket, check if need to also
+        // delete user from room, or even delete the room
+        if (sockets.size === 0) {
+            // delete user
+            delete room.users[userId]
+            removingUser = true
         }
+    
+        if (Object.keys(room.users).length === 0) {
+        // delete room
+        // 6/6/2019 9:00 am, commenting this out
+        // since we don't have many users and we want
+        // to keep recent messages of each room
+    
+        if (room.messages.length === 0) {
+            // 6/11 memory goes to 2G super fast
+            delete roomDict[roomId]
+        }
+        }
+        socket.joined = false
+        // socket can leave room without disconnecting
+        socket.leave(roomId)
+        return removingUser
+    },
+  
+    getUsersInRoom: (roomId) => {
+        const room = roomDict[roomId]
+        if (!room) {
+            return []
+        }
+        const users = room.users
+        const res = []
+        Object.keys(users).forEach(function(userId) {
+            const user = users[userId].user
+            if (res.length < 50) {
+                res.push(user)
+            }
+        })
+        return res
+    },
+    getUserFromRoom: (userId, roomId) => {
+        const room = roomDict[roomId]
+        const users = room.users
+        if (userId in users) {
+        const userWithSockets = users[userId]
+        return userWithSockets
+        }
+        return null
+    },
+    findRoomToJoin: (pageTags) => {
+        // decide which room to join
+        // or no room to join
+        let closestRoom = null
+        let threashold = SIMILARITY_THRESHOLD
+        Object.values(roomDict).forEach((room)=>{
+        const roomTags = room.tags
+        const score = tagManager.similarityScore(pageTags, roomTags)
+        // console.log(pageTags)
+        // console.log(roomTags)
+        // console.log('score: ' + score)
+        if (score > threashold) {
+            closestRoom = room
+            threashold = score
+        }
+        })
+        return closestRoom
+    },
+    createRoomForSocket: (socket) => {
+        const roomId = roomIdCount++;
+        roomManager.addSocketToRoom(socket, roomId)
+        return roomDict[roomId]
+    },
+    addSocketToRoom: (socket, roomId, readOnly) => {
+        // Add socket to room, track socket under user
+        // if adding user to room, return true
+        // roomDict = {
+        //   roomId: {
+        //     id: roomId,
+        //     users: {
+        //        userId: {
+        //          user: {},
+        //          sockets: set of socket ids
+        //          }
+        //     },
+        //     messages: [],
+        //     tags: ['Nike', 'shoes', 'discount']
+        //   }
+        // }
+        let addingUser = false
+      
+        if (!(roomId in roomDict)) {
+          roomDict[roomId] = {
+            id: roomId,
+            messages: [],
+            users: {}, // userId as key
+            tags: socket.pageTags
+          }
+          console.log('create room ' + roomId)
+        }
+        const room = roomDict[roomId]
+        const users = room.users
+        const userId = socket.user.id
+      
+        if (!(userId in users)) {
+          users[userId] = {
+            user: socket.user,
+            sockets: new Set()
+          }
+          addingUser = true
+        }
+      
+        const userWithSockets = users[userId]
+        // always set user data from latest socket's user
+        userWithSockets.user = socket.user
+        userWithSockets.sockets.add(socket.id)
+      
+        socket.join(roomId)
+        if (!readOnly) {
+          socket.joined = true
+          socket.roomId = roomId
+        }
+      
+        return addingUser
       }
-    )
-  },
-  getRooms: (token, cb) => {
-    request.get(
-      {
-        url: urls.dbAPI + "/api/v1/rooms",
-        headers: {
-          token: token
-        }
-      },
-      function optionalCallback(err, httpResponse, body) {
-        if (err) {
-          console.error("Failed to get rooms", err)
-          socket.emit("alert", { errorCode: 500 })
-          cb(false)
-          return
-        }
-        if (httpResponse.statusCode === 200) {
-          rooms = JSON.parse(body)
-          cb(rooms)
-          rooms.forEach(r => {
-            _roomsInfo[r.id] = r
-          })
-        } else {
-          cb(false)
-        }
-      }
-    )
-  },
+      
 
-  siteToRoom: site => {
-    return _sitesToRooms[site]
-  },
-
-  setSiteToRoom: res => {
-    console.log("set site to room")
-    res = res || { send: () => {} }
-    request.get(
-      {
-        url: urls.dbAPI + "/api/v1/site_to_rooms"
-      },
-      function optionalCallback(err, httpResponse, body) {
-        if (err) {
-          console.error("Failed to get site to rooms mapping", err)
-          res.send(500)
-          return
-        }
-        if (httpResponse.statusCode === 200) {
-          _sitesToRooms = JSON.parse(body)
-          res.send(httpResponse.statusCode)
-        } else {
-          res.send(httpResponse.statusCode)
-        }
-      }
-    )
-  },
-
-  getRecommendedRooms: () => {
-    return [
-      {
-        roomId: "lobby",
-        title: "聊天大厅",
-        url: "https://yiyechat.com",
-        userCount: 0
-      },
-      {
-        roomId: "www.baidu.com",
-        title: "百度",
-        url: "https://www.baidu.com",
-        userCount: 0
-      },
-      {
-        roomId: "www.google.com",
-        title: "Google",
-        url: "https://www.google.com",
-        userCount: 0
-      },
-      {
-        roomId: "www.bilibili.com",
-        title: "Bilibili",
-        url: "https://www.bilibili.com/",
-        userCount: 0
-      },
-      {
-        roomId: "www.youtube.com",
-        title: "Youtube",
-        url: "https://youtube.com",
-        userCount: 0
-      },
-      {
-        roomId: "www.douban.com",
-        title: "豆瓣",
-        url: "https://www.douban.com",
-        userCount: 0
-      },
-      {
-        roomId: "github.com",
-        title: "Github",
-        url: "https://github.com",
-        userCount: 0
-      },
-      {
-        roomId: "www.zhihu.com",
-        title: "知乎",
-        url: "https://www.zhihu.com",
-        userCount: 0
-      },
-      {
-        roomId: "jandan.net",
-        title: "煎蛋",
-        url: "https://jandan.net",
-        userCount: 0
-      }
-    ]
-  }
 }
+
+
+
+
+
+
 
 module.exports = roomManager
