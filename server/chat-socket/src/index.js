@@ -59,23 +59,16 @@ app.get("/", function(req, res) {
 // })
 app.get("/api/popular_rooms", function(req, res) {
   metrics.increment("socket.api.popular_rooms")
-  // roomManager.getRooms(req.headers.token, rooms => {
-  //   if (rooms) {
-  //     rooms.forEach(room => {
-  //       const roomId = room.id
-  //       room.userCount =
-  //         roomId in roomDict ? Object.keys(roomDict[roomId].users).length : 0
-  //     })
-  //     rooms.sort((b, a) => {
-  //       return a.userCount - b.userCount
-  //     })
-  //     res.send(rooms)
-  //   } else {
-  //     res.send(500)
-  //   }
-  // })
-  // TODO: return pop rooms
-  res.send([])
+  let popRooms = roomManager.getPopularRooms()
+  popRooms = popRooms.map((room) => {
+    return {
+      id: room.id,
+      tags: room.tags,
+      about: room.tags.join(', '),
+      userCount: Object.keys(room.users).length
+    }
+  })
+  res.send(popRooms)
 })
 
 function countSocketAndUsers() {

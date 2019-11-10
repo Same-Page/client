@@ -1,14 +1,18 @@
 .sp-home-chatroom {
-  width: 80px;
+  /* width: 80px;
   height: 70px;
   line-height: 70px;
   background: #72c1ff;
   margin: 5px;
-  color: white;
+  color: white; */
   cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 5px;
 }
 .sp-home-chatroom:hover {
-  background: #2196f3;
+  color: #2196f3;
 }
 .sp-chatroom-metadata {
   display: inline-block;
@@ -16,4 +20,5 @@
   line-height: normal;
   font-size: 12px;
   font-weight: bold;
+
 }

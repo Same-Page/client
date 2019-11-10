@@ -22,7 +22,7 @@ const tagManager = {
     getTags: (pageTitle) => {
         const pageTitleLower = pageTitle.toLowerCase()
         const pageTitlePatchedWithSpace = insert_spacing(pageTitleLower)
-        let tokens = pageTitlePatchedWithSpace.split(/(?:,|:|：|《|。|》|，|\?|,|-|？|！|!|\.| )+/) 
+        let tokens = pageTitlePatchedWithSpace.split(/(?:,|:|：|《|。|》|，|\?|,|-|？|！|!|\.|\(|\)|（|）| )+/) 
         let pageTags = []
         tokens.forEach((token) => {
           if (containsChinese(token)) {

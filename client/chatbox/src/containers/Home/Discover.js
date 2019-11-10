@@ -28,7 +28,7 @@ function Discover(props) {
     <div className="sp-special-tab">
       <div style={{ margin: 20, marginTop: 10 }}>
         <center>
-          <h3>房间列表</h3>
+          <h3>热门房间</h3>
           {loadingRooms && <Icon type="loading" />}
         </center>
         <div className="sp-hot-chatrooms-wrapper">

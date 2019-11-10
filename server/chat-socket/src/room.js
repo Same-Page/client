@@ -5,9 +5,33 @@ const LOBBY_ROOM_ID = "5"
 
 let roomIdCount = 0
 const roomDict = {} // key: roomId, value: dict of sockets
+// roomDict = {
+//   roomId: {
+//     id: roomId,
+//     users: {
+//        userId: {
+//          user: {},
+//          sockets: set of socket ids
+//        }
+//     },
+//     messages: [],
+//     tags: ['Nike', 'shoes', 'discount']
+//   }
+// }
 const roomManager = {
     getRoom: (roomId) => {
         return roomDict[roomId]
+    },
+    getPopularRooms: () => {
+        // might be too slow to sort all rooms
+        // so we filter to find room with at least 2 users first
+        const rooms = Object.values(roomDict).filter((room) => {
+            return Object.keys(room.users).length > 1
+        })
+        rooms.sort((a, b) => {
+            return Object.keys(b.users).length - Object.keys(a.users).length
+        })
+        return rooms
     },
     addMsgToRoomHistory: (message, roomId) => {
         // Save message to room object, only keep latest ten
@@ -84,15 +108,15 @@ const roomManager = {
         let closestRoom = null
         let threashold = SIMILARITY_THRESHOLD
         Object.values(roomDict).forEach((room)=>{
-        const roomTags = room.tags
-        const score = tagManager.similarityScore(pageTags, roomTags)
-        // console.log(pageTags)
-        // console.log(roomTags)
-        // console.log('score: ' + score)
-        if (score > threashold) {
-            closestRoom = room
-            threashold = score
-        }
+            const roomTags = room.tags
+            const score = tagManager.similarityScore(pageTags, roomTags)
+            // console.log(pageTags)
+            // console.log(roomTags)
+            // console.log('score: ' + score)
+            if (score > threashold) {
+                closestRoom = room
+                threashold = score
+            }
         })
         return closestRoom
     },
@@ -104,19 +128,6 @@ const roomManager = {
     addSocketToRoom: (socket, roomId, readOnly) => {
         // Add socket to room, track socket under user
         // if adding user to room, return true
-        // roomDict = {
-        //   roomId: {
-        //     id: roomId,
-        //     users: {
-        //        userId: {
-        //          user: {},
-        //          sockets: set of socket ids
-        //          }
-        //     },
-        //     messages: [],
-        //     tags: ['Nike', 'shoes', 'discount']
-        //   }
-        // }
         let addingUser = false
       
         if (!(roomId in roomDict)) {
@@ -149,18 +160,8 @@ const roomManager = {
         if (!readOnly) {
           socket.joined = true
           socket.roomId = roomId
-        }
-      
+        }   
         return addingUser
       }
-      
-
 }
-
-
-
-
-
-
-
 module.exports = roomManager

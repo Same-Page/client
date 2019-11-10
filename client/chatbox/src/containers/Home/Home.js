@@ -59,7 +59,7 @@ function Home(props) {
         // defaultActiveKey={["latest-comments"]}
         onChange={key => {}}
       >
-        <Panel header="房间列表" key="hot-chatrooms">
+        <Panel header="热门房间" key="hot-chatrooms">
           <Button
             style={{ marginLeft: 5, marginBottom: 15 }}
             type="primary"

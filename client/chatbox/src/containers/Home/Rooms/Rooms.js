@@ -20,18 +20,20 @@ function Rooms(props) {
   return props.rooms.map(room => {
     let roomId = room.id
     return (
-      <Tooltip
-        key={roomId}
-        overlayStyle={{ maxWidth: 100 }}
-        title={room.about}
-        placement="bottom"
-      >
-        <center
+      // <Tooltip
+      //   key={roomId}
+      //   // overlayStyle={{ maxWidth: 100 }}
+      //   title={room.about}
+      //   placement="right"
+      // >
+        <div
+
+          title={room.about}
           className="sp-home-chatroom"
           onClick={() => {
             // if (roomId === "lobby") {
             tabContext.changeTab("chat")
-            chatContext.setMode("room")
+            // chatContext.setMode("room")
             chatContext.setRoom(room)
             chatContext.setRealRoom(room)
             storageManager.set("realRoom", room)
@@ -40,13 +42,17 @@ function Rooms(props) {
             // window.open(room.url)
           }}
         >
-          <span className="sp-chatroom-metadata">
-            {room.name}
+          {/* <span className="sp-chatroom-metadata">
+            <div style={{display: 'inline-flex'}}>
+              <span style={{whiteSpace:'nowrap', textOverflow: 'ellipsis', overflow: 'hidden'}}>{room.name}</span>
+            </div>
             <br />{" "}
             <span style={{ fontSize: "smaller" }}>{room.userCount}人</span>
-          </span>
-        </center>
-      </Tooltip>
+          </span> */}
+          
+            <span style={{marginRight:10}}><Icon type="user" />{room.userCount}</span>{room.about}
+        </div>
+      // </Tooltip>
     )
   })
 }
