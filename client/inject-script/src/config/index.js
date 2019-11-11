@@ -3,9 +3,9 @@ const defaultConfig = {
 	defaultTab: "chat",
 	chatModes: [],
 	debug: false,
-	socketUrl: "https://chat.yiyechat.com",
+	socketUrl: "https://chat-v5.yiyechat.com",
 	apiUrl: "https://api-v2.yiyechat.com",
-	chatboxSrc: "https://yiyechat.com/open-source/build/index.html"
+	chatboxSrc: "http://yiyechat.com/extension"
 };
 
 if (process.env.REACT_APP_SP_ENV === "dev") {
