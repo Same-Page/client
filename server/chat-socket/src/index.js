@@ -174,10 +174,11 @@ io.on("connection", function(socket) {
     if (!socket.joined) {
       return
     }
+    const roomId = socket.roomId
     const userLeft = roomManager.removeSocketFromRoom(socket)
     // io.in(socket.roomId).emit("stop typing", { username: socket.username })
     if (userLeft) {
-      io.in(socket.roomId).emit("user gone", {
+      io.in(roomId).emit("user gone", {
         user: socket.user
       })
     }
