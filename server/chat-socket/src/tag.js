@@ -35,7 +35,7 @@ const tagManager = {
         pageTags = stopword.removeStopwords(pageTags)
         const customStopwords = ['', 'google', 'baidu', 'search', 'amazon', 'com', 'cn']
         pageTags = pageTags.filter( (tag) => !customStopwords.includes(tag) )    
-        console.log(pageTags)
+        // console.log(pageTags)
         return pageTags
     }
 

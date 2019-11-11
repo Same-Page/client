@@ -59,16 +59,7 @@ app.get("/", function(req, res) {
 // })
 app.get("/api/popular_rooms", function(req, res) {
   metrics.increment("socket.api.popular_rooms")
-  let popRooms = roomManager.getPopularRooms()
-  popRooms = popRooms.map((room) => {
-    return {
-      id: room.id,
-      tags: room.tags,
-      about: room.tags.join(', '),
-      userCount: Object.keys(room.users).length
-    }
-  })
-  res.send(popRooms)
+  res.send(roomManager.getPopularRooms())
 })
 
 function countSocketAndUsers() {
@@ -137,7 +128,7 @@ io.on("connection", function(socket) {
       if (allowJoin) {
         socket.spMode = "tags"
 
-        const room = roomManager.findRoomToJoin(socket.pageTags)
+        let room = roomManager.findRoomToJoin(socket.pageTags)
         if (room) {
           const roomId = room.id
           const newUserJoined = roomManager.addSocketToRoom(socket, roomId)
@@ -149,7 +140,7 @@ io.on("connection", function(socket) {
           }
 
         } else {
-          roomManager.createRoomForSocket(socket)
+          room = roomManager.createRoomForSocket(socket)
         }
 
         socket.emit("*", {
@@ -357,10 +348,7 @@ io.on("connection", function(socket) {
     socket.emit("*", {
       eventName: "room info",
       // room: roomManager.getRoomInfo(socket.roomId),
-      room: {
-        id: room.id,
-        tags: room.tags
-      },
+      room: roomManager.getRoomInfo(room.id),
       mode: socket.spMode
     })
     // TODO?: no need to get this if chatbox not open
@@ -394,11 +382,7 @@ io.on("connection", function(socket) {
     socket.emit("recent messages", room.messages)
     socket.emit("*", {
       eventName: "room info",
-      room: {
-        id: room.id,
-        tags: room.tags
-      },
-      // room: roomManager.getRoomInfo(socket.roomId),
+      room: roomManager.getRoomInfo(socket.roomId),
       mode: socket.spMode
     })
 

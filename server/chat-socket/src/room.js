@@ -22,6 +22,19 @@ const roomManager = {
     getRoom: (roomId) => {
         return roomDict[roomId]
     },
+    getRoomInfo: (roomId) => {
+        // return basic info for client to use
+        if (roomId in roomDict) {
+            const room = roomDict[roomId]
+            return {
+                id: room.id,
+                tags: room.tags,
+                about: room.tags.join(', '),
+                userCount: Object.keys(room.users).length
+            }
+        }
+        return null
+    },
     getPopularRooms: () => {
         // might be too slow to sort all rooms
         // so we filter to find room with at least 2 users first
@@ -31,7 +44,9 @@ const roomManager = {
         rooms.sort((a, b) => {
             return Object.keys(b.users).length - Object.keys(a.users).length
         })
-        return rooms
+        return rooms.map(room => {
+            return roomManager.getRoomInfo(room.id)
+        })
     },
     addMsgToRoomHistory: (message, roomId) => {
         // Save message to room object, only keep latest ten
@@ -62,17 +77,15 @@ const roomManager = {
         }
     
         if (Object.keys(room.users).length === 0) {
-        // delete room
-        // 6/6/2019 9:00 am, commenting this out
-        // since we don't have many users and we want
-        // to keep recent messages of each room
-    
-        if (room.messages.length === 0) {
-            // 6/11 memory goes to 2G super fast
-            delete roomDict[roomId]
-        }
+            // Must delete room or memory leak super fast
+            // if no message left
+            if (room.messages.length === 0) {
+                delete roomDict[roomId]
+                console.log('delete room '+roomId)
+            }
         }
         socket.joined = false
+        socket.roomId = null
         // socket can leave room without disconnecting
         socket.leave(roomId)
         return removingUser
@@ -121,13 +134,17 @@ const roomManager = {
         return closestRoom
     },
     createRoomForSocket: (socket) => {
-        const roomId = roomIdCount++;
+        const roomId = (roomIdCount++).toString();
         roomManager.addSocketToRoom(socket, roomId)
         return roomDict[roomId]
     },
     addSocketToRoom: (socket, roomId, readOnly) => {
         // Add socket to room, track socket under user
         // if adding user to room, return true
+        if(socket.joined) {
+            roomManager.removeSocketFromRoom(socket)
+        }
+
         let addingUser = false
       
         if (!(roomId in roomDict)) {

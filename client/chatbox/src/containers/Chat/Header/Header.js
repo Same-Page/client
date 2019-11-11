@@ -182,12 +182,13 @@ function ChatHeader(props) {
       )
     }
     if (mode === "tags") {
-      helpTitle = "同兴趣聊天室 "+room.id
+      helpTitle = "同兴趣聊天室 " + room.id
       helpContent = (
         <div>
           <p>浏览相似内容的用户会进入该聊天室</p>
           <h4>该聊天室的关键词有</h4>
-          {room.tags && room.tags.join(', ')}
+          {room.tags && room.tags.join(", ")}
+          {(!room.tags || !room.tags.length) && <span>该页面没有关键词</span>}
         </div>
       )
     }
@@ -253,8 +254,17 @@ function ChatHeader(props) {
             </Tooltip>
           )}
         </Radio.Group>
-        <div style={{ maxWidth: '45%', display: 'inline-flex' }}>
-            <span style={{whiteSpace:'nowrap', textOverflow: 'ellipsis', overflow: 'hidden'}}>{room.tags && room.tags.join(', ')}</span>
+        <div style={{ maxWidth: "45%", display: "inline-flex" }}>
+          <span
+            style={{
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis",
+              overflow: "hidden"
+            }}
+          >
+            {room.tags && room.tags.join(", ")}
+            {(!room.tags || !room.tags.length) && <span>无关键词</span>}
+          </span>
         </div>
         <Button
           style={{ border: "none" }}
