@@ -69,8 +69,8 @@ function countSocketAndUsers() {
   })
   var socketCount = Object.keys(io.sockets.sockets).length
   var userCount = Object.keys(userIds).length
-  metrics.gauge("socket.online_v2.users", userCount)
-  metrics.gauge("socket.online_v2.sockets", socketCount)
+  metrics.gauge("socket.online_v5.users", userCount)
+  metrics.gauge("socket.online_v5.sockets", socketCount)
 }
 
 function keepCountingSocketAndUsers() {
