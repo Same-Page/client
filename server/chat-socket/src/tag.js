@@ -21,8 +21,13 @@ const tagManager = {
     },
     getTags: (pageTitle) => {
         const pageTitleLower = pageTitle.toLowerCase()
+        // Add space between Chinese and English
         const pageTitlePatchedWithSpace = insert_spacing(pageTitleLower)
+        // Split by space or punctuation marks
         let tokens = pageTitlePatchedWithSpace.split(/(?:,|:|：|《|。|》|，|\?|,|-|？|！|!|\.|\(|\)|（|）| )+/) 
+        const cnStopwords = ['知乎', '首页', '主页', '百度', '淘宝', '微博', '搜狐','腾讯','网易','京东','亚马逊']
+        tokens = tokens.filter( (token) => !cnStopwords.includes(token) )    
+
         let pageTags = []
         tokens.forEach((token) => {
           if (containsChinese(token)) {
@@ -33,7 +38,7 @@ const tagManager = {
           }
         })
         pageTags = stopword.removeStopwords(pageTags)
-        const customStopwords = ['', 'google', 'baidu', 'search', 'amazon', 'com', 'cn']
+        const customStopwords = ['', 'google', 'baidu', 'search', 'amazon', 'com', 'cn', 'bilibili']
         pageTags = pageTags.filter( (tag) => !customStopwords.includes(tag) )    
         // console.log(pageTags)
         return pageTags
