@@ -136,8 +136,8 @@ function ChatBody(props) {
 
     if (showTimestamp) {
       if (moment().diff(msg.time) > 24 * 60 * 60 * 1000)
-        timeDisplay = msg.time.local().format("MMMDo A HH:mm")
-      else timeDisplay = msg.time.local().format("A HH:mm")
+        timeDisplay = msg.time.local().format("MMMDo HH:mm")
+      else timeDisplay = msg.time.local().format("HH:mm")
     }
 
     res.push(

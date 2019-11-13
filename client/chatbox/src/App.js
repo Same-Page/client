@@ -1,6 +1,9 @@
 import axios from "axios"
 import moment from "moment"
 
+import { IntlProvider } from "react-intl"
+import msg_zh from "i18n/zh.json"
+import msg_en from "i18n/en.json"
 import React from "react"
 import { Icon, message } from "antd"
 
@@ -21,6 +24,11 @@ const DEFAULT_REAL_ROOM = {
   name: "大厅",
   id: "5",
   about: "this is lobby"
+}
+
+const i18nMsg = {
+  zh: msg_zh,
+  en: msg_en
 }
 
 class App extends React.Component {
@@ -52,9 +60,10 @@ class App extends React.Component {
       realRoom: DEFAULT_REAL_ROOM
     }
     const locale = window.navigator.userLanguage || window.navigator.language
-    if (locale.indexOf("zh") > -1) {
-      moment.locale("zh-cn")
-    }
+    // if (locale.indexOf("zh") > -1) {
+    //   moment.locale("zh-cn")
+    // }
+    moment.locale(locale)
     // window.spDebug(locale)
     message.config({
       top: 80,
@@ -230,35 +239,40 @@ class App extends React.Component {
       tab = "account"
     }
     return (
-      <AccountContext.Provider
-        value={{
-          account: this.state.account,
-          setAccount: this.setAccount,
-          autoLogin: this.state.autoLogin,
-          stopAutoLogin: this.stopAutoLogin
-        }}
+      <IntlProvider
+        locale={navigator.language}
+        messages={i18nMsg[navigator.language.substring(0, 2)]}
       >
-        <ChatContext.Provider
+        <AccountContext.Provider
           value={{
-            mode: this.state.mode,
-            setMode: mode => {
-              // console.log("setting mode")
-              this.setState({ mode: mode })
-            },
-            room: this.state.room,
-            setRoom: room => {
-              // console.log("setting room")
-              this.setState({ room: room })
-            },
-            realRoom: this.state.realRoom,
-            setRealRoom: realRoom => {
-              this.setState({ realRoom: realRoom })
-            }
+            account: this.state.account,
+            setAccount: this.setAccount,
+            autoLogin: this.state.autoLogin,
+            stopAutoLogin: this.stopAutoLogin
           }}
         >
-          <Tab tab={tab} />
-        </ChatContext.Provider>
-      </AccountContext.Provider>
+          <ChatContext.Provider
+            value={{
+              mode: this.state.mode,
+              setMode: mode => {
+                // console.log("setting mode")
+                this.setState({ mode: mode })
+              },
+              room: this.state.room,
+              setRoom: room => {
+                // console.log("setting room")
+                this.setState({ room: room })
+              },
+              realRoom: this.state.realRoom,
+              setRealRoom: realRoom => {
+                this.setState({ realRoom: realRoom })
+              }
+            }}
+          >
+            <Tab tab={tab} />
+          </ChatContext.Provider>
+        </AccountContext.Provider>
+      </IntlProvider>
     )
   }
 }

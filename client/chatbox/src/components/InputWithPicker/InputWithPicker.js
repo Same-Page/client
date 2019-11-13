@@ -1,5 +1,7 @@
 import "./InputWithPicker.css"
 
+import { useIntl } from "react-intl"
+
 import React, { useState, useRef, useEffect } from "react"
 import { Button, Input, Icon, Upload } from "antd"
 import urls from "config/urls"
@@ -11,6 +13,7 @@ const uploadUrl = `${urls.dbAPI}/api/v1/chat_upload`
 function InputWithPicker(props) {
   const [input, setInput] = useState("")
   const [uploading, setUploading] = useState(false)
+  const intl = useIntl()
   const inputRef = useRef()
   // show emoji is one step slower than will show emoji
   // so that we can show a loading icon
@@ -124,7 +127,11 @@ function InputWithPicker(props) {
         addonAfter={props.addonAfter}
         onChange={handleChange}
         disabled={sending}
-        placeholder={sending ? "发送中。。。" : "请输入。。。"}
+        placeholder={
+          sending
+            ? intl.formatMessage({ id: "sending" })
+            : intl.formatMessage({ id: "input.here" })
+        }
       />
     </div>
   )

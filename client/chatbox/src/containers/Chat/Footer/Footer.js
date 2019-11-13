@@ -2,6 +2,7 @@ import "./Footer.css"
 
 import React, { useContext, useState } from "react"
 import { message, Button, Modal, Tooltip } from "antd"
+import { useIntl } from "react-intl"
 
 import InputWithPicker from "components/InputWithPicker"
 import AccountContext from "context/account-context"
@@ -10,6 +11,7 @@ import socketManager from "socket/socket"
 const MESSAGE_TIME_GAP = 3 * 1000
 let lastMsgTime = 0
 function Footer(props) {
+  const intl = useIntl()
   const [showInvitationModal, setShowInvitationModal] = useState(false)
   // const [invitationType, setInvitationType] = useState("room")
   // const [invitationPurpose, setInvitationPurpose] = useState("chat")
@@ -44,12 +46,12 @@ function Footer(props) {
         addonAfter={
           <span>
             <Modal
-              title="分享你所在的网页"
+              title={intl.formatMessage({ id: "share.url" })}
               visible={showInvitationModal}
               onOk={() => {
                 const payload = {
                   // url and title added by content script
-                  type: "invite",
+                  type: "invite"
                   // invitationType: invitationType,
                   // invitationPurpose: invitationPurpose
                 }
@@ -64,12 +66,10 @@ function Footer(props) {
               onCancel={() => {
                 setShowInvitationModal(false)
               }}
-              okText="确认"
-              cancelText="取消"
+              okText={intl.formatMessage({ id: "yes" })}
+              cancelText={intl.formatMessage({ id: "cancel" })}
             >
-              <p>
-                分享网页时请注意保护个人隐私
-              </p>
+              <p>{intl.formatMessage({ id: "share.url.privacy" })}</p>
               {/* <b style={{ marginRight: 10 }}>邀请目的</b>
               <Radio.Group
                 onChange={e => {
@@ -102,7 +102,10 @@ function Footer(props) {
                 </Radio.Group> 
               </div>*/}
             </Modal>
-            <Tooltip title="分享当前网页" placement="left">
+            <Tooltip
+              title={intl.formatMessage({ id: "share.url" })}
+              placement="left"
+            >
               <Button
                 onClick={() => {
                   setShowInvitationModal(true)

@@ -1,6 +1,6 @@
 import "antd/dist/antd.css"
 import "./Tab.css"
-
+import { useIntl } from "react-intl"
 import React, { useState, useEffect } from "react"
 import { Tabs, Icon, Tooltip, Badge } from "antd"
 
@@ -17,6 +17,7 @@ import storageManager from "utils/storage"
 const TabPane = Tabs.TabPane
 
 function Tab(props) {
+  const intl = useIntl()
   // console.log("render tab")
   const tabList = window.spConfig.tabList || [
     "discover",
@@ -77,7 +78,10 @@ function Tab(props) {
           {tabList.includes("discover") && (
             <TabPane
               tab={
-                <Tooltip title="发现" placement="bottom">
+                <Tooltip
+                  title={intl.formatMessage({ id: "discover" })}
+                  placement="bottom"
+                >
                   <Icon type="compass" />
                 </Tooltip>
               }
@@ -89,7 +93,10 @@ function Tab(props) {
           {tabList.includes("chat") && (
             <TabPane
               tab={
-                <Tooltip title="实时聊天" placement="bottom">
+                <Tooltip
+                  title={intl.formatMessage({ id: "live.chat" })}
+                  placement="bottom"
+                >
                   <Icon type="message" />
                 </Tooltip>
               }
@@ -102,7 +109,10 @@ function Tab(props) {
           {tabList.includes("comment") && (
             <TabPane
               tab={
-                <Tooltip title="网页留言" placement="bottom">
+                <Tooltip
+                  title={intl.formatMessage({ id: "comment" })}
+                  placement="bottom"
+                >
                   <Icon type="form" />
                 </Tooltip>
               }
@@ -114,7 +124,10 @@ function Tab(props) {
           {tabList.includes("inbox") && (
             <TabPane
               tab={
-                <Tooltip title="收件箱" placement="bottom">
+                <Tooltip
+                  title={intl.formatMessage({ id: "inbox" })}
+                  placement="bottom"
+                >
                   <Badge dot={unread} className="sp-new-message-dot">
                     <Icon type="mail" />
                   </Badge>
@@ -128,7 +141,10 @@ function Tab(props) {
           {tabList.includes("profile") && (
             <TabPane
               tab={
-                <Tooltip title="个人信息" placement="bottom">
+                <Tooltip
+                  title={intl.formatMessage({ id: "profile" })}
+                  placement="bottom"
+                >
                   <Icon type="user" />
                 </Tooltip>
               }
@@ -140,7 +156,10 @@ function Tab(props) {
           {tabList.includes("close") && (
             <TabPane
               tab={
-                <Tooltip title="隐藏聊天盒" placement="bottom">
+                <Tooltip
+                  title={intl.formatMessage({ id: "close" })}
+                  placement="bottom"
+                >
                   <Icon type="close" />
                 </Tooltip>
               }

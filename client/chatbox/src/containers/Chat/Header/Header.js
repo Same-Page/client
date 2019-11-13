@@ -1,5 +1,6 @@
 import "./Header.css"
 
+import { FormattedMessage, useIntl } from "react-intl"
 import React, { useState, useEffect, useContext } from "react"
 import { Radio, Button, Tooltip, Icon, Modal, Avatar } from "antd"
 
@@ -13,6 +14,7 @@ import storageManager from "utils/storage"
 import spDebug from "config/logger"
 function ChatHeader(props) {
   const chatModes = window.spConfig.chatModes || ["room", "site", "page"]
+  const intl = useIntl()
   const [showUsers, toggleUsers] = useState(false)
   const [showHelp, setShowHelp] = useState(false)
   const [users, setUsers] = useState([])
@@ -124,7 +126,7 @@ function ChatHeader(props) {
         size="small"
         type="primary"
       >
-        去登录
+        {intl.formatMessage({ id: "login" })}
       </Button>
     </center>
   )
@@ -182,13 +184,15 @@ function ChatHeader(props) {
       )
     }
     if (mode === "tags") {
-      helpTitle = "同兴趣聊天室 " + room.id
+      helpTitle = intl.formatMessage({ id: "room" }) + " " + room.id
       helpContent = (
         <div>
-          <p>浏览相似内容的用户会进入该聊天室</p>
-          <h4>该聊天室的关键词有</h4>
-          {room.tags && room.tags.join(", ")}
-          {(!room.tags || !room.tags.length) && <span>该页面没有关键词</span>}
+          {/* <p>浏览相似内容的用户会进入该聊天室</p> */}
+          <p>{intl.formatMessage({ id: "keywords.of.room" })}</p>
+          <b>{room.tags && room.tags.join(", ")}</b>
+          {(!room.tags || !room.tags.length) && (
+            <span>{intl.formatMessage({ id: "no.keyword" })}</span>
+          )}
         </div>
       )
     }
@@ -212,8 +216,13 @@ function ChatHeader(props) {
           bodyStyle={{ maxHeight: "calc(100% - 55px)", overflowY: "auto" }}
         >
           {helpContent}
-          <a className="yiyelink" target="_blank" href="https://yiyechat.com">
-            一叶
+          <a
+            className="yiyelink"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://yiyechat.com"
+          >
+            {intl.formatMessage({ id: "sp" })}
           </a>
         </Modal>
 
@@ -263,7 +272,9 @@ function ChatHeader(props) {
             }}
           >
             {room.tags && room.tags.join(", ")}
-            {(!room.tags || !room.tags.length) && <span>无关键词</span>}
+            {(!room.tags || !room.tags.length) && (
+              <FormattedMessage id="no.keyword"></FormattedMessage>
+            )}
           </span>
         </div>
         <Button

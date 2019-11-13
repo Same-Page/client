@@ -1,4 +1,5 @@
 import "./Home.css"
+import { useIntl } from "react-intl"
 import React, { useState, useEffect } from "react"
 import { Icon } from "antd"
 
@@ -6,6 +7,7 @@ import Rooms from "./Rooms"
 import { getPopularRooms } from "services/room"
 
 function Discover(props) {
+  const intl = useIntl()
   const [rooms, setRooms] = useState([])
   const [loadingRooms, setLoadingRooms] = useState(true)
 
@@ -45,7 +47,7 @@ function Discover(props) {
         >
           {loadingRooms && <Icon type="loading" />}
         </span>
-        热门房间
+        {intl.formatMessage({ id: "popular.rooms" })}
       </center>
       <div
         style={{ padding: 10, paddingLeft: 20, paddingRight: 20 }}
