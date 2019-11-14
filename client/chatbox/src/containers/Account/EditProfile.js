@@ -136,7 +136,7 @@ class EditProfileForm extends React.Component {
           </Form.Item>
           <Form.Item {...tailFormItemLayout}>
             <Button
-              size="large"
+              // size="large"
               style={{ marginRight: 20 }}
               onClick={this.props.back}
             >
@@ -145,13 +145,16 @@ class EditProfileForm extends React.Component {
             <Button
               loading={this.state.submitting}
               type="primary"
-              size="large"
+              // size="large"
               htmlType="submit"
             >
               保存
             </Button>
           </Form.Item>
         </Form>
+        <br />
+        <br />
+        <br />
       </div>
     )
   }

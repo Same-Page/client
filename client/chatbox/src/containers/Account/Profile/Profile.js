@@ -86,7 +86,7 @@ function Profile(props) {
             type="primary"
             icon="edit"
             style={{ margin: 10 }}
-            size="large"
+            // size="large"
             onClick={props.showEditProfile}
           >
             {intl.formatMessage({ id: "update.profile" })}
