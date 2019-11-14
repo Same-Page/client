@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react"
 import { Button, Avatar, Icon, Row, Col, message } from "antd"
+import { useIntl } from "react-intl"
 
 import AccountContext from "context/account-context"
 
@@ -37,6 +38,7 @@ function ProfileBody(props) {
     followerCount,
     followUser
   } = props
+  const intl = useIntl()
   const [thanking, setThanking] = useState(false)
   const [toggleBlocking, setToggleBlocking] = useState(false)
   const accountContext = useContext(AccountContext)
@@ -60,26 +62,32 @@ function ProfileBody(props) {
       </center>
       {loaded && !loading && (
         <span>
-          <Row gutter={50} style={{ textAlign: "center" }}>
-            <Col style={{ textAlign: "right" }} span={12}>
-              ID: {user.numId}
-            </Col>
-            <Col style={{ textAlign: "left" }} span={12}>
-              关注者: {followerCount}
-            </Col>
-          </Row>
+          <div style={{ width: 200, margin: "auto" }}>
+            <Row gutter={50} style={{ textAlign: "center" }}>
+              <Col span={12}>
+                ID
+                <br />
+                <b>{user.numId}</b>
+              </Col>
+              <Col span={12}>
+                {intl.formatMessage({ id: "follower" })}
+                <br /> <b>{followerCount}</b>
+              </Col>
+            </Row>
+          </div>
           <br />
           <center>
             <div style={aboutStyle}>{user.about}</div>
             <div style={{ marginTop: 30, marginBottom: 30 }}>
-              {!self && (
+              {/* {!self && (
                 <Button
                   loading={thanking}
                   onClick={() => {
                     setThanking(true)
                     thankUser(user.id)
                       .then(resp => {
-                        message.success("点赞成功!")
+                        message.success(        intl.formatMessage({ id: "success" })
+                        )
                         window.spDebug(account)
                         const newAccountData = { ...account }
                         newAccountData.credit = resp.data.credit
@@ -96,9 +104,10 @@ function ProfileBody(props) {
                   style={{ margin: 10 }}
                   size="large"
                 >
-                  赞
+                          {intl.formatMessage({ id: "vote.up" })}
+
                 </Button>
-              )}
+              )} */}
               {following && (
                 <Button
                   icon="user-delete"
@@ -108,7 +117,7 @@ function ProfileBody(props) {
                     followUser(false)
                   }}
                 >
-                  取消关注
+                  {intl.formatMessage({ id: "unfollow" })}
                 </Button>
               )}
               {!following && (
@@ -121,7 +130,7 @@ function ProfileBody(props) {
                     followUser(true)
                   }}
                 >
-                  关注
+                  {intl.formatMessage({ id: "follow" })}
                 </Button>
               )}
 
@@ -133,7 +142,7 @@ function ProfileBody(props) {
                 style={{ margin: 10 }}
                 size="large"
               >
-                私信
+                {intl.formatMessage({ id: "send.mail" })}
               </Button>
               {account && account.isMod && (
                 <div style={{ marginTop: 20 }}>

@@ -259,7 +259,7 @@ io.on("connection", function(socket) {
         "[" + socket.roomId + "] " + socket.username + " invite: " + data.url
       )
       // return
-      cleanedMsg = "分享网页"
+      cleanedMsg = data.title
       metadata = {
         type: data.invitationType,
         purpose: data.invitationPurpose,

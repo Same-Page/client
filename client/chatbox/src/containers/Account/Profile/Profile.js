@@ -1,4 +1,5 @@
 import "./Profile.css"
+import { useIntl } from "react-intl"
 
 import React, { useState } from "react"
 import { Avatar, Button, Row, Col } from "antd"
@@ -17,7 +18,7 @@ const ProfileBodyStyle = {
   width: "100%",
   position: "fixed",
   // background: "rgb(249, 249, 249)",
-  padding: 20,
+  padding: 50,
   paddingTop: 10,
   paddingBottom: 30
 }
@@ -38,6 +39,7 @@ const aboutStyle = {
 function Profile(props) {
   const account = props.account
   const [loggingOut, setLoggingOut] = useState(false)
+  const intl = useIntl()
 
   return (
     <div style={ProfileBodyStyle}>
@@ -50,26 +52,32 @@ function Profile(props) {
       <center style={{ margin: 20, fontSize: "large", fontWeight: "bold" }}>
         {account.name}
       </center>
-      <Row gutter={50} style={{ textAlign: "center" }}>
-        <Col style={{ textAlign: "right" }} span={12}>
-          ID: {account.numId}
-        </Col>
-        <Col style={{ textAlign: "left" }} span={12}>
-          积分: {account.credit}
-        </Col>
-      </Row>
-      <Row gutter={50} style={{ textAlign: "center" }}>
-        <Col style={{ textAlign: "right" }} span={12}>
-          <span className="sp-follow-stats" onClick={props.showFollowings}>
-            关注了: {account.followingCount}
-          </span>
-        </Col>
-        <Col style={{ textAlign: "left" }} span={12}>
-          <span className="sp-follow-stats" onClick={props.showFollowers}>
-            关注者: {account.followerCount}
-          </span>
-        </Col>
-      </Row>
+      <div style={{ width: 200, margin: "auto" }}>
+        <Row gutter={50} style={{ textAlign: "center" }}>
+          <Col style={{ textAlign: "center" }} span={12}>
+            ID <br />
+            <b>{account.numId}</b>
+          </Col>
+          <Col style={{ textAlign: "center" }} span={12}>
+            {intl.formatMessage({ id: "credit" })} <br />
+            <b>{account.credit}</b>
+          </Col>
+        </Row>
+        <Row gutter={50} style={{ marginTop: 10, textAlign: "center" }}>
+          <Col style={{ textAlign: "center" }} span={12}>
+            <span className="sp-follow-stats" onClick={props.showFollowings}>
+              {intl.formatMessage({ id: "following" })}
+              <br /> <b>{account.followingCount}</b>
+            </span>
+          </Col>
+          <Col style={{ textAlign: "center" }} span={12}>
+            <span className="sp-follow-stats" onClick={props.showFollowers}>
+              {intl.formatMessage({ id: "follower" })}
+              <br /> <b>{account.followerCount}</b>
+            </span>
+          </Col>
+        </Row>
+      </div>
       <br />
       <center>
         <div style={aboutStyle}>{account.about}</div>
@@ -81,11 +89,11 @@ function Profile(props) {
             size="large"
             onClick={props.showEditProfile}
           >
-            修改资料
+            {intl.formatMessage({ id: "update.profile" })}
           </Button>
         </div>
         <Button onClick={props.showResetPassword} style={{ margin: 10 }}>
-          更改密码
+          {intl.formatMessage({ id: "change.password" })}
         </Button>
         <Button
           onClick={() => {
@@ -107,7 +115,7 @@ function Profile(props) {
           type="danger"
           style={{ margin: 10 }}
         >
-          登出
+          {intl.formatMessage({ id: "logout" })}
         </Button>
       </center>
     </div>

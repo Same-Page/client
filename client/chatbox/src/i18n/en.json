@@ -22,5 +22,11 @@
   "follower": "Followers",
   "update.profile": "Update info",
   "change.password": "Change password",
-  "logout": "Logout"
+  "logout": "Logout",
+  "follow": "Follow",
+  "unfollow": "Unfollow",
+  "send.mail": "Mail",
+  "mail": "Mail",
+  "notification": "Notification",
+  "empty": "Empty"
 }

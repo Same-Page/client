@@ -47,7 +47,7 @@ class AnimationDanmu extends Component {
 			danmu.imgSrc = stickersUrl + danmu.content;
 		}
 		if (data.type === "image") {
-			danmu.content = "图片";
+			danmu.content = "image";
 		}
 		// if (data.type === "video") {
 		//   danmu.content = "视频"

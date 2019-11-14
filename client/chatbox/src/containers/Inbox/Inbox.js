@@ -2,6 +2,7 @@ import "./Inbox.css"
 import React, { useEffect, useState, useContext, useRef } from "react"
 import { Avatar, Icon, Radio, Button, message } from "antd"
 import moment from "moment"
+import { useIntl } from "react-intl"
 
 import Conversation from "./Conversation"
 import { getMessages } from "services/message"
@@ -12,6 +13,7 @@ import storageManager from "utils/storage"
 function Inbox(props) {
   const user = props.user
   const setUser = props.setUser
+  const intl = useIntl()
   const account = useContext(AccountContext).account
   const tabContext = useContext(TabContext)
   const activeTab = tabContext.activeTab
@@ -265,7 +267,11 @@ function Inbox(props) {
     )
   })
   if (conversationsArray.length === 0) {
-    rows = <center style={{ margin: 20 }}>没有消息</center>
+    rows = (
+      <center style={{ margin: 20 }}>
+        {intl.formatMessage({ id: "empty" })}
+      </center>
+    )
   }
 
   if (!account) {
@@ -316,14 +322,21 @@ function Inbox(props) {
                 setShowNotifications(e.target.value)
               }}
             >
-              <Radio.Button value={false}>私信</Radio.Button>
-              <Radio.Button value={true}>消息</Radio.Button>
+              <Radio.Button value={false}>
+                {intl.formatMessage({ id: "mail" })}
+              </Radio.Button>
+              <Radio.Button value={true}>
+                {" "}
+                {intl.formatMessage({ id: "notification" })}
+              </Radio.Button>
             </Radio.Group>
           </center>
           <div className="sp-tab-body" style={{ paddingBottom: 70 }}>
             {!showNotifications && rows}
             {showNotifications && (
-              <center style={{ margin: 20 }}>没有消息</center>
+              <center style={{ margin: 20 }}>
+                {intl.formatMessage({ id: "empty" })}
+              </center>
             )}
           </div>
         </div>

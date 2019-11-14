@@ -22,5 +22,11 @@
   "follower": "关注者",
   "update.profile": "更新资料",
   "change.password": "更改密码",
-  "logout": "登出"
+  "logout": "登出",
+  "follow": "关注",
+  "unfollow": "取消关注",
+  "send.mail": "私信",
+  "mail": "私信",
+  "notification": "提醒",
+  "empty": "无"
 }

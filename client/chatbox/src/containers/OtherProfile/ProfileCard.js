@@ -1,4 +1,5 @@
 import React from "react"
+import { useIntl } from "react-intl"
 import { Button, Avatar, Card } from "antd"
 const { Meta } = Card
 
@@ -14,6 +15,7 @@ const aboutStyle = {
 
 function ProfileCard(props) {
   const { user, following, followerCount, followUser, directMessage } = props
+  const intl = useIntl()
   const footer = (
     <div>
       {user.about && <div style={aboutStyle}>{user.about}</div>}
@@ -28,7 +30,7 @@ function ProfileCard(props) {
             followUser(false)
           }}
         >
-          取消关注
+          {intl.formatMessage({ id: "unfollow" })}
         </Button>
       )}
       {!following && (
@@ -41,7 +43,7 @@ function ProfileCard(props) {
             followUser(true)
           }}
         >
-          关注
+          {intl.formatMessage({ id: "follow" })}
         </Button>
       )}
 
@@ -54,7 +56,7 @@ function ProfileCard(props) {
         style={{ marginLeft: 10 }}
         size="small"
       >
-        私信
+        {intl.formatMessage({ id: "send.mail" })}
       </Button>
     </div>
   )
