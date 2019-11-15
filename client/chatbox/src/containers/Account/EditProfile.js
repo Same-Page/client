@@ -4,6 +4,7 @@ import { Form, Input, Button, message } from "antd"
 
 import AvatarUploader from "./AvatarUploader"
 import { updateUser } from "services/user"
+import { injectIntl } from "react-intl"
 
 // const { Option } = Select
 let avatarFile = null
@@ -75,14 +76,18 @@ class EditProfileForm extends React.Component {
           icon="arrow-left"
         />
         <center>
-          <h3 style={{ marginTop: 50, marginBottom: 30 }}>修改资料</h3>
+          <h3 style={{ marginTop: 50, marginBottom: 30 }}>
+            {this.props.intl.formatMessage({ id: "update.profile" })}
+          </h3>
         </center>{" "}
         <Form
           style={{ width: "70%", margin: "auto" }}
           {...formItemLayout}
           onSubmit={this.handleSubmit}
         >
-          <Form.Item label="上传头像">
+          <Form.Item
+            label={this.props.intl.formatMessage({ id: "upload.avatar" })}
+          >
             {getFieldDecorator("upload", {
               valuePropName: "fileList",
               getValueFromEvent: () => {
@@ -96,7 +101,11 @@ class EditProfileForm extends React.Component {
               />
             )}
           </Form.Item>
-          <Form.Item label={<span>用户名</span>}>
+          <Form.Item
+            label={
+              <span>{this.props.intl.formatMessage({ id: "user.name" })}</span>
+            }
+          >
             {getFieldDecorator("name", {
               rules: [
                 {
@@ -129,7 +138,11 @@ class EditProfileForm extends React.Component {
               </Select>
             )}
           </Form.Item> */}
-          <Form.Item label={<span>个人简介</span>}>
+          <Form.Item
+            label={
+              <span>{this.props.intl.formatMessage({ id: "user.about" })}</span>
+            }
+          >
             {getFieldDecorator("about", {
               initialValue: account.about
             })(<Input.TextArea />)}
@@ -140,7 +153,7 @@ class EditProfileForm extends React.Component {
               style={{ marginRight: 20 }}
               onClick={this.props.back}
             >
-              取消
+              {this.props.intl.formatMessage({ id: "cancel" })}
             </Button>
             <Button
               loading={this.state.submitting}
@@ -148,7 +161,7 @@ class EditProfileForm extends React.Component {
               // size="large"
               htmlType="submit"
             >
-              保存
+              {this.props.intl.formatMessage({ id: "save" })}
             </Button>
           </Form.Item>
         </Form>
@@ -164,4 +177,4 @@ const WrappedEditProfileForm = Form.create({ name: "edit-profile" })(
   EditProfileForm
 )
 
-export default WrappedEditProfileForm
+export default injectIntl(WrappedEditProfileForm)

@@ -5,7 +5,8 @@ import { useIntl } from "react-intl"
 import AccountContext from "context/account-context"
 
 import socketManager from "socket"
-import { blockUser, unblockUser, thankUser } from "services/user"
+// import { blockUser, unblockUser, thankUser } from "services/user"
+import { blockUser, unblockUser } from "services/user"
 const avatarStyle = {
   margin: "auto",
   marginTop: 20,
@@ -39,11 +40,11 @@ function ProfileBody(props) {
     followUser
   } = props
   const intl = useIntl()
-  const [thanking, setThanking] = useState(false)
+  // const [thanking, setThanking] = useState(false)
   const [toggleBlocking, setToggleBlocking] = useState(false)
   const accountContext = useContext(AccountContext)
   const account = accountContext.account
-  const self = account && account.id.toString() === user.id.toString()
+  // const self = account && account.id.toString() === user.id.toString()
   return (
     <div>
       <Avatar style={avatarStyle} size={128} src={user.avatarSrc} icon="user" />

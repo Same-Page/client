@@ -9,6 +9,7 @@
   "share.url": "Share your url",
   "share.url.privacy": "Please be cautious when sharing your URL",
   "yes": "OK",
+  "save": "Save",
   "cancel": "Cancel",
   "popular.rooms": "Popular Rooms",
   "close": "Close",
@@ -28,5 +29,13 @@
   "send.mail": "Mail",
   "mail": "Mail",
   "notification": "Notification",
-  "empty": "Empty"
+  "empty": "Empty",
+  "upload.avatar": "Upload photo",
+  "user.name": "Name",
+  "user.about": "About",
+
+  "choose.image": "Choose image",
+  "unsupported.file.type": "Unsupported file type",
+  "file.too.big": "File too big",
+  "file.must.smaller.than": "File must be smaller than "
 }

@@ -9,6 +9,7 @@
   "share.url": "分享你所在的网址",
   "share.url.privacy": "分享网址时请注意保护个人隐私",
   "yes": "确认",
+  "save": "保存",
   "cancel": "取消",
   "popular.rooms": "热门房间",
   "close": "关闭",
@@ -28,5 +29,13 @@
   "send.mail": "私信",
   "mail": "私信",
   "notification": "提醒",
-  "empty": "无"
+  "empty": "无",
+  "upload.avatar": "上传头像",
+  "user.name": "名字",
+  "user.about": "个人介绍",
+
+  "choose.image": "选择图片",
+  "unsupported.file.type": "不支持的文件类型",
+  "file.too.big": "文件太大",
+  "file.must.smaller.than": "文件必须小于"
 }
