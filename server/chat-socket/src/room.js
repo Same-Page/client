@@ -138,7 +138,17 @@ const roomManager = {
         roomManager.addSocketToRoom(socket, roomId)
         return roomDict[roomId]
     },
+    adjustRoomTag: (room, newTags) => {
+        // adjust room's tags based on users' page tags
+        // Naive solution for now is only look the newly joined user
+        room.tags = tagManager.getSameTags(room.tags, newTags)
+    },
     addSocketToRoom: (socket, roomId, readOnly) => {
+        // TODO: this function is confusing because it
+        // also handles room creation, should leave that
+        // to a separate function and this function always 
+        // assume room created
+
         // Add socket to room, track socket under user
         // if adding user to room, return true
         if(socket.joined) {
@@ -166,6 +176,7 @@ const roomManager = {
             sockets: new Set()
           }
           addingUser = true
+          roomManager.adjustRoomTag(room, socket.pageTags)
         }
       
         const userWithSockets = users[userId]

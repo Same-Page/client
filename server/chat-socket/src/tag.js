@@ -10,6 +10,9 @@ function insert_spacing(str) {
   }
 const tagManager = {
 
+    getSameTags: (tagsA, tagsB) => {
+      return tagsA.filter(tag => tagsB.includes(tag))
+    },
     similarityScore: (inputTags, baseTags) => {
         let matchCount = 0
         inputTags.forEach((tag)=>{
