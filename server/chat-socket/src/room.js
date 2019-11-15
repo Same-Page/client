@@ -141,7 +141,10 @@ const roomManager = {
     adjustRoomTag: (room, newTags) => {
         // adjust room's tags based on users' page tags
         // Naive solution for now is only look the newly joined user
+        console.log('adjust tags')
+        console.log(room.tags)
         room.tags = tagManager.getSameTags(room.tags, newTags)
+        console.log(room.tags)
     },
     addSocketToRoom: (socket, roomId, readOnly) => {
         // TODO: this function is confusing because it
