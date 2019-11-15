@@ -334,7 +334,7 @@ io.on("connection", function(socket) {
       const newUserJoined = roomManager.addSocketToRoom(socket, room.id)
       // Tell everyone new user joined
       if (newUserJoined) {
-        io.in(roomId).emit("new user", {
+        io.in(room.id).emit("new user", {
           user: socket.user
         })
       }
