@@ -14,6 +14,7 @@ const tagManager = {
       return tagsA.filter(tag => tagsB.includes(tag))
     },
     similarityScore: (inputTags, baseTags) => {
+        if (inputTags.length == 0) return 0
         let matchCount = 0
         inputTags.forEach((tag)=>{
           if (baseTags.includes(tag)) {
@@ -27,7 +28,7 @@ const tagManager = {
         // Add space between Chinese and English
         const pageTitlePatchedWithSpace = insert_spacing(pageTitleLower)
         // Split by space or punctuation marks
-        let tokens = pageTitlePatchedWithSpace.split(/(?:,|:|：|《|。|》|，|\?|,|-|？|！|!|\.|\(|\)|（|）| )+/) 
+        let tokens = pageTitlePatchedWithSpace.split(/(?:,|:|：|《|。|》|，|\||\?|,|-|？|！|!|\.|\(|\)|（|）| )+/) 
         const cnStopwords = ['知乎', '首页', '主页', '百度', '淘宝', '微博', '搜狐','腾讯','网易','京东','亚马逊']
         tokens = tokens.filter( (token) => !cnStopwords.includes(token) )    
 

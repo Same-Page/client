@@ -1,6 +1,6 @@
 const tagManager = require("./tag.js")
 
-const SIMILARITY_THRESHOLD = 0.1
+const SIMILARITY_THRESHOLD = 0.3
 const LOBBY_ROOM_ID = "5"
 
 let roomIdCount = 0
@@ -161,6 +161,7 @@ const roomManager = {
         let addingUser = false
       
         if (!(roomId in roomDict)) {
+          // create room
           roomDict[roomId] = {
             id: roomId,
             messages: [],
@@ -168,6 +169,8 @@ const roomManager = {
             tags: socket.pageTags
           }
           console.log('create room ' + roomId)
+        } else {
+            roomManager.adjustRoomTag(roomDict[roomId], socket.pageTags)
         }
         const room = roomDict[roomId]
         const users = room.users
@@ -179,7 +182,6 @@ const roomManager = {
             sockets: new Set()
           }
           addingUser = true
-          roomManager.adjustRoomTag(room, socket.pageTags)
         }
       
         const userWithSockets = users[userId]
