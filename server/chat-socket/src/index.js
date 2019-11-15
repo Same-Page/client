@@ -407,7 +407,7 @@ io.on("connection", function(socket) {
 
     socket.roomId = roomId
     socket.spMode = data.mode
-    const newUserJoined = roomManager.addSocketToRoom(socket, roomId)
+    const newUserJoined = roomManager.addSocketToRoom(socket, roomId, false, true)
 
     // Tell everyone new user joined
     if (newUserJoined) {

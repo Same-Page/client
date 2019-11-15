@@ -146,11 +146,13 @@ const roomManager = {
         room.tags = tagManager.getSameTags(room.tags, newTags)
         console.log(room.tags)
     },
-    addSocketToRoom: (socket, roomId, readOnly) => {
+    addSocketToRoom: (socket, roomId, readOnly, noTagAdjustment) => {
         // TODO: this function is confusing because it
         // also handles room creation, should leave that
         // to a separate function and this function always 
         // assume room created
+
+        // noTagAdjustment when user come in from discovery link
 
         // Add socket to room, track socket under user
         // if adding user to room, return true
@@ -170,7 +172,9 @@ const roomManager = {
           }
           console.log('create room ' + roomId)
         } else {
-            roomManager.adjustRoomTag(roomDict[roomId], socket.pageTags)
+            if (!noTagAdjustment) {
+                roomManager.adjustRoomTag(roomDict[roomId], socket.pageTags)
+            }
         }
         const room = roomDict[roomId]
         const users = room.users
