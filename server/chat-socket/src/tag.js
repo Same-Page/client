@@ -44,7 +44,7 @@ const tagManager = {
 		const pageTitlePatchedWithSpace = insert_spacing(pageTitleLower)
 		// Split by space or punctuation marks
 		let tokens = pageTitlePatchedWithSpace.split(
-			/(?:,|:|：|《|。|》|，|【|】|~|\||\?|,|-|_|？|！|!|\.|\(|\)|（|）| )+/
+			/(?:,|:|：|《|。|》|，|、|【|】|~|\||\?|,|-|_|？|！|!|\.|\(|\)|（|）| )+/
 		)
 		let pageTags = []
 		tokens.forEach(token => {
@@ -57,6 +57,7 @@ const tagManager = {
 		})
 		const customStopwords = [
 			"",
+			"www",
 			"com",
 			"org",
 			"net",
@@ -64,7 +65,18 @@ const tagManager = {
 			"jd",
 			"bing",
 			"的",
-			"我"
+			"我",
+			"网",
+			"消息",
+			"下载",
+			"条",
+			"视频",
+			"弹幕",
+			"视频网",
+			"动态",
+			"地图",
+			"翻译",
+			"国内"
 		]
 		pageTags = pageTags.filter(tag => !customStopwords.includes(tag))
 		pageTags = stopword.removeStopwords(pageTags)
