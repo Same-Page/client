@@ -11,66 +11,66 @@ import socketManager from "socket/socket"
 const MESSAGE_TIME_GAP = 3 * 1000
 let lastMsgTime = 0
 function Footer(props) {
-  const intl = useIntl()
-  const [showInvitationModal, setShowInvitationModal] = useState(false)
-  // const [invitationType, setInvitationType] = useState("room")
-  // const [invitationPurpose, setInvitationPurpose] = useState("chat")
-  const accountContext = useContext(AccountContext)
-  const account = accountContext.account
+	const intl = useIntl()
+	const [showInvitationModal, setShowInvitationModal] = useState(false)
+	// const [invitationType, setInvitationType] = useState("room")
+	// const [invitationPurpose, setInvitationPurpose] = useState("chat")
+	const accountContext = useContext(AccountContext)
+	const account = accountContext.account
 
-  const send = input => {
-    const now = new Date()
-    if (now - lastMsgTime > MESSAGE_TIME_GAP) {
-      let msg = {
-        msg: input,
-        // TODO: no need to send username
-        // socket server remembers it during login
-        username: account.username
-      }
-      socketManager.sendMessage(msg)
-      lastMsgTime = now
-      return true
-    } else {
-      message.warn("请放慢速度")
-      return false
-    }
-  }
+	const send = input => {
+		const now = new Date()
+		if (now - lastMsgTime > MESSAGE_TIME_GAP) {
+			let msg = {
+				msg: input,
+				// TODO: no need to send username
+				// socket server remembers it during login
+				username: account.username
+			}
+			socketManager.sendMessage(msg)
+			lastMsgTime = now
+			return true
+		} else {
+			message.warn(intl.formatMessage({ id: "slow.down" }))
+			return false
+		}
+	}
 
-  let content = (
-    <center style={{ padding: 10, background: "lightgray" }}>尚未登录</center>
-  )
-  if (account) {
-    content = (
-      <InputWithPicker
-        send={send}
-        addonAfter={
-          <span>
-            <Modal
-              title={intl.formatMessage({ id: "share.url" })}
-              visible={showInvitationModal}
-              onOk={() => {
-                const payload = {
-                  // url and title added by content script
-                  type: "invite"
-                  // invitationType: invitationType,
-                  // invitationPurpose: invitationPurpose
-                }
-                socketManager.sendMessage(payload)
-                setShowInvitationModal(false)
-                // if (invitationType !== "room") {
-                //   // room invitation is much faster
-                //   // no db lookup
-                //   message.loading("发送中")
-                // }
-              }}
-              onCancel={() => {
-                setShowInvitationModal(false)
-              }}
-              okText={intl.formatMessage({ id: "yes" })}
-              cancelText={intl.formatMessage({ id: "cancel" })}
-            >
-              <p>{intl.formatMessage({ id: "share.url.privacy" })}</p>
-              {/* <b style={{ marginRight: 10 }}>邀请目的</b>
+	let content = (
+		<center style={{ padding: 10, background: "lightgray" }}>尚未登录</center>
+	)
+	if (account) {
+		content = (
+			<InputWithPicker
+				send={send}
+				addonAfter={
+					<span>
+						<Modal
+							title={intl.formatMessage({ id: "share.url" })}
+							visible={showInvitationModal}
+							onOk={() => {
+								const payload = {
+									// url and title added by content script
+									type: "invite"
+									// invitationType: invitationType,
+									// invitationPurpose: invitationPurpose
+								}
+								socketManager.sendMessage(payload)
+								setShowInvitationModal(false)
+								// if (invitationType !== "room") {
+								//   // room invitation is much faster
+								//   // no db lookup
+								//   message.loading("发送中")
+								// }
+							}}
+							onCancel={() => {
+								setShowInvitationModal(false)
+							}}
+							okText={intl.formatMessage({ id: "yes" })}
+							cancelText={intl.formatMessage({ id: "cancel" })}
+						>
+							<p>{intl.formatMessage({ id: "share.url.privacy" })}</p>
+							{/* <b style={{ marginRight: 10 }}>邀请目的</b>
               <Radio.Group
                 onChange={e => {
                   setInvitationPurpose(e.target.value)
@@ -101,25 +101,25 @@ function Footer(props) {
                   </Radio>
                 </Radio.Group> 
               </div>*/}
-            </Modal>
-            <Tooltip
-              title={intl.formatMessage({ id: "share.url" })}
-              placement="left"
-            >
-              <Button
-                onClick={() => {
-                  setShowInvitationModal(true)
-                }}
-                icon="share-alt"
-              />
-            </Tooltip>
-          </span>
-        }
-      />
-    )
-  }
+						</Modal>
+						<Tooltip
+							title={intl.formatMessage({ id: "share.url" })}
+							placement="left"
+						>
+							<Button
+								onClick={() => {
+									setShowInvitationModal(true)
+								}}
+								icon="share-alt"
+							/>
+						</Tooltip>
+					</span>
+				}
+			/>
+		)
+	}
 
-  return <div className="sp-chat-bottom">{content}</div>
+	return <div className="sp-chat-bottom">{content}</div>
 }
 
 export default Footer
