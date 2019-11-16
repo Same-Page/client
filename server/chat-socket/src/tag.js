@@ -80,7 +80,10 @@ const tagManager = {
 			"是",
 			"什么",
 			"图片",
-			"视频"
+			"视频",
+			"购物",
+			"版",
+			"系统"
 		]
 		pageTags = pageTags.filter(tag => !customStopwords.includes(tag))
 		pageTags = stopword.removeStopwords(pageTags)
