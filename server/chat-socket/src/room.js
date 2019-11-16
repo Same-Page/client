@@ -2,6 +2,7 @@ const tagManager = require("./tag.js")
 
 const SIMILARITY_THRESHOLD = 0.3
 const LOBBY_ROOM_ID = "5"
+const MIN_USER_IN_ROOM = 3
 
 let roomIdCount = 0
 const roomDict = {} // key: roomId, value: dict of sockets
@@ -37,9 +38,9 @@ const roomManager = {
 	},
 	getPopularRooms: () => {
 		// might be too slow to sort all rooms
-		// so we filter to find room with at least 5 users first
+		// so we filter to find room with at least x users first
 		const rooms = Object.values(roomDict).filter(room => {
-			return Object.keys(room.users).length >= 5
+			return Object.keys(room.users).length >= MIN_USER_IN_ROOM
 		})
 		rooms.sort((a, b) => {
 			return Object.keys(b.users).length - Object.keys(a.users).length
