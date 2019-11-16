@@ -64,6 +64,7 @@ const tagManager = {
 			"cn",
 			"jd",
 			"bing",
+			"jpg",
 			"的",
 			"我",
 			"网",
@@ -72,11 +73,14 @@ const tagManager = {
 			"条",
 			"视频",
 			"弹幕",
-			"视频网",
 			"动态",
 			"地图",
 			"翻译",
-			"国内"
+			"国内",
+			"是",
+			"什么",
+			"图片",
+			"视频"
 		]
 		pageTags = pageTags.filter(tag => !customStopwords.includes(tag))
 		pageTags = stopword.removeStopwords(pageTags)
