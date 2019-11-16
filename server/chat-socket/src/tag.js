@@ -55,7 +55,17 @@ const tagManager = {
 				pageTags.push(token)
 			}
 		})
-		const customStopwords = ["", "的", "我"]
+		const customStopwords = [
+			"",
+			"com",
+			"org",
+			"net",
+			"cn",
+			"jd",
+			"bing",
+			"的",
+			"我"
+		]
 		pageTags = pageTags.filter(tag => !customStopwords.includes(tag))
 		pageTags = stopword.removeStopwords(pageTags)
 
