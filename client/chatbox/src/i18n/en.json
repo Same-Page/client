@@ -9,6 +9,9 @@
 	"success": "Success!",
 	"register.success": "Register success!",
 	"slow.down": "Please slow down",
+	"connected": "Connected!",
+	"disconnected": "Disconnected!",
+	"error": "Error",
 
 	"no.keyword": "No keyword",
 	"input.here": "Type here...",

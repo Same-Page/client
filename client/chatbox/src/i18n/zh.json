@@ -9,6 +9,9 @@
 	"success": "成功！",
 	"register.success": "注册成功！",
 	"slow.down": "请减速",
+	"connected": "连接成功！",
+	"disconnected": "断开连接！",
+	"error": "错误",
 
 	"no.keyword": "无关键词",
 	"input.here": "请输入。。。",

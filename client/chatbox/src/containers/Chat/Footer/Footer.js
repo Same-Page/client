@@ -37,7 +37,9 @@ function Footer(props) {
 	}
 
 	let content = (
-		<center style={{ padding: 10, background: "lightgray" }}>尚未登录</center>
+		<center style={{ padding: 10, background: "lightgray" }}>
+			{intl.formatMessage({ id: "not.login" })}
+		</center>
 	)
 	if (account) {
 		content = (
