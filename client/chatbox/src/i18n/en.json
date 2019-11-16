@@ -50,5 +50,18 @@
 
 	"new.password": "New password",
 	"confirm.password": "Confirm password",
-	"confirm.password.fail": "Password doesn't match"
+	"confirm.password.fail": "Password doesn't match",
+
+	"search.result": "results",
+	"recently.used": "recently used",
+	"people": "people",
+	"nature": "nature",
+	"food": "food",
+	"activity": "activity",
+	"places": "places",
+	"objects": "objects",
+	"symbols": "symbols",
+	"flags": "flags",
+	"not.found": "not found",
+	"search": "search"
 }

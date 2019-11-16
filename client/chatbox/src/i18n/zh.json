@@ -50,5 +50,18 @@
 
 	"new.password": "新密码",
 	"confirm.password": "确认密码",
-	"confirm.password.fail": "两次输入密码不同"
+	"confirm.password.fail": "两次输入密码不同",
+
+	"search.result": "搜索结果",
+	"recently.used": "最近常用",
+	"people": "人",
+	"nature": "自然",
+	"food": "吃喝",
+	"activity": "活动",
+	"places": "旅游",
+	"objects": "物体",
+	"symbols": "符合",
+	"flags": "国旗",
+	"not.found": "没找到",
+	"search": "搜索"
 }
