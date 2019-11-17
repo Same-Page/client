@@ -34,14 +34,22 @@ const tagManager = {
 		return tagsA.filter(tag => tagsB.includes(tag))
 	},
 	similarityScore: (inputTags, baseTags) => {
+		// Need more sophisticated algorithm to also consider different
+		// weights for different words
 		if (inputTags.length == 0) return 0
-		let matchCount = 0
+		let score = 0
 		inputTags.forEach(tag => {
 			if (baseTags.includes(tag)) {
-				matchCount++
+				// small numbers are less important
+				// E.g. "you have 2 new messages" show up in page title
+				if (!isNaN(tag) && tag < 10) {
+					score += 0.1
+				} else {
+					score += 1
+				}
 			}
 		})
-		return matchCount / inputTags.length
+		return score / inputTags.length
 	},
 	getTags: pageTitle => {
 		let pageTitleLower = pageTitle.toLowerCase()
