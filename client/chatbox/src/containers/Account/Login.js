@@ -111,7 +111,12 @@ class NormalLoginForm extends React.Component {
 				>
 					<Form.Item>
 						{getFieldDecorator("userId", {
-							rules: [{ required: true, message: "请输入用户ID" }]
+							rules: [
+								{
+									required: true,
+									message: this.props.intl.formatMessage({ id: "required" })
+								}
+							]
 						})(
 							<Input
 								prefix={
@@ -123,14 +128,19 @@ class NormalLoginForm extends React.Component {
 					</Form.Item>
 					<Form.Item>
 						{getFieldDecorator("password", {
-							rules: [{ required: true, message: "请输入密码" }]
+							rules: [
+								{
+									required: true,
+									message: this.props.intl.formatMessage({ id: "required" })
+								}
+							]
 						})(
 							<Input
 								prefix={
 									<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />
 								}
 								type="password"
-								placeholder="密码"
+								placeholder={this.props.intl.formatMessage({ id: "password" })}
 							/>
 						)}
 					</Form.Item>
@@ -142,7 +152,7 @@ class NormalLoginForm extends React.Component {
 							style={{ marginRight: 10 }}
 							loading={this.state.loading}
 						>
-							登录
+							{this.props.intl.formatMessage({ id: "login" })}
 						</Button>
 						{/* 或
             {

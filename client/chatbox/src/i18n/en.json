@@ -12,11 +12,14 @@
 	"connected": "Connected!",
 	"disconnected": "Disconnected!",
 	"error": "Error",
+	"required": "Required",
 
 	"no.keyword": "No keyword",
 	"input.here": "Type here...",
 	"login": "Login",
 	"not.login": "Not logged in",
+	"password": "Password",
+
 	"room": "Room",
 	"keywords.of.room": "Keywords of this room",
 	"share.url": "Share your url",

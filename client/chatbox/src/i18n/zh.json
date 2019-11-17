@@ -12,11 +12,15 @@
 	"connected": "连接成功！",
 	"disconnected": "断开连接！",
 	"error": "错误",
+	"required": "必填",
 
 	"no.keyword": "无关键词",
 	"input.here": "请输入。。。",
+
 	"login": "登录",
 	"not.login": "未登录",
+	"password": "密码",
+
 	"room": "房间",
 	"keywords.of.room": "该房间的关键词有:",
 	"share.url": "分享你所在的网址",
