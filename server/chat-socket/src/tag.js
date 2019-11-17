@@ -2,6 +2,9 @@ const stopword = require("stopword")
 const cnTokenizer = require("nodejieba")
 const containsChinese = require("contains-chinese")
 const siteNames = require("./tag/siteNames.json")
+const customStopwords = require("./tag/stopwords.json")
+
+// cnTokenizer.load({ userDict: "./tag/cnWords.txt" })
 
 function insert_spacing(str) {
 	//将汉字与英文、数字、下划线之间添加一个空格
@@ -44,47 +47,17 @@ const tagManager = {
 		const pageTitlePatchedWithSpace = insert_spacing(pageTitleLower)
 		// Split by space or punctuation marks
 		let tokens = pageTitlePatchedWithSpace.split(
-			/(?:,|:|：|《|。|》|，|、|【|】|~|\||\?|,|-|_|？|！|!|\.|\(|\)|（|）| )+/
+			/(?:,|:|：|《|。|》|，|、|【|】|\/|~|\||\?|,|-|_|？|！|!|\.|\(|\)|（|）| )+/
 		)
 		let pageTags = []
 		tokens.forEach(token => {
 			if (containsChinese(token)) {
-				let cnTokens = cnTokenizer.cut(token)
+				let cnTokens = cnTokenizer.cutHMM(token)
 				pageTags.push(...cnTokens)
 			} else {
 				pageTags.push(token)
 			}
 		})
-		const customStopwords = [
-			"",
-			"www",
-			"com",
-			"org",
-			"net",
-			"cn",
-			"jd",
-			"bing",
-			"jpg",
-			"的",
-			"我",
-			"网",
-			"消息",
-			"下载",
-			"条",
-			"视频",
-			"弹幕",
-			"动态",
-			"地图",
-			"翻译",
-			"国内",
-			"是",
-			"什么",
-			"图片",
-			"视频",
-			"购物",
-			"版",
-			"系统"
-		]
 		pageTags = pageTags.filter(tag => !customStopwords.includes(tag))
 		pageTags = stopword.removeStopwords(pageTags)
 		pageTags = [...new Set(pageTags)]
