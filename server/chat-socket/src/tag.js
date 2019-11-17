@@ -87,7 +87,7 @@ const tagManager = {
 		]
 		pageTags = pageTags.filter(tag => !customStopwords.includes(tag))
 		pageTags = stopword.removeStopwords(pageTags)
-
+		pageTags = [...new Set(pageTags)]
 		return pageTags
 	}
 }
