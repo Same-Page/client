@@ -68,6 +68,14 @@ app.post("/api/tags", function(req, res) {
 	metrics.increment("socket.api.tags")
 	res.send(tagManager.getTags(req.body.title))
 })
+app.post("/api/sim_score", function(req, res) {
+	metrics.increment("socket.api.tags")
+	const inputTags = tagManager.getTags(req.body.input)
+	const baseTags = tagManager.getTags(req.body.base)
+	const score = tagManager.similarityScore(inputTags, baseTags) + ""
+	res.send(score)
+})
+
 function countSocketAndUsers() {
 	var userIds = {}
 	Object.keys(io.sockets.sockets).forEach(function(sid) {
