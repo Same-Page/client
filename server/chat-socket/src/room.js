@@ -37,7 +37,7 @@ const roomManager = {
 			let roomTags = room.tags
 			if (userPageTags) {
 				roomTags = userPageTags.filter(tag => {
-					return roomTags.include(tag)
+					return roomTags.includes(tag)
 				})
 			} else {
 				roomTags.splice(3)
