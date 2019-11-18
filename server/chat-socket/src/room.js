@@ -23,14 +23,30 @@ const roomManager = {
 	getRoom: roomId => {
 		return roomDict[roomId]
 	},
-	getRoomInfo: roomId => {
+	getRoomInfo: (roomId, userPageTags) => {
 		// return basic info for client to use
+		// Because room tags come from the first user
+		// be careful not to expose user's private info
+		// If client send their userPageTags, only return
+		// the matched ones
+		// If it's from the popular room endpoint, return
+		// limited tags (TODO: remove uncommon tags for pop rooms)
+
 		if (roomId in roomDict) {
 			const room = roomDict[roomId]
+			let roomTags = room.tags
+			if (userPageTags) {
+				roomTags = userPageTags.filter(tag => {
+					return roomTags.include(tag)
+				})
+			} else {
+				roomTags.splice(3)
+				// TODO: remove uncommon tags for pop rooms
+			}
 			return {
 				id: room.id,
-				tags: room.tags,
-				about: room.tags.join(", "),
+				tags: roomTags,
+				about: roomTags.join(", "),
 				userCount: Object.keys(room.users).length
 			}
 		}

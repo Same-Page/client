@@ -364,7 +364,7 @@ io.on("connection", function(socket) {
 		socket.emit("*", {
 			eventName: "room info",
 			// room: roomManager.getRoomInfo(socket.roomId),
-			room: roomManager.getRoomInfo(room.id),
+			room: roomManager.getRoomInfo(room.id, socket.pageTags),
 			mode: socket.spMode
 		})
 		// TODO?: no need to get this if chatbox not open
@@ -398,7 +398,7 @@ io.on("connection", function(socket) {
 		socket.emit("recent messages", room.messages)
 		socket.emit("*", {
 			eventName: "room info",
-			room: roomManager.getRoomInfo(socket.roomId),
+			room: roomManager.getRoomInfo(socket.roomId, socket.pageTags),
 			mode: socket.spMode
 		})
 
