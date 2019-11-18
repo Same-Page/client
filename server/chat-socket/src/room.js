@@ -2,7 +2,7 @@ const tagManager = require("./tag.js")
 
 const SIMILARITY_THRESHOLD = 0.5
 const LOBBY_ROOM_ID = "5"
-const MIN_USER_IN_ROOM = 3
+const MIN_USER_IN_ROOM = 2
 
 let roomIdCount = 0
 const roomDict = {} // key: roomId, value: dict of sockets
