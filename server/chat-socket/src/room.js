@@ -1,8 +1,8 @@
 const tagManager = require("./tag.js")
 
-const SIMILARITY_THRESHOLD = 0.5
+const SIMILARITY_THRESHOLD = 0.3
 const LOBBY_ROOM_ID = "5"
-const MIN_USER_IN_ROOM = 2
+const MIN_USER_IN_ROOM = 3
 
 let roomIdCount = 0
 const roomDict = {} // key: roomId, value: dict of sockets
@@ -143,7 +143,7 @@ const roomManager = {
 			// console.log(pageTags)
 			// console.log(roomTags)
 			// console.log('score: ' + score)
-			if (score > threashold) {
+			if (score >= threashold) {
 				closestRoom = room
 				threashold = score
 			}
