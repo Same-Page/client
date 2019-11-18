@@ -58,7 +58,7 @@ function extractKownChineseTerms(input) {
 	for (i = 0; i < input.length; i++) {
 		for (j = input.length; j > i; j--) {
 			const t = input.slice(i, j)
-			console.log(t)
+			// console.log(t)
 			if (cnTermSet.has(t)) {
 				foundTerms.push(t)
 				res = res.replace(t, "")
@@ -77,6 +77,9 @@ const tagManager = {
 	similarityScore: (inputTags, baseTags) => {
 		// Need more sophisticated algorithm to also consider different
 		// weights for different words
+
+		// TODO: longer word match should weigh more
+		// e.g. 这个杀手不太冷 weigh more than 文艺片
 		if (inputTags.length == 0) return 0
 		let score = 0
 		inputTags.forEach(tag => {
