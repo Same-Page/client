@@ -103,7 +103,7 @@ const tagManager = {
 		const pageTitlePatchedWithSpace = insert_spacing(pageTitleLower)
 		// Split by space or punctuation marks
 		let tokens = pageTitlePatchedWithSpace.split(
-			/(?:,|:|：|《|。|》|，|、|【|】|\/|~|\||\?|,|゜|-|_|？|！|!|\.|\(|\)|（|）| )+/
+			/(?:,|:|：|《|。|》|，|、|．|【|】|\/|~|\||\?|,|゜|-|_|？|！|!|\.|\(|\)|（|）| )+/
 		)
 		let pageTags = []
 		tokens.forEach(token => {
