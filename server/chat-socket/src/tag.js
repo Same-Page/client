@@ -1,13 +1,32 @@
+const fs = require("fs")
+
 const stopword = require("stopword")
 const cnTokenizer = require("nodejieba")
 const containsChinese = require("contains-chinese")
 const siteNames = require("./tag/siteNames.json")
 const customStopwords = require("./tag/stopwords.json")
 
-console.log("load cn dict")
-cnTokenizer.load({
-	userDict: __dirname + "/tag/cnWords.txt"
-})
+let cnTermSet = null
+
+if (!cnTermSet) {
+	console.log("load CN dictionary")
+	let tmpArr = []
+	const fileNames = fs.readdirSync(__dirname + "/tag/cnNames")
+
+	fileNames.forEach(fileName => {
+		console.log(fileName)
+		const names = fs
+			.readFileSync(__dirname + "/tag/cnNames/" + fileName)
+			.toString()
+			.split("\n")
+			.filter(n => n.length > 1)
+
+		tmpArr = tmpArr.concat(names)
+	})
+	cnTermSet = new Set(tmpArr)
+	tmpArr = null
+	console.log(cnTermSet.size)
+}
 
 function insert_spacing(str) {
 	//将汉字与英文、数字、下划线之间添加一个空格
@@ -28,6 +47,28 @@ function removeSiteName(pageTitle) {
 		pageTitle = pageTitle.replace(name, "")
 	})
 	return pageTitle
+}
+
+function extractKownChineseTerms(input) {
+	let foundTerms = []
+	// Get all substrings from longest to shortest
+	// If longer string is found, do not look for shorter ones
+	let i, j
+	let res = input
+	for (i = 0; i < input.length; i++) {
+		for (j = input.length; j > i; j--) {
+			const t = input.slice(i, j)
+			console.log(t)
+			if (cnTermSet.has(t)) {
+				foundTerms.push(t)
+				res = res.replace(t, "")
+				i = j
+				break
+				// this ensures shorter tags not created
+			}
+		}
+	}
+	return [res, foundTerms]
 }
 const tagManager = {
 	getSameTags: (tagsA, tagsB) => {
@@ -52,6 +93,7 @@ const tagManager = {
 		return score / inputTags.length
 	},
 	getTags: pageTitle => {
+		// TODO: write test cases
 		let pageTitleLower = pageTitle.toLowerCase()
 		pageTitleLower = removeSiteName(pageTitleLower)
 		// Add space between Chinese and English
@@ -63,8 +105,14 @@ const tagManager = {
 		let pageTags = []
 		tokens.forEach(token => {
 			if (containsChinese(token)) {
-				let cnTokens = cnTokenizer.cut(token)
-				pageTags.push(...cnTokens)
+				const [t, foundTerms] = extractKownChineseTerms(token)
+				if (containsChinese(t)) {
+					let cnTokens = cnTokenizer.cut(t)
+					pageTags.push(...cnTokens)
+				} else {
+					pageTags.push(t)
+				}
+				pageTags.push(...foundTerms)
 			} else {
 				pageTags.push(token)
 			}
