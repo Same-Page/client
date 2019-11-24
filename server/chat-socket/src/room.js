@@ -140,10 +140,11 @@ const roomManager = {
 		Object.values(roomDict).forEach(room => {
 			const roomTags = room.tags
 			const score = tagManager.similarityScore(pageTags, roomTags)
-			// console.log(pageTags)
-			// console.log(roomTags)
-			// console.log('score: ' + score)
+
 			if (score >= threashold) {
+				// console.log(pageTags)
+				// console.log(roomTags)
+				// console.log("score: " + score)
 				closestRoom = room
 				threashold = score
 			}

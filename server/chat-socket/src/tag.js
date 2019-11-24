@@ -30,8 +30,8 @@ if (!cnTermSet) {
 
 function insert_spacing(str) {
 	//将汉字与英文、数字、下划线之间添加一个空格
-	var p1 = /([A-Za-z_])([\u4e00-\u9fa5]+)/gi
-	var p2 = /([\u4e00-\u9fa5]+)([A-Za-z_])/gi
+	var p1 = /([A-Za-z0-9_])([\u4e00-\u9fa5]+)/gi
+	var p2 = /([\u4e00-\u9fa5]+)([A-Za-z0-9_])/gi
 	return str.replace(p1, "$1 $2").replace(p2, "$1 $2")
 }
 function removeSiteName(pageTitle) {
@@ -49,26 +49,27 @@ function removeSiteName(pageTitle) {
 	return pageTitle
 }
 
-function extractKownChineseTerms(input) {
+function extractKnownChineseTerms(input) {
 	let foundTerms = []
 	// Get all substrings from longest to shortest
 	// If longer string is found, do not look for shorter ones
-	let i, j
-	let res = input
-	for (i = 0; i < input.length; i++) {
-		for (j = input.length; j > i; j--) {
-			const t = input.slice(i, j)
-			// console.log(t)
+	let i
+	// let res = input
+
+	let len = input.length
+
+	while (len > 1) {
+		for (i = 0; i + len <= input.length; i++) {
+			const t = input.slice(i, i + len)
 			if (cnTermSet.has(t)) {
 				foundTerms.push(t)
-				res = res.replace(t, "")
-				i = j
-				break
-				// this ensures shorter tags not created
+				input = input.replace(t, " ")
 			}
 		}
+
+		len--
 	}
-	return [res, foundTerms]
+	return [input, foundTerms]
 }
 const tagManager = {
 	getSameTags: (tagsA, tagsB) => {
@@ -93,7 +94,7 @@ const tagManager = {
 				}
 			}
 		})
-		return score / inputTags.length
+		return (score * score) / inputTags.length
 	},
 	getTags: pageTitle => {
 		// TODO: write test cases
@@ -103,12 +104,12 @@ const tagManager = {
 		const pageTitlePatchedWithSpace = insert_spacing(pageTitleLower)
 		// Split by space or punctuation marks
 		let tokens = pageTitlePatchedWithSpace.split(
-			/(?:,|:|：|《|。|》|，|、|．|【|】|\/|~|\||\?|,|゜|-|_|？|！|!|\.|\(|\)|（|）| )+/
+			/(?:,|:|：|《|。|》|，|、|．|【|】|\[|\]|\/|~|\||\?|,|゜|-|_|？|！|!|\.|\(|\)|（|）| )+/
 		)
 		let pageTags = []
 		tokens.forEach(token => {
 			if (containsChinese(token)) {
-				const [t, foundTerms] = extractKownChineseTerms(token)
+				const [t, foundTerms] = extractKnownChineseTerms(token)
 				if (containsChinese(t)) {
 					let cnTokens = cnTokenizer.cut(t)
 					pageTags.push(...cnTokens)
@@ -120,7 +121,9 @@ const tagManager = {
 				pageTags.push(token)
 			}
 		})
-		pageTags = pageTags.filter(tag => !customStopwords.includes(tag))
+		pageTags = pageTags.filter(
+			tag => !customStopwords.includes(tag) && tag.replace(/ /g, "") != ""
+		)
 		pageTags = stopword.removeStopwords(pageTags)
 		pageTags = [...new Set(pageTags)]
 		return pageTags
