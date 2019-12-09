@@ -82,19 +82,21 @@ const tagManager = {
 		// TODO: longer word match should weigh more
 		// e.g. 这个杀手不太冷 weigh more than 文艺片
 		if (inputTags.length == 0) return 0
-		let score = 0
+		let matchCount = 0
 		inputTags.forEach(tag => {
 			if (baseTags.includes(tag)) {
 				// small numbers are less important
 				// E.g. "you have 2 new messages" show up in page title
-				if (!isNaN(tag) && tag < 10) {
-					score += 0.1
-				} else {
-					score += 1
-				}
+				// if (!isNaN(tag) && tag < 10) {
+				// 	score += 0.1
+				// } else {
+				// 	score += 1
+				// }
+				matchCount += 1
 			}
 		})
-		return (score * score) / inputTags.length
+
+		return (matchCount * matchCount) / (inputTags.length * baseTags.length)
 	},
 	getTags: pageTitle => {
 		// TODO: write test cases

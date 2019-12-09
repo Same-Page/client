@@ -73,7 +73,12 @@ app.post("/api/sim_score", function(req, res) {
 	const inputTags = tagManager.getTags(req.body.input)
 	const baseTags = tagManager.getTags(req.body.base)
 	const score = tagManager.similarityScore(inputTags, baseTags) + ""
-	res.send(score)
+	const resp = {
+		input_tags: inputTags,
+		base_tags: baseTags,
+		score: score
+	}
+	res.send(resp)
 })
 
 function countSocketAndUsers() {
