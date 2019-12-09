@@ -1,6 +1,6 @@
 const tagManager = require("./tag.js")
 
-const SIMILARITY_THRESHOLD = 0.3
+const SIMILARITY_THRESHOLD = 0.6
 const LOBBY_ROOM_ID = "5"
 const MIN_USER_IN_ROOM = 3
 
