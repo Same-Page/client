@@ -138,6 +138,7 @@ io.on("connection", function(socket) {
 		socket.pageTags = tagManager.getTags(socket.pageTitle)
 		// language added in 2.3.3
 		socket.lang = utils.stripHtml(data.lang)
+		console.log(socket.lang)
 		// url field is added in v2.6.0
 		socket.url = utils.stripHtml(data.url)
 		socket.token = data.token // added in v2.7.0
@@ -168,9 +169,29 @@ io.on("connection", function(socket) {
 					eventName: "login success"
 				})
 				// Tell this new socket who are already in the room
+				const usersInRoom = roomManager.getUsersInRoom(socket.roomId)
 				socket.emit("users in room", {
-					users: roomManager.getUsersInRoom(socket.roomId)
+					users: usersInRoom
 				})
+
+				const otherUsersInRoom = usersInRoom.filter(u => {
+					return u.id != socket.user.id
+				})
+
+				if (otherUsersInRoom.length > 0) {
+					// Notify user he's not alone, msg sent from a user inside the room
+					// TODO: this should come from system
+					const otherUserInRoom = otherUsersInRoom[0]
+					var notificationMsg = {
+						id: messageCount++,
+						user: otherUserInRoom,
+						userId: otherUserInRoom.id,
+						content: "Hi~",
+						type: "text",
+						roomId: socket.roomId
+					}
+					socket.emit("new message", notificationMsg)
+				}
 
 				// TODO: recent messages and room info are not
 				// needed unless chatbox is open, maybe let client
