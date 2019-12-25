@@ -99,9 +99,59 @@ function keepCountingSocketAndUsers() {
 	}, 10 * 1000)
 }
 
+function pushNews() {
+	request.get(
+		{
+			url: "https://api-v3.yiyechat.com/api/news",
+			json: true
+		},
+		function optionalCallback(err, httpResponse, body) {
+			if (err || httpResponse.statusCode != 200) {
+				if (err) console.error("Get news failed", err)
+				else console.error("Get newss failed", httpResponse.statusCode)
+
+				return
+			}
+
+			if (body.length) {
+				const news = body[0]
+				var notificationMsg = {
+					id: messageCount++,
+					user: {
+						id: 3,
+						name: "news",
+						about: "新闻推送",
+						avatarSrc: "https://dnsofx4sf31ab.cloudfront.net/3.jpg"
+					},
+					userId: 3,
+					content: news["title"],
+					metadata: {
+						// type: data.invitationType,
+						// purpose: data.invitationPurpose,
+						pageTitle: news["title"],
+						pageUrl: news["constructed_url"]
+					},
+					type: "invite"
+					// roomId: socket.roomId
+				}
+				io.emit("new message", notificationMsg)
+			}
+		}
+	)
+}
+
+function keepPushingNews() {
+	pushNews()
+	setTimeout(function() {
+		keepPushingNews()
+	}, 10 * 60 * 1000)
+}
+
 // roomManager.setSiteToRoom()
 // roomManager.loadRooms()
 if (process.env.CHATBOX_ENV === "prod") keepCountingSocketAndUsers()
+
+keepPushingNews()
 
 function isClientVersionOK(version) {
 	return version >= MIN_CLIENT_VERSION
