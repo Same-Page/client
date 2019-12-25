@@ -151,7 +151,7 @@ function keepPushingNews() {
 // roomManager.loadRooms()
 if (process.env.CHATBOX_ENV === "prod") keepCountingSocketAndUsers()
 
-keepPushingNews()
+// keepPushingNews()
 
 function isClientVersionOK(version) {
 	return version >= MIN_CLIENT_VERSION
