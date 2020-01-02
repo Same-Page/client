@@ -1,8 +1,15 @@
+const AWS = require("aws-sdk")
+AWS.config.update({
+	region: "ap-southeast-1"
+	// endpoint: "http://localhost:8000"
+})
 const tagManager = require("./tag.js")
 
 const SIMILARITY_THRESHOLD = 0.6
 const LOBBY_ROOM_ID = "5"
 const MIN_USER_IN_ROOM = 3
+
+const docClient = new AWS.DynamoDB.DocumentClient()
 
 let roomIdCount = 0
 const roomDict = {} // key: roomId, value: dict of sockets
@@ -72,6 +79,27 @@ const roomManager = {
 		if (room.messages.length > 50) {
 			room.messages.shift()
 		}
+
+		const tagHash = room.tags.join("-")
+
+		var params = {
+			TableName: "sp-chats",
+			Item: {
+				tags: tagHash,
+				time: message.timestamp + "",
+				...message
+			}
+		}
+		docClient.put(params, function(err, data) {
+			if (err) {
+				console.error(
+					"Unable to add item. Error JSON:",
+					JSON.stringify(err, null, 2)
+				)
+			} else {
+				console.log("Added item:", JSON.stringify(data, null, 2))
+			}
+		})
 	},
 	removeSocketFromRoom: socket => {
 		// If a user is leaving room entirely (all his sockets gone),
@@ -154,7 +182,34 @@ const roomManager = {
 	createRoomForSocket: socket => {
 		const roomId = (roomIdCount++).toString()
 		roomManager.addSocketToRoom(socket, roomId)
-		return roomDict[roomId]
+		const room = roomDict[roomId]
+
+		const tagHash = room.tags.join("-")
+		console.log(tagHash)
+		const params = {
+			TableName: "sp-chats",
+			KeyConditionExpression: "#tags = :tags",
+			ExpressionAttributeNames: {
+				"#tags": "tags"
+			},
+			ExpressionAttributeValues: {
+				":tags": tagHash
+			}
+		}
+		docClient.query(params, (err, data) => {
+			if (err) {
+				console.error(
+					"Unable to read item. Error JSON:",
+					JSON.stringify(err, null, 2)
+				)
+			} else {
+				// console.log("GetItem succeeded:", JSON.stringify(data, null, 2))
+				// console.log(data)
+				room.messages = data.Items || []
+			}
+		})
+
+		return room
 	},
 	adjustRoomTag: (room, newTags) => {
 		// adjust room's tags based on users' page tags

@@ -9,6 +9,7 @@
   },
   "author": "ArchiTech",
   "dependencies": {
+    "aws-sdk": "^2.596.0",
     "contains-chinese": "^1.0.0",
     "express": "^4.16.3",
     "node-cache": "^4.2.0",
