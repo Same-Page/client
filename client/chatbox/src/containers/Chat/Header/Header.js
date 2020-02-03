@@ -233,7 +233,7 @@ function ChatHeader(props) {
           size="small"
           icon="unordered-list"
         >
-          <span style={{ marginLeft: 5 }}>{props.mediaNum}</span>
+          {/* <span style={{ marginLeft: 5 }}>{props.mediaNum}</span> */}
         </Button>
         <Radio.Group
           className="sp-toggle-page-site-chat"
@@ -251,7 +251,7 @@ function ChatHeader(props) {
           {chatModes.includes("room") && (
             <Tooltip placement="bottom" title={chatContext.realRoom.name}>
               <Radio.Button value="room">
-                房间<Badge offset={[3, -3]} count={5}></Badge>
+                房间<Badge offset={[3, -3]} count={0}></Badge>
               </Radio.Button>
             </Tooltip>
           )}
@@ -286,7 +286,8 @@ function ChatHeader(props) {
           size="small"
           // icon="info-circle"
         >
-          <Icon type="info-circle" theme="twoTone" />
+          {/* <Icon type="info-circle" theme="twoTone" /> */}
+          <Icon type="setting" theme="twoTone" />
         </Button>
         {/* <Col style={{ textAlign: "right" }} span={8}> */}
 
