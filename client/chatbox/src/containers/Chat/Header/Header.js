@@ -1,6 +1,7 @@
 import "./Header.css"
 
 import { FormattedMessage, useIntl } from "react-intl"
+import { Badge } from "antd"
 import React, { useState, useEffect, useContext } from "react"
 import { Radio, Button, Tooltip, Icon, Modal, Avatar } from "antd"
 
@@ -249,7 +250,9 @@ function ChatHeader(props) {
         >
           {chatModes.includes("room") && (
             <Tooltip placement="bottom" title={chatContext.realRoom.name}>
-              <Radio.Button value="room">房间</Radio.Button>
+              <Radio.Button value="room">
+                房间<Badge offset={[3, -3]} count={5}></Badge>
+              </Radio.Button>
             </Tooltip>
           )}
           {chatModes.includes("site") && (
@@ -263,7 +266,7 @@ function ChatHeader(props) {
             </Tooltip>
           )}
         </Radio.Group>
-        <div style={{ maxWidth: "45%", display: "inline-flex" }}>
+        {/* <div style={{ maxWidth: "45%", display: "inline-flex" }}>
           <span
             style={{
               whiteSpace: "nowrap",
@@ -276,7 +279,7 @@ function ChatHeader(props) {
               <FormattedMessage id="no.keyword"></FormattedMessage>
             )}
           </span>
-        </div>
+        </div> */}
         <Button
           style={{ border: "none" }}
           onClick={() => setShowHelp(true)}

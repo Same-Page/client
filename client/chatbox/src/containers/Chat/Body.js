@@ -34,9 +34,9 @@ function ChatBody(props) {
       return
     }
     // window.spDebug("[Body.js] register socket events")
-    socketManager.addHandler("new message", "display_new_message", data => {
+    socketManager.addHandler("chat message", "display_new_message", data => {
       data.time = moment()
-      spDebug("[chatbox] new message")
+      spDebug("[chatbox] chat message")
       setMessages(prevMessages => {
         return [...prevMessages, data]
       })
@@ -48,7 +48,7 @@ function ChatBody(props) {
     })
     socketManager.addHandler("invitation", "display_new_invitation", data => {
       data.time = moment()
-      data.self = data.userId.toString() === account.id.toString()
+      data.self = data.user.id.toString() === account.id.toString()
       setMessages(prevMessages => {
         return [...prevMessages, data]
       })
@@ -67,7 +67,7 @@ function ChatBody(props) {
         // the room then went offline then back online
         // window.spDebug(recentMessages)
         recentMessages.forEach(msg => {
-          msg.self = msg.userId.toString() === account.id.toString()
+          msg.self = msg.user.id.toString() === account.id.toString()
           msg.time = moment.utc(msg.timestamp)
         })
         setMessages(recentMessages)
@@ -77,7 +77,7 @@ function ChatBody(props) {
     )
     return () => {
       window.spDebug("[Body.js] unregister socket events")
-      socketManager.removeHandler("new message", "display_new_message")
+      socketManager.removeHandler("chat message", "display_new_message")
       socketManager.removeHandler("invitation", "display_new_invitation")
       socketManager.removeHandler("recent messages", "display_recent_messages")
     }
@@ -124,7 +124,8 @@ function ChatBody(props) {
     let timeDisplay = null
 
     if (lastMsg) {
-      if (lastMsg.userId.toString() === msg.userId.toString()) showUser = false
+      if (lastMsg.user.id.toString() === msg.user.id.toString())
+        showUser = false
       if (msg.time.diff(lastMsg.time) > 5 * 60 * 1000) {
         showTimestamp = true
         showUser = true

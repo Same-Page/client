@@ -1,12 +1,11 @@
 const _socketEventHanders = {}
 
-const _sendEvent = (eventName, data) => {
+const _sendEvent = data => {
   window.parent.postMessage(
     {
       type: "sp-socket",
-      data: data,
-      eventName: eventName,
-      action: "send event"
+      data: data
+      // eventName: eventName
     },
     "*"
   )
@@ -21,11 +20,15 @@ const socketManager = {
     const handlers = _socketEventHanders[eventName]
     delete handlers[callbackName]
   },
-  sendMessage: msg => {
-    window.parent.postMessage(
-      { type: "sp-socket", msg: msg, action: "send message v2" },
-      "*"
-    )
+  sendMessage: (roomId, msg) => {
+    const payload = {
+      action: "message",
+      data: {
+        roomId: roomId,
+        content: msg
+      }
+    }
+    _sendEvent(payload)
   },
   sendEvent: _sendEvent,
   // changeRoom: roomId => {
@@ -35,13 +38,14 @@ const socketManager = {
   //   )
   // },
   changeRoom: (roomId, mode) => {
-    if (roomId && mode) {
-      window.spDebug("change room to " + roomId)
-      _sendEvent("change room", {
-        roomId: roomId,
-        mode: mode
-      })
-    }
+    // alert("todo")
+    // if (roomId && mode) {
+    //   window.spDebug("change room to " + roomId)
+    //   _sendEvent("change room", {
+    //     roomId: roomId,
+    //     mode: mode
+    //   })
+    // }
   }
 }
 
@@ -49,13 +53,14 @@ window.addEventListener(
   "message",
   e => {
     if (e && e.data && e.data.type === "sp-socket") {
-      const eventName = e.data.name
+      window.spDebug(e.data)
       const data = e.data.data
-      // window.spDebug(eventName)
+      const eventName = data.name
+
       if (eventName in _socketEventHanders) {
         const handlers = _socketEventHanders[eventName] || {}
         Object.values(handlers).forEach(handler => {
-          handler(data)
+          handler(data.data)
         })
       }
     }
