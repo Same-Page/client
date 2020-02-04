@@ -9,22 +9,17 @@ import { Icon, message } from "antd"
 
 import Tab from "containers/Tab"
 import AccountContext from "context/account-context"
-import ChatContext from "context/chat-context"
 
 import socketManager from "socket/socket"
 import storageManager from "utils/storage"
 import urls from "config/urls"
+import { changeChatView } from "redux/actions/chat"
+import { changeTab } from "redux/actions"
+import store from "redux/store"
+
 // import { setPageTitle, getPageTitle } from "utils/pageTitle"
 
 require("moment/locale/zh-cn") //moment.js bug, has to manually include
-
-const DEFAULT_TAB = "chat"
-
-const DEFAULT_REAL_ROOM = {
-  name: "大厅",
-  id: "5",
-  about: "this is lobby"
-}
 
 const i18nMsg = {
   zh: msg_zh,
@@ -61,10 +56,10 @@ class App extends React.Component {
       waitingForConfigFromParent: true,
       // Only if there is no account data in storage on page load
       // autoLogin only once per page load
-      autoLogin: false,
-      mode: null,
-      room: null,
-      realRoom: DEFAULT_REAL_ROOM
+      autoLogin: false
+      //   mode: null,
+      //   room: null,
+      //   realRoom: DEFAULT_REAL_ROOM
     }
     // if (locale.indexOf("zh") > -1) {
     //   moment.locale("zh-cn")
@@ -138,11 +133,11 @@ class App extends React.Component {
       console.error("no parent window!")
     }
 
-    storageManager.get("realRoom", realRoom => {
-      if (realRoom) {
-        this.setState({ realRoom: realRoom })
-      }
-    })
+    // storageManager.get("realRoom", realRoom => {
+    //   if (realRoom) {
+    //     this.setState({ realRoom: realRoom })
+    //   }
+    // })
 
     // console.log("get account from storage, register account change listener")
     storageManager.get("account", account => {
@@ -197,7 +192,9 @@ class App extends React.Component {
           urls.dbAPI = spConfig.apiUrl || urls.dbAPI
           urls.socketAPI = spConfig.socketUrl || urls.socketAPI
           this.setState({ waitingForConfigFromParent: false })
-          this.setState({ mode: spConfig.defaultChatMode || "site" })
+
+          store.dispatch(changeChatView(spConfig.defaultChatMode))
+          store.dispatch(changeTab(spConfig.defaultTab))
         }
       },
       false
@@ -244,10 +241,9 @@ class App extends React.Component {
         </center>
       )
     }
-    let tab = DEFAULT_TAB
-    if (!this.state.account) {
-      tab = "account"
-    }
+    // if (!this.state.account) {
+    //   tab = "account"
+    // }
     return (
       <IntlProvider locale={locale} messages={msg}>
         <AccountContext.Provider
@@ -258,26 +254,7 @@ class App extends React.Component {
             stopAutoLogin: this.stopAutoLogin
           }}
         >
-          <ChatContext.Provider
-            value={{
-              mode: this.state.mode,
-              setMode: mode => {
-                // console.log("setting mode")
-                this.setState({ mode: mode })
-              },
-              room: this.state.room,
-              setRoom: room => {
-                // console.log("setting room")
-                this.setState({ room: room })
-              },
-              realRoom: this.state.realRoom,
-              setRealRoom: realRoom => {
-                this.setState({ realRoom: realRoom })
-              }
-            }}
-          >
-            <Tab tab={tab} />
-          </ChatContext.Provider>
+          <Tab />
         </AccountContext.Provider>
       </IntlProvider>
     )

@@ -4,15 +4,18 @@ import { FormattedMessage, useIntl } from "react-intl"
 import { Badge } from "antd"
 import React, { useState, useEffect, useContext } from "react"
 import { Radio, Button, Tooltip, Icon, Modal, Avatar } from "antd"
+import { connect } from "react-redux"
 
 import socketManager from "socket/socket"
 import Users from "./Users"
 import AccountContext from "context/account-context"
 import TabContext from "context/tab-context"
-import ChatContext from "context/chat-context"
 import { getUrl, getDomain } from "utils/url"
 import storageManager from "utils/storage"
 import spDebug from "config/logger"
+
+import { changeChatView } from "redux/actions/chat"
+
 function ChatHeader(props) {
   const chatModes = window.spConfig.chatModes || ["room", "site", "page"]
   const intl = useIntl()
@@ -21,38 +24,38 @@ function ChatHeader(props) {
   const [users, setUsers] = useState([])
   const accountContext = useContext(AccountContext)
   const tabContext = useContext(TabContext)
-  const chatContext = useContext(ChatContext)
-  const mode = chatContext.mode
-  const room = chatContext.room || {}
+  const mode = props.mode
+  const room = {} // TODO
+  // const room = chatContext.room || {}
   // site and page also rooms, realRoom means
   // non site and page room id
-  useEffect(() => {
-    // setUsers([])
-    if (room && mode) {
-      socketManager.changeRoom(room.id, mode)
-    }
-    // console.log("room changed")
-  }, [room, mode])
-  useEffect(() => {
-    if (mode === "site") {
-      const room = {
-        title: getDomain(),
-        id: getDomain()
-      }
-      chatContext.setRoom(room)
-    }
-    if (mode === "page") {
-      const room = {
-        title: getUrl(),
-        id: getUrl()
-      }
-      chatContext.setRoom(room)
-    }
-    // if mode is room, Rooms.js will set room
+  // useEffect(() => {
+  //   // setUsers([])
+  //   if (room && mode) {
+  //     socketManager.changeRoom(room.id, mode)
+  //   }
+  //   // console.log("room changed")
+  // }, [room, mode])
+  // useEffect(() => {
+  //   if (mode === "site") {
+  //     const room = {
+  //       title: getDomain(),
+  //       id: getDomain()
+  //     }
+  //     chatContext.setRoom(room)
+  //   }
+  //   if (mode === "page") {
+  //     const room = {
+  //       title: getUrl(),
+  //       id: getUrl()
+  //     }
+  //     chatContext.setRoom(room)
+  //   }
+  //   // if mode is room, Rooms.js will set room
 
-    // console.log("mode change")
-    storageManager.set("mode", mode)
-  }, [mode])
+  //   // console.log("mode change")
+  //   storageManager.set("mode", mode)
+  // }, [mode])
 
   useEffect(() => {
     // No storage listener because user may chat in
@@ -88,23 +91,23 @@ function ChatHeader(props) {
     socketManager.addHandler("disconnect", "clear_users_in_room", () => {
       setUsers([])
     })
-    socketManager.addHandler("room info", "set_mode_and_room", data => {
-      // useful when user join a popular site, but
-      // backend move user into certain room
-      // E.g. www.google.com -> lobby
-      // Note: should only update UI, do not trigger actual room change!
-      // console.log(data)
-      chatContext.setMode(data.mode)
-      if (data.mode === "room") {
-        chatContext.setRoom(data.room)
-        chatContext.setRealRoom(data.room)
-      }
-      if (data.mode === "tags") {
-        spDebug(data)
-        chatContext.setRoom(data.room)
-        chatContext.setRealRoom(data.room)
-      }
-    })
+    // socketManager.addHandler("room info", "set_mode_and_room", data => {
+    //   // useful when user join a popular site, but
+    //   // backend move user into certain room
+    //   // E.g. www.google.com -> lobby
+    //   // Note: should only update UI, do not trigger actual room change!
+    //   // console.log(data)
+    //   chatContext.setMode(data.mode)
+    //   if (data.mode === "room") {
+    //     chatContext.setRoom(data.room)
+    //     chatContext.setRealRoom(data.room)
+    //   }
+    //   if (data.mode === "tags") {
+    //     spDebug(data)
+    //     chatContext.setRoom(data.room)
+    //     chatContext.setRealRoom(data.room)
+    //   }
+    // })
     // window.setMode = setMode
     return () => {
       // No clean up because chat header is never unmounted after mounted
@@ -112,7 +115,7 @@ function ChatHeader(props) {
       socketManager.removeHandler("new user", "add_user_to_room")
       socketManager.removeHandler("user gone", "remove_user_from_room")
       socketManager.removeHandler("users in room", "set_users_in_room")
-      socketManager.removeHandler("room info", "set_mode_and_room")
+      // socketManager.removeHandler("room info", "set_mode_and_room")
       socketManager.removeHandler("disconnect", "clear_users_in_room")
       // window.setMode = null
     }
@@ -242,18 +245,17 @@ function ChatHeader(props) {
           buttonStyle="solid"
           onChange={e => {
             const mode = e.target.value
-            chatContext.setMode(mode)
+            props.changeChatView(mode)
             if (mode === "room") {
-              chatContext.setRoom(chatContext.realRoom)
             }
           }}
         >
           {chatModes.includes("room") && (
-            <Tooltip placement="bottom" title={chatContext.realRoom.name}>
-              <Radio.Button value="room">
-                房间<Badge offset={[3, -3]} count={0}></Badge>
-              </Radio.Button>
-            </Tooltip>
+            // <Tooltip placement="bottom" title={chatContext.realRoom.name}>
+            <Radio.Button value="room">
+              房间<Badge offset={[3, -3]} count={0}></Badge>
+            </Radio.Button>
+            // </Tooltip>
           )}
           {chatModes.includes("site") && (
             <Tooltip placement="bottom" title={getDomain()}>
@@ -306,4 +308,8 @@ function ChatHeader(props) {
   return <center className="sp-tab-header">{content}</center>
 }
 
-export default ChatHeader
+const stateToProps = state => {
+  return { mode: state.mode }
+}
+
+export default connect(stateToProps, { changeChatView })(ChatHeader)

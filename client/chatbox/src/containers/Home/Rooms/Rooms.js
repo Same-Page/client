@@ -4,12 +4,10 @@ import React, { useContext } from "react"
 import { Icon } from "antd"
 
 import TabContext from "context/tab-context"
-import ChatContext from "context/chat-context"
 import storageManager from "utils/storage"
 
 function Rooms(props) {
   const tabContext = useContext(TabContext)
-  const chatContext = useContext(ChatContext)
 
   if (props.loading)
     return (
@@ -34,8 +32,8 @@ function Rooms(props) {
           // if (roomId === "lobby") {
           tabContext.changeTab("chat")
           // chatContext.setMode("room")
-          chatContext.setRoom(room)
-          chatContext.setRealRoom(room)
+          // chatContext.setRoom(room)
+          // chatContext.setRealRoom(room)
           storageManager.set("realRoom", room)
           // return
           // }

@@ -1,6 +1,5 @@
 const defaultConfig = {
 	tabList: ["discover", "chat", "inbox", "profile", "close"],
-	// tabList: ["chat", "inbox", "profile", "close"],
 	defaultTab: "chat",
 	chatModes: ["site", "page", "room"],
 	defaultChatMode: "site",

@@ -3,6 +3,7 @@ import "./Tab.css"
 import { useIntl } from "react-intl"
 import React, { useState, useEffect } from "react"
 import { Tabs, Icon, Tooltip, Badge } from "antd"
+import { connect } from "react-redux"
 
 import Chat from "containers/Chat"
 import Comment from "containers/Comment"
@@ -13,6 +14,8 @@ import Discover from "containers/Home/Discover"
 
 import TabContext from "context/tab-context"
 import storageManager from "utils/storage"
+
+import { changeTab } from "redux/actions"
 
 const TabPane = Tabs.TabPane
 
@@ -27,8 +30,8 @@ function Tab(props) {
     "profile",
     "close"
   ]
-  const defaultTab = window.spConfig.defaultTab || props.tab
-  const [activeTab, changeTab] = useState(defaultTab)
+  // const defaultTab = window.spConfig.defaultTab || props.tab
+  // const [activeTab, changeTab] = useState(defaultTab)
   // view other's profile
   const [other, selectOtherUser] = useState()
   const [unread, setUnread] = useState(false)
@@ -36,7 +39,7 @@ function Tab(props) {
   const [conversationUser, setCoversationUser] = useState()
   function directMessage(user) {
     selectOtherUser(null)
-    changeTab("inbox")
+    props.changeTab("inbox")
     setCoversationUser(user)
   }
 
@@ -55,8 +58,8 @@ function Tab(props) {
     <TabContext.Provider
       value={{
         selectOtherUser: selectOtherUser,
-        changeTab: changeTab,
-        activeTab: activeTab,
+        changeTab: props.changeTab,
+        activeTab: props.tab,
         directMessage: directMessage
       }}
     >
@@ -69,10 +72,10 @@ function Tab(props) {
               window.parent.postMessage("minimize", "*")
               return
             }
-            changeTab(val)
+            props.changeTab(val)
             selectOtherUser(null)
           }}
-          activeKey={activeTab}
+          activeKey={props.tab}
           type="card"
         >
           {tabList.includes("discover") && (
@@ -85,7 +88,7 @@ function Tab(props) {
                   <Icon type="compass" />
                 </Tooltip>
               }
-              key="home"
+              key="discover"
             >
               <Discover />
             </TabPane>
@@ -148,7 +151,7 @@ function Tab(props) {
                   <Icon type="user" />
                 </Tooltip>
               }
-              key="account"
+              key="profile"
             >
               <Account />
             </TabPane>
@@ -175,4 +178,7 @@ function Tab(props) {
   )
 }
 
-export default Tab
+const stateToProps = state => {
+  return { tab: state.tab }
+}
+export default connect(stateToProps, { changeTab })(Tab)
