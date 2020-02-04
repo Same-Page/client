@@ -60,6 +60,8 @@ const _sendMsg = msg => {
 		_socket.send(JSON.stringify(msg))
 	} else {
 		console.error("socket not connected")
+		_connect()
+		// TODO: show message not sent
 	}
 }
 
