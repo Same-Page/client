@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react"
 import { Button, Avatar, Icon, Row, Col, message } from "antd"
 import { useIntl } from "react-intl"
+import { connect } from "react-redux"
 
 import AccountContext from "context/account-context"
-
+import { msgOtherUser } from "redux/actions"
 import socketManager from "socket"
 // import { blockUser, unblockUser, thankUser } from "services/user"
 import { blockUser, unblockUser } from "services/user"
@@ -31,7 +32,7 @@ const aboutStyle = {
 
 function ProfileBody(props) {
   const {
-    directMessage,
+    msgOtherUser,
     loading,
     loaded,
     user,
@@ -137,7 +138,7 @@ function ProfileBody(props) {
 
               <Button
                 onClick={() => {
-                  directMessage(user)
+                  msgOtherUser(user)
                 }}
                 icon="mail"
                 style={{ margin: 10 }}
@@ -200,4 +201,4 @@ function ProfileBody(props) {
   )
 }
 
-export default ProfileBody
+export default connect(null, { msgOtherUser })(ProfileBody)

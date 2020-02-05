@@ -3,18 +3,19 @@ import axios from "axios"
 
 import React, { useEffect, useState, useContext, useRef } from "react"
 import { Avatar, Icon, Radio, Button } from "antd"
+import { connect } from "react-redux"
 
-import TabContext from "context/tab-context"
 import AccountContext from "context/account-context"
 import urls from "config/urls"
 import followEventHandler from "./event"
+import { viewOtherUser } from "redux/actions"
 
 function Follow(props) {
   const [showFollowers, setShowFollowers] = useState(props.showFollowers)
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [users, setUsers] = useState([])
-  const tabContext = useContext(TabContext)
+
   const accountContext = useContext(AccountContext)
   const account = accountContext.account
   const usersRef = useRef([])
@@ -141,7 +142,7 @@ function Follow(props) {
 
         {users.map(user => (
           <div
-            onClick={() => tabContext.selectOtherUser(user)}
+            onClick={() => props.viewOtherUser(user)}
             className="sp-follow-row"
             key={user.id}
           >
@@ -168,4 +169,4 @@ function Follow(props) {
   )
 }
 
-export default Follow
+export default connect(null, { viewOtherUser })(Follow)

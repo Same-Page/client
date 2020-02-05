@@ -4,6 +4,8 @@ const store = (state = { foo: 1 }, action) => {
       return { ...state, mode: action.payload }
     case "CHANGE_TAB":
       return { ...state, tab: action.payload }
+    case "MESSAGE_OTHER_USER":
+      return { ...state, tab: "inbox", inboxUser: action.payload }
 
     // case "ADD_LIVE_MSG":
     //   let newState = {}

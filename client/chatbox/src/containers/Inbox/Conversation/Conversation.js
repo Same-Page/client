@@ -3,13 +3,14 @@ import "./Conversation.css"
 import React, { useContext, useState, useRef, useEffect } from "react"
 import { Button } from "antd"
 import moment from "moment"
+import { connect } from "react-redux"
 
 import socketManager from "socket"
 import Message from "containers/Chat/Message"
 import { postMessage } from "services/message"
 import AccountContext from "context/account-context"
-import TabContext from "context/tab-context"
 import InputWithPicker from "components/InputWithPicker"
+import { viewOtherUser } from "redux/actions"
 
 const conversationBodyStyle = {
   height: "calc(100% - 107px)",
@@ -26,7 +27,6 @@ const AUTO_SCROLL_TRESHOLD_DISTANCE = 500
 
 function Conversation(props) {
   const account = useContext(AccountContext).account
-  const tabContext = useContext(TabContext)
   const messages = props.conversation.messages
   const other = props.conversation.user
   const offset = props.offset
@@ -136,7 +136,7 @@ function Conversation(props) {
             与
             <span
               className="sp-conversation-username"
-              onClick={() => tabContext.selectOtherUser(other)}
+              onClick={() => props.viewOtherUser(other)}
             >
               {other.name}
             </span>
@@ -154,4 +154,5 @@ function Conversation(props) {
     </div>
   )
 }
-export default Conversation
+
+export default connect(null, { viewOtherUser })(Conversation)

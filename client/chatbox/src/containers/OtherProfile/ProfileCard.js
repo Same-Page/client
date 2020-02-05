@@ -1,6 +1,10 @@
 import React from "react"
 import { useIntl } from "react-intl"
 import { Button, Avatar, Card } from "antd"
+import { connect } from "react-redux"
+
+import { msgOtherUser } from "redux/actions"
+
 const { Meta } = Card
 
 const aboutStyle = {
@@ -14,7 +18,7 @@ const aboutStyle = {
 }
 
 function ProfileCard(props) {
-  const { user, following, followerCount, followUser, directMessage } = props
+  const { user, following, followerCount, followUser, msgOtherUser } = props
   const intl = useIntl()
   const footer = (
     <div>
@@ -50,7 +54,7 @@ function ProfileCard(props) {
       <Button
         onClick={e => {
           e.stopPropagation()
-          directMessage(user)
+          msgOtherUser(user)
         }}
         icon="mail"
         style={{ marginLeft: 10 }}
@@ -90,4 +94,4 @@ function AvatarWithFollowerCount(props) {
   )
 }
 
-export default ProfileCard
+export default connect(null, { msgOtherUser })(ProfileCard)

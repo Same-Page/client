@@ -12,10 +12,9 @@ import OtherProfile from "containers/OtherProfile"
 import Inbox from "containers/Inbox"
 import Discover from "containers/Home/Discover"
 
-import TabContext from "context/tab-context"
 import storageManager from "utils/storage"
 
-import { changeTab } from "redux/actions"
+import { changeTab, viewOtherUser } from "redux/actions"
 
 const TabPane = Tabs.TabPane
 
@@ -33,15 +32,9 @@ function Tab(props) {
   // const defaultTab = window.spConfig.defaultTab || props.tab
   // const [activeTab, changeTab] = useState(defaultTab)
   // view other's profile
-  const [other, selectOtherUser] = useState()
   const [unread, setUnread] = useState(false)
   // view direct message with other
-  const [conversationUser, setCoversationUser] = useState()
-  function directMessage(user) {
-    selectOtherUser(null)
-    props.changeTab("inbox")
-    setCoversationUser(user)
-  }
+  // const [conversationUser, setCoversationUser] = useState()
 
   useEffect(() => {
     storageManager.addEventListener("unread", unread => {
@@ -55,14 +48,7 @@ function Tab(props) {
   }, [])
 
   return (
-    <TabContext.Provider
-      value={{
-        selectOtherUser: selectOtherUser,
-        changeTab: props.changeTab,
-        activeTab: props.tab,
-        directMessage: directMessage
-      }}
-    >
+    <div>
       <div className="card-container">
         <Tabs
           onChange={val => {
@@ -73,7 +59,8 @@ function Tab(props) {
               return
             }
             props.changeTab(val)
-            selectOtherUser(null)
+            // remember last viewed user?
+            props.viewOtherUser(null)
           }}
           activeKey={props.tab}
           type="card"
@@ -138,7 +125,7 @@ function Tab(props) {
               }
               key="inbox"
             >
-              <Inbox user={conversationUser} setUser={setCoversationUser} />
+              <Inbox />
             </TabPane>
           )}
           {tabList.includes("profile") && (
@@ -173,12 +160,12 @@ function Tab(props) {
           )}
         </Tabs>
       </div>
-      <OtherProfile data={other} selectOtherUser={selectOtherUser} />
-    </TabContext.Provider>
+      <OtherProfile />
+    </div>
   )
 }
 
 const stateToProps = state => {
   return { tab: state.tab }
 }
-export default connect(stateToProps, { changeTab })(Tab)
+export default connect(stateToProps, { changeTab, viewOtherUser })(Tab)

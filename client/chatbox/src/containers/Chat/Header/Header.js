@@ -9,12 +9,13 @@ import { connect } from "react-redux"
 import socketManager from "socket/socket"
 import Users from "./Users"
 import AccountContext from "context/account-context"
-import TabContext from "context/tab-context"
+
 import { getUrl, getDomain } from "utils/url"
 import storageManager from "utils/storage"
 import spDebug from "config/logger"
 
 import { changeChatView } from "redux/actions/chat"
+import { viewOtherUser } from "redux/actions"
 
 function ChatHeader(props) {
   const chatModes = window.spConfig.chatModes || ["room", "site", "page"]
@@ -23,7 +24,7 @@ function ChatHeader(props) {
   const [showHelp, setShowHelp] = useState(false)
   const [users, setUsers] = useState([])
   const accountContext = useContext(AccountContext)
-  const tabContext = useContext(TabContext)
+
   const mode = props.mode
   const room = {} // TODO
   // const room = chatContext.room || {}
@@ -125,7 +126,7 @@ function ChatHeader(props) {
     <center>
       <Button
         onClick={() => {
-          tabContext.changeTab("account")
+          props.changeTab("account")
         }}
         size="small"
         type="primary"
@@ -160,7 +161,7 @@ function ChatHeader(props) {
                 style={{ cursor: "pointer", marginRight: 10 }}
                 onClick={() => {
                   setShowHelp(false)
-                  tabContext.selectOtherUser(room.owner)
+                  props.viewOtherUser(room.owner)
                 }}
               />
               {room.owner.name}
@@ -312,4 +313,6 @@ const stateToProps = state => {
   return { mode: state.mode }
 }
 
-export default connect(stateToProps, { changeChatView })(ChatHeader)
+export default connect(stateToProps, { changeChatView, viewOtherUser })(
+  ChatHeader
+)

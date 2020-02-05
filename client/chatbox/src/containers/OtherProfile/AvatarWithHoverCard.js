@@ -1,15 +1,16 @@
 import React, { useState, useContext } from "react"
 import { Avatar } from "antd"
-import TabContext from "context/tab-context"
+
+import { connect } from "react-redux"
 
 import ProfileCard from "./ProfileCard"
 import ProfileMeta from "./ProfileMeta"
+import { viewOtherUser } from "redux/actions"
 
 import Popper from "@material-ui/core/Popper"
 
 function AvatarWithHoverCard(props) {
   const user = props.user
-  const tabContext = useContext(TabContext)
   const [anchorEl, setAnchor] = useState(null)
 
   const showingCard = Boolean(anchorEl)
@@ -37,7 +38,7 @@ function AvatarWithHoverCard(props) {
           size={props.size}
           onClick={e => {
             e.stopPropagation()
-            tabContext.selectOtherUser(user)
+            props.viewOtherUser(user)
           }}
           onMouseEnter={e => {
             // console.log("mouse enter avatar")
@@ -98,4 +99,4 @@ function MyPoper(props) {
   )
 }
 
-export default AvatarWithHoverCard
+export default connect(null, { viewOtherUser })(AvatarWithHoverCard)

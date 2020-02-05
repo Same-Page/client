@@ -1,6 +1,8 @@
 import React, { useContext } from "react"
+import { connect } from "react-redux"
+
 import { Avatar } from "antd"
-import TabContext from "context/tab-context"
+import { viewOtherUser } from "redux/actions/"
 
 const usersStyle = {
   background: "white",
@@ -16,13 +18,11 @@ const usersStyle = {
 }
 
 function Users(props) {
-  const tabContext = useContext(TabContext)
-
   const users = (props.users || []).map(user => {
     return (
       <div
         className="sp-online-user"
-        onClick={() => tabContext.selectOtherUser(user)}
+        onClick={() => props.viewOtherUser(user)}
         key={user.id}
       >
         <Avatar
@@ -40,4 +40,4 @@ function Users(props) {
   return <div style={usersStyle}>{users}</div>
 }
 
-export default Users
+export default connect(null, { viewOtherUser })(Users)

@@ -1,8 +1,10 @@
 import React from "react"
 import { Button } from "antd"
+import { connect } from "react-redux"
 
 import ProfileMeta from "./ProfileMeta"
 import PrfileBody from "./ProfileBody"
+import { viewOtherUser } from "redux/actions"
 
 function OtherProfile(props) {
   if (!props.data) return <span />
@@ -16,15 +18,15 @@ function OtherProfile(props) {
   return (
     <div className="sp-special-tab">
       <Button
-        onClick={() => props.selectOtherUser()}
+        onClick={() => props.viewOtherUser(null)}
         className="sp-back-btn"
         icon="arrow-left"
       />
       <ProfileMeta user={user}>
-        <PrfileBody directMessage={props.directMessage} />
+        <PrfileBody />
       </ProfileMeta>
     </div>
   )
 }
 
-export default OtherProfile
+export default connect(null, { viewOtherUser })(OtherProfile)

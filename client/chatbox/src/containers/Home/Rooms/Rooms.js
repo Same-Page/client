@@ -2,13 +2,11 @@ import "./Room.css"
 
 import React, { useContext } from "react"
 import { Icon } from "antd"
+import { connect } from "react-redux"
 
-import TabContext from "context/tab-context"
 import storageManager from "utils/storage"
-
+import { changeTab } from "redux/actions"
 function Rooms(props) {
-  const tabContext = useContext(TabContext)
-
   if (props.loading)
     return (
       <center>
@@ -30,7 +28,7 @@ function Rooms(props) {
         className="sp-home-chatroom"
         onClick={() => {
           // if (roomId === "lobby") {
-          tabContext.changeTab("chat")
+          props.changeTab("chat")
           // chatContext.setMode("room")
           // chatContext.setRoom(room)
           // chatContext.setRealRoom(room)
@@ -59,4 +57,4 @@ function Rooms(props) {
   })
 }
 
-export default Rooms
+export default connect(null, { changeTab })(Rooms)
