@@ -74,8 +74,8 @@ const _connect = () => {
 		console.error("cannot connect because user not logged in")
 		return
 	}
-	if (_socket) {
-		window.spDebug("socket already created, try joining room")
+	if (_isConnected()) {
+		window.spDebug("socket already connected, try joining room")
 		_joinRoom()
 		return
 	}
