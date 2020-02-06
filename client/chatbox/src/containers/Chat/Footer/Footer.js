@@ -3,10 +3,12 @@ import "./Footer.css"
 import React, { useContext, useState } from "react"
 import { message, Button, Modal, Tooltip } from "antd"
 import { useIntl } from "react-intl"
+import { connect } from "react-redux"
 
 import InputWithPicker from "components/InputWithPicker"
 import AccountContext from "context/account-context"
 import socketManager from "socket/socket"
+import { getUrl, getDomain } from "utils/url"
 
 const MESSAGE_TIME_GAP = 3 * 1000
 let lastMsgTime = 0
@@ -22,7 +24,7 @@ function Footer(props) {
     const now = new Date()
     if (now - lastMsgTime > MESSAGE_TIME_GAP) {
       // TODO: room id
-      socketManager.sendMessage("http://localhost:3210/", input)
+      socketManager.sendMessage(props.roomId, input)
       lastMsgTime = now
       return true
     } else {
@@ -119,4 +121,16 @@ function Footer(props) {
   return <div className="sp-chat-bottom">{content}</div>
 }
 
-export default Footer
+const stateToProps = (state, props) => {
+  let roomId = "lobby"
+  if (state.chatView == "page") {
+    roomId = getUrl()
+  }
+  if (state.chatView == "site") {
+    roomId = getDomain()
+  }
+  return {
+    roomId: roomId
+  }
+}
+export default connect(stateToProps)(Footer)
