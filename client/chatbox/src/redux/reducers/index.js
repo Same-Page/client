@@ -1,11 +1,13 @@
 const store = (state = { foo: 1 }, action) => {
   switch (action.type) {
     case "CHANGE_CHAT_VIEW":
-      return { ...state, mode: action.payload }
+      return { ...state, chatView: action.payload }
     case "CHANGE_TAB":
       return { ...state, tab: action.payload }
     case "MESSAGE_OTHER_USER":
       return { ...state, tab: "inbox", inboxUser: action.payload }
+    case "SET_CHAT_MODES":
+      return { ...state, chatModes: action.payload }
 
     // case "ADD_LIVE_MSG":
     //   let newState = {}

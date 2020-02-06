@@ -13,7 +13,7 @@ import AccountContext from "context/account-context"
 import socketManager from "socket/socket"
 import storageManager from "utils/storage"
 import urls from "config/urls"
-import { changeChatView } from "redux/actions/chat"
+import { changeChatView, setChatModes } from "redux/actions/chat"
 import { changeTab } from "redux/actions"
 import store from "redux/store"
 
@@ -130,7 +130,7 @@ class App extends React.Component {
     } else {
       window.spConfig = {}
       this.setState({ waitingForConfigFromParent: false })
-      console.error("no parent window!")
+      console.error("no parent window, this won't work without config!")
     }
 
     // storageManager.get("realRoom", realRoom => {
@@ -191,10 +191,14 @@ class App extends React.Component {
           window.spConfig = spConfig
           urls.dbAPI = spConfig.apiUrl || urls.dbAPI
           urls.socketAPI = spConfig.socketUrl || urls.socketAPI
-          this.setState({ waitingForConfigFromParent: false })
 
-          store.dispatch(changeChatView(spConfig.defaultChatMode))
+          store.dispatch(setChatModes(spConfig.chatModes))
+          spConfig.defaultChatView =
+            spConfig.defaultChatView || spConfig.chatModes[0]
+          store.dispatch(changeChatView(spConfig.defaultChatView))
           store.dispatch(changeTab(spConfig.defaultTab))
+
+          this.setState({ waitingForConfigFromParent: false })
         }
       },
       false

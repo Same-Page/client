@@ -2,7 +2,7 @@ const defaultConfig = {
 	tabList: ["discover", "chat", "inbox", "profile", "close"],
 	defaultTab: "chat",
 	chatModes: ["site", "page", "room"],
-	defaultChatMode: "site",
+	defaultChatView: "site",
 	debug: true,
 	autoConnect: true,
 	socketUrl: "https://chat-v5.yiyechat.com",

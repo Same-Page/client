@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { message } from "antd"
+import { connect } from "react-redux"
+
 import Header from "./Header"
 import Body from "./Body"
 import Footer from "./Footer"
@@ -59,14 +61,23 @@ function Chat(props) {
           setMediaDisplay("block")
         }}
       />
-      <Body
-        displayMusicTab={() => {
-          setMediaDisplay("block")
-        }}
-      />
+      {props.chatModes.map((mode, i) => (
+        <Body
+          chatView={mode}
+          key={mode}
+          displayMusicTab={() => {
+            setMediaDisplay("block")
+          }}
+        />
+      ))}
+
       <Footer />
     </div>
   )
 }
 
-export default Chat
+const stateToProps = state => {
+  return { chatModes: state.chatModes }
+}
+
+export default connect(stateToProps)(Chat)

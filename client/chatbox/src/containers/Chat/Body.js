@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 import moment from "moment"
+import { connect } from "react-redux"
 
 import Message from "./Message"
 import socketManager from "socket/socket"
@@ -23,18 +24,20 @@ function isMedia(msg) {
 }
 
 function ChatBody(props) {
+  const chatView = props.chatView
   const [messages, setMessages] = useState(props.data || [])
   const bodyRef = useRef(null)
   const accountContext = useContext(AccountContext)
   const account = accountContext.account
-
+  const chatMsgCallbackName = "display_new_message_" + chatView
   useEffect(() => {
     if (!account) {
       console.warn("[Body.js] no account, won't register socket events")
       return
     }
     // window.spDebug("[Body.js] register socket events")
-    socketManager.addHandler("chat message", "display_new_message", data => {
+    socketManager.addHandler("chat message", chatMsgCallbackName, data => {
+      if (data.roomType != chatView) return
       data.time = moment()
       spDebug("[chatbox] chat message")
       setMessages(prevMessages => {
@@ -46,38 +49,38 @@ function ChatBody(props) {
       // TODO: use onload event rather than hard code time
       scrollToBottomIfNearBottom(timeout)
     })
-    socketManager.addHandler("invitation", "display_new_invitation", data => {
-      data.time = moment()
-      data.self = data.user.id.toString() === account.id.toString()
-      setMessages(prevMessages => {
-        return [...prevMessages, data]
-      })
-      let timeout = 10
-      scrollToBottomIfNearBottom(timeout)
-    })
-    socketManager.addHandler(
-      "recent messages",
-      "display_recent_messages",
-      recentMessages => {
-        // Receive recent messages of the joined room,
-        // should receive right after joining room or when iframe
-        // is mounted.
-        // Shoudn't display recent messages if there's
-        // any messages already being displayed, e.g. joined
-        // the room then went offline then back online
-        // window.spDebug(recentMessages)
-        recentMessages.forEach(msg => {
-          msg.self = msg.user.id.toString() === account.id.toString()
-          msg.time = moment.utc(msg.timestamp)
-        })
-        setMessages(recentMessages)
-        const timeout = 300
-        scrollToBottom(timeout)
-      }
-    )
+    // socketManager.addHandler("invitation", "display_new_invitation", data => {
+    //   data.time = moment()
+    //   data.self = data.user.id.toString() === account.id.toString()
+    //   setMessages(prevMessages => {
+    //     return [...prevMessages, data]
+    //   })
+    //   let timeout = 10
+    //   scrollToBottomIfNearBottom(timeout)
+    // })
+    // socketManager.addHandler(
+    //   "recent messages",
+    //   "display_recent_messages",
+    //   recentMessages => {
+    //     // Receive recent messages of the joined room,
+    //     // should receive right after joining room or when iframe
+    //     // is mounted.
+    //     // Shoudn't display recent messages if there's
+    //     // any messages already being displayed, e.g. joined
+    //     // the room then went offline then back online
+    //     // window.spDebug(recentMessages)
+    //     recentMessages.forEach(msg => {
+    //       msg.self = msg.user.id.toString() === account.id.toString()
+    //       msg.time = moment.utc(msg.timestamp)
+    //     })
+    //     setMessages(recentMessages)
+    //     const timeout = 300
+    //     scrollToBottom(timeout)
+    //   }
+    // )
     return () => {
       window.spDebug("[Body.js] unregister socket events")
-      socketManager.removeHandler("chat message", "display_new_message")
+      socketManager.removeHandler("chat message", chatMsgCallbackName)
       socketManager.removeHandler("invitation", "display_new_invitation")
       socketManager.removeHandler("recent messages", "display_recent_messages")
     }
@@ -98,6 +101,7 @@ function ChatBody(props) {
 
   const scrollToBottomIfNearBottom = timeout => {
     const bodyDiv = bodyRef.current
+    if (!bodyDiv) return
     if (
       bodyDiv.scrollHeight - bodyDiv.scrollTop - bodyDiv.offsetHeight <
       AUTO_SCROLL_TRESHOLD_DISTANCE
@@ -154,11 +158,20 @@ function ChatBody(props) {
     )
     lastMsg = msg
   })
+
   return (
-    <div ref={bodyRef} style={chatBodyStyle}>
-      {res}
-    </div>
+    <span>
+      {props.show && (
+        <div ref={bodyRef} style={chatBodyStyle}>
+          {res}
+        </div>
+      )}
+    </span>
   )
 }
 
-export default ChatBody
+const stateToProps = (state, props) => {
+  return { show: state.chatView === props.chatView }
+}
+
+export default connect(stateToProps)(ChatBody)

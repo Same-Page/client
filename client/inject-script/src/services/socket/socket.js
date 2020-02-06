@@ -42,6 +42,7 @@ const _joinRoom = () => {
 	const payload = {
 		action: "join",
 		data: {
+			domain: getDomain(),
 			url: getUrl(),
 			title: document.title,
 			token: accountManager.getAccount().token

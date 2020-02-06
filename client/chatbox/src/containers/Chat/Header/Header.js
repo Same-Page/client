@@ -18,14 +18,14 @@ import { changeChatView } from "redux/actions/chat"
 import { viewOtherUser } from "redux/actions"
 
 function ChatHeader(props) {
-  const chatModes = window.spConfig.chatModes || ["room", "site", "page"]
+  const chatModes = props.chatModes
   const intl = useIntl()
   const [showUsers, toggleUsers] = useState(false)
   const [showHelp, setShowHelp] = useState(false)
   const [users, setUsers] = useState([])
   const accountContext = useContext(AccountContext)
 
-  const mode = props.mode
+  const chatView = props.chatView
   const room = {} // TODO
   // const room = chatContext.room || {}
   // site and page also rooms, realRoom means
@@ -142,65 +142,65 @@ function ChatHeader(props) {
     }
     let helpTitle = ""
     let helpContent = ""
-    if (mode === "room") {
-      helpTitle = room.name
-      helpContent = (
-        <div>
-          <h4>介绍</h4>
-          {room.about}
-          <br />
-          <br />
-          <h4>房主</h4>
-          {room.owner && (
-            <div>
-              <Avatar
-                // icon={icon}
-                // className={props.className}
-                src={room.owner.avatarSrc}
-                size="large"
-                style={{ cursor: "pointer", marginRight: 10 }}
-                onClick={() => {
-                  setShowHelp(false)
-                  props.viewOtherUser(room.owner)
-                }}
-              />
-              {room.owner.name}
-            </div>
-          )}
-        </div>
-      )
-    }
-    if (mode === "site") {
-      helpTitle = "同网站聊天"
-      helpContent = (
-        <div>
-          <h4>介绍</h4>
-          和其他也在{getDomain()}的用户聊天。
-        </div>
-      )
-    }
-    if (mode === "page") {
-      helpTitle = "同网页聊天"
-      helpContent = (
-        <div>
-          <h4>介绍</h4>
-          和其他也在{getUrl()}的用户聊天。
-        </div>
-      )
-    }
-    if (mode === "tags") {
-      helpTitle = intl.formatMessage({ id: "room" }) + " " + room.id
-      helpContent = (
-        <div>
-          {/* <p>浏览相似内容的用户会进入该聊天室</p> */}
-          <p>{intl.formatMessage({ id: "keywords.of.room" })}</p>
-          <b>{room.tags && room.tags.join(", ")}</b>
-          {(!room.tags || !room.tags.length) && (
-            <span>{intl.formatMessage({ id: "no.keyword" })}</span>
-          )}
-        </div>
-      )
-    }
+    // if (mode === "room") {
+    //   helpTitle = room.name
+    //   helpContent = (
+    //     <div>
+    //       <h4>介绍</h4>
+    //       {room.about}
+    //       <br />
+    //       <br />
+    //       <h4>房主</h4>
+    //       {room.owner && (
+    //         <div>
+    //           <Avatar
+    //             // icon={icon}
+    //             // className={props.className}
+    //             src={room.owner.avatarSrc}
+    //             size="large"
+    //             style={{ cursor: "pointer", marginRight: 10 }}
+    //             onClick={() => {
+    //               setShowHelp(false)
+    //               props.viewOtherUser(room.owner)
+    //             }}
+    //           />
+    //           {room.owner.name}
+    //         </div>
+    //       )}
+    //     </div>
+    //   )
+    // }
+    // if (mode === "site") {
+    //   helpTitle = "同网站聊天"
+    //   helpContent = (
+    //     <div>
+    //       <h4>介绍</h4>
+    //       和其他也在{getDomain()}的用户聊天。
+    //     </div>
+    //   )
+    // }
+    // if (mode === "page") {
+    //   helpTitle = "同网页聊天"
+    //   helpContent = (
+    //     <div>
+    //       <h4>介绍</h4>
+    //       和其他也在{getUrl()}的用户聊天。
+    //     </div>
+    //   )
+    // }
+    // if (mode === "tags") {
+    //   helpTitle = intl.formatMessage({ id: "room" }) + " " + room.id
+    //   helpContent = (
+    //     <div>
+    //       {/* <p>浏览相似内容的用户会进入该聊天室</p> */}
+    //       <p>{intl.formatMessage({ id: "keywords.of.room" })}</p>
+    //       <b>{room.tags && room.tags.join(", ")}</b>
+    //       {(!room.tags || !room.tags.length) && (
+    //         <span>{intl.formatMessage({ id: "no.keyword" })}</span>
+    //       )}
+    //     </div>
+    //   )
+    // }
     content = (
       <div>
         {/* <Switch
@@ -242,13 +242,13 @@ function ChatHeader(props) {
         <Radio.Group
           className="sp-toggle-page-site-chat"
           size="small"
-          value={mode}
+          value={chatView}
           buttonStyle="solid"
           onChange={e => {
-            const mode = e.target.value
-            props.changeChatView(mode)
-            if (mode === "room") {
-            }
+            const chatView = e.target.value
+            props.changeChatView(chatView)
+            // if (mode === "room") {
+            // }
           }}
         >
           {chatModes.includes("room") && (
@@ -310,7 +310,7 @@ function ChatHeader(props) {
 }
 
 const stateToProps = state => {
-  return { mode: state.mode }
+  return { chatView: state.chatView, chatModes: state.chatModes }
 }
 
 export default connect(stateToProps, { changeChatView, viewOtherUser })(
