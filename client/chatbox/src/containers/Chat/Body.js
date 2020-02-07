@@ -31,11 +31,13 @@ function ChatBody(props) {
   const account = accountContext.account
   const chatMsgCallbackName = "display_new_message_" + chatView
   useEffect(() => {
+    // TODO: seems no need to remove socket handler when account state change
+
     if (!account) {
       console.warn("[Body.js] no account, won't register socket events")
       return
     }
-    // window.spDebug("[Body.js] register socket events")
+    window.spDebug("[Body.js] register socket events")
     socketManager.addHandler("chat message", chatMsgCallbackName, data => {
       if (data.roomType != chatView) return
       data.time = moment()
@@ -81,8 +83,8 @@ function ChatBody(props) {
     return () => {
       window.spDebug("[Body.js] unregister socket events")
       socketManager.removeHandler("chat message", chatMsgCallbackName)
-      socketManager.removeHandler("invitation", "display_new_invitation")
-      socketManager.removeHandler("recent messages", "display_recent_messages")
+      // socketManager.removeHandler("invitation", "display_new_invitation")
+      // socketManager.removeHandler("recent messages", "display_recent_messages")
     }
   }, [account])
   useEffect(() => {

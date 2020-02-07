@@ -89,7 +89,11 @@ const _connect = () => {
 	_socket.onopen = e => {
 		window.spDebug("websocket connected")
 		// window.spDebug(e)
-		_joinRoom()
+		if (_isConnected()) {
+			_joinRoom()
+		} else {
+			window.spDebug("websocket not connected?")
+		}
 	}
 
 	_socket.onmessage = e => {
