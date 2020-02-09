@@ -115,6 +115,10 @@ const _connect = () => {
 			addUserToCache(user)
 			roomManager.addUserToRoom(roomId, user)
 		}
+
+		if (msg.name === "chat message") {
+			window.queueAnimationDanmu(msg.data)
+		}
 	}
 
 	_socket.onclose = e => {

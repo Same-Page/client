@@ -65,8 +65,8 @@ function ChatBody(props) {
       })
       if (!data.self) {
         let timeout = 10
-        if (data.type === "sticker") timeout = 500
-        if (data.type === "image") timeout = 1000
+        // if (data.type === "sticker") timeout = 500
+        // if (data.type === "image") timeout = 1000
         // TODO: use onload event rather than hard code time
         scrollToBottomIfNearBottom(timeout)
       }
@@ -120,7 +120,9 @@ function ChatBody(props) {
   //   })
   //   window.setPlaylist(messages.filter(isMedia))
   // }, [messages])
-
+  const imageLoadedCb = () => {
+    scrollToBottomIfNearBottom(10)
+  }
   const scrollToBottomIfNearBottom = timeout => {
     const bodyDiv = bodyRef.current
     if (!bodyDiv) return
@@ -176,6 +178,7 @@ function ChatBody(props) {
         showUser={showUser}
         timeDisplay={timeDisplay}
         displayMusicTab={props.displayMusicTab}
+        imageLoadedCb={imageLoadedCb}
       />
     )
     lastMsg = msg

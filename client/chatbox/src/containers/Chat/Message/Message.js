@@ -73,6 +73,7 @@ function ChatMessage(props) {
       {messageTime}
       {userInfo}
       <MessageBody
+        imageLoadedCb={props.imageLoadedCb}
         displayMusicTab={props.displayMusicTab}
         data={data}
         showMenu={props.showMenu}

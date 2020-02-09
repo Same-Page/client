@@ -23,6 +23,9 @@ function MessageBody(props) {
           window.spDebug("click on image")
           window.parent.postMessage({ imgSrc: imgSrc }, "*")
         }}
+        onLoad={() => {
+          props.imageLoadedCb()
+        }}
         className="sp-message-image"
         // alt={imgSrc}
         src={imgSrc}
