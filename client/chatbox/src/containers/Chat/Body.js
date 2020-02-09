@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 import moment from "moment"
-import { connect } from "react-redux"
+// import { connect } from "react-redux"
 
 import Message from "./Message"
 import socketManager from "socket/socket"
@@ -24,12 +24,15 @@ function isMedia(msg) {
 }
 
 function ChatBody(props) {
-  const chatView = props.chatView
-  const [messages, setMessages] = useState(props.data || [])
+  const { messages, setMessages, chatView } = props
+  const msgNum = messages.length
   const bodyRef = useRef(null)
   const accountContext = useContext(AccountContext)
   const account = accountContext.account
   const chatMsgCallbackName = "display_new_message_" + chatView
+  useEffect(() => {
+    scrollToBottomIfNearBottom(10)
+  }, [msgNum])
   useEffect(() => {
     // TODO: seems no need to remove socket handler when account state change
 
@@ -40,16 +43,33 @@ function ChatBody(props) {
     window.spDebug("[Body.js] register socket events")
     socketManager.addHandler("chat message", chatMsgCallbackName, data => {
       if (data.roomType != chatView) return
+      data.self = data.user.id.toString() === account.id.toString()
       data.time = moment()
       spDebug("[chatbox] chat message")
       setMessages(prevMessages => {
+        // update own message
+        let i = 0
+        for (; i < prevMessages.length; i++) {
+          if (prevMessages[i].id.toString() === data.id.toString()) {
+            break
+          }
+        }
+        if (i < prevMessages.length) {
+          // if found existing message, update it
+          const messages = [...prevMessages]
+          messages[i] = data
+          return messages
+        }
+
         return [...prevMessages, data]
       })
-      let timeout = 10
-      if (data.type === "sticker") timeout = 500
-      if (data.type === "image") timeout = 700
-      // TODO: use onload event rather than hard code time
-      scrollToBottomIfNearBottom(timeout)
+      if (!data.self) {
+        let timeout = 10
+        if (data.type === "sticker") timeout = 500
+        if (data.type === "image") timeout = 1000
+        // TODO: use onload event rather than hard code time
+        scrollToBottomIfNearBottom(timeout)
+      }
     })
     // socketManager.addHandler("invitation", "display_new_invitation", data => {
     //   data.time = moment()
@@ -87,19 +107,19 @@ function ChatBody(props) {
       // socketManager.removeHandler("recent messages", "display_recent_messages")
     }
   }, [account])
-  useEffect(() => {
-    // Find media messages and pass to playlist
-    // TODO: better to use a playlist context
-    // rather than window.setPlaylist
-    let mediaIndex = 0
-    messages.forEach(msg => {
-      if (isMedia(msg)) {
-        msg.mediaIndex = mediaIndex
-        mediaIndex++
-      }
-    })
-    window.setPlaylist(messages.filter(isMedia))
-  }, [messages])
+  // useEffect(() => {
+  //   // Find media messages and pass to playlist
+  //   // TODO: better to use a playlist context
+  //   // rather than window.setPlaylist
+  //   let mediaIndex = 0
+  //   messages.forEach(msg => {
+  //     if (isMedia(msg)) {
+  //       msg.mediaIndex = mediaIndex
+  //       mediaIndex++
+  //     }
+  //   })
+  //   window.setPlaylist(messages.filter(isMedia))
+  // }, [messages])
 
   const scrollToBottomIfNearBottom = timeout => {
     const bodyDiv = bodyRef.current
@@ -171,9 +191,9 @@ function ChatBody(props) {
     </span>
   )
 }
+export default ChatBody
+// const stateToProps = (state, props) => {
+//   return { show: state.chatView === props.chatView }
+// }
 
-const stateToProps = (state, props) => {
-  return { show: state.chatView === props.chatView }
-}
-
-export default connect(stateToProps)(ChatBody)
+// export default connect(stateToProps)(ChatBody)

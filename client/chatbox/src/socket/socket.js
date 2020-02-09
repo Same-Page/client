@@ -20,14 +20,12 @@ const socketManager = {
     const handlers = _socketEventHanders[eventName]
     delete handlers[callbackName]
   },
-  sendMessage: (roomId, msg) => {
+  sendMessage: data => {
     const payload = {
       action: "message",
-      data: {
-        roomId: roomId,
-        content: msg
-      }
+      data: data
     }
+    console.log(data)
     _sendEvent(payload)
   },
   sendEvent: _sendEvent,

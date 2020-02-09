@@ -3,22 +3,22 @@ import { message } from "antd"
 import { connect } from "react-redux"
 
 import Header from "./Header"
-import Body from "./Body"
-import Footer from "./Footer"
-import MusicTab from "containers/Music"
+import View from "./View"
+// import Footer from "./Footer"
+// import MusicTab from "containers/Music"
 import socketManager from "socket"
 import storageManager from "utils/storage"
 
 function Chat(props) {
-  const [mediaDisplay, setMediaDisplay] = useState("none")
-  const [mediaNum, setMediaNum] = useState(0)
+  // const [mediaDisplay, setMediaDisplay] = useState("none")
+  // const [mediaNum, setMediaNum] = useState(0)
 
   useEffect(() => {
     // Ask parent about room info when mounted
-    socketManager.sendEvent("get room info")
+    // socketManager.sendEvent("get room info")
 
     socketManager.addHandler("login success", "query_room_info", users => {
-      socketManager.sendEvent("get room info")
+      // socketManager.sendEvent("get room info")
     })
     socketManager.addHandler("private message", "pm_notification", data => {
       // console.log(data)
@@ -47,7 +47,7 @@ function Chat(props) {
 
   return (
     <div>
-      <span style={{ display: mediaDisplay }}>
+      {/* <span style={{ display: mediaDisplay }}>
         <MusicTab
           back={() => {
             setMediaDisplay("none")
@@ -55,29 +55,29 @@ function Chat(props) {
           setMediaNum={setMediaNum}
         />
       </span>
+       */}
       <Header
-        mediaNum={mediaNum}
-        showMusic={() => {
-          setMediaDisplay("block")
-        }}
+      // mediaNum={mediaNum}
+      // showMusic={() => {
+      //   setMediaDisplay("block")
+      // }}
       />
       {props.chatModes.map((mode, i) => (
-        <Body
+        <View
           chatView={mode}
+          activeView={props.activeView}
           key={mode}
-          displayMusicTab={() => {
-            setMediaDisplay("block")
-          }}
+          // displayMusicTab={() => {
+          //   setMediaDisplay("block")
+          // }}
         />
       ))}
-
-      <Footer />
     </div>
   )
 }
 
 const stateToProps = state => {
-  return { chatModes: state.chatModes }
+  return { chatModes: state.chatModes, activeView: state.chatView }
 }
 
 export default connect(stateToProps)(Chat)

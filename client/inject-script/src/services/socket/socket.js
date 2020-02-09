@@ -55,6 +55,10 @@ const _isConnected = () => {
 	return _socket && _socket.readyState === _socket.OPEN
 }
 const _sendMsg = msg => {
+	console.log(msg)
+	if (msg && msg.data && msg.data.content) {
+		msg.data.content.title = document.title
+	}
 	// always inject page title and url?
 	// window.spDebug(msg)
 	if (_isConnected()) {

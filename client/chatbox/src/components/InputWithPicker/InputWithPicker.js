@@ -29,11 +29,17 @@ function InputWithPicker(props) {
     customRequest: options => {
       const data = new FormData()
       data.append("file", options.file)
+      const fileName = options.file.name || "no-file-name"
       setUploading(true)
       axios
         .post(options.action, data)
         .then(resp => {
-          props.send(resp.data.url)
+          const payload = {
+            fileName: fileName,
+            url: resp.data.url,
+            type: "file"
+          }
+          props.send(payload)
         })
         .catch(err => {
           console.error(err)
@@ -68,7 +74,11 @@ function InputWithPicker(props) {
   const handleKeyDown = e => {
     if (e.key === "Enter") {
       setWillShowEmoji(false)
-      const shouldClear = props.send(input)
+      const payload = {
+        text: input,
+        type: "text"
+      }
+      const shouldClear = props.send(payload)
       if (shouldClear) {
         setInput("")
       }
@@ -76,7 +86,11 @@ function InputWithPicker(props) {
   }
   const addEmoji = emoji => {
     if (emoji.custom) {
-      props.send(emoji.imageUrl)
+      const payload = {
+        text: emoji.imageUrl,
+        type: "text"
+      }
+      props.send(payload)
       setWillShowEmoji(false)
     } else {
       setInput(input => {

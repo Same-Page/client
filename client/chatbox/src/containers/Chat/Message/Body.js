@@ -6,14 +6,16 @@ import { Popover, Button, Icon } from "antd"
 import socketManager from "socket"
 
 function MessageBody(props) {
-  const data = props.data
-  let content = data.content
+  const data = props.data.content
+  const self = props.data.self
+  let content = data.value
+  let contentType = data.type
   let className = "sp-message-body " + data.type
-  if (data.type === "sticker") {
+  if (contentType === "sticker") {
     let imgSrc = content
     content = <img alt={imgSrc} src={imgSrc} />
   }
-  if (data.type === "image") {
+  if (contentType === "image") {
     let imgSrc = content
     content = (
       <img
@@ -22,12 +24,19 @@ function MessageBody(props) {
           window.parent.postMessage({ imgSrc: imgSrc }, "*")
         }}
         className="sp-message-image"
-        alt={imgSrc}
+        // alt={imgSrc}
         src={imgSrc}
       />
     )
   }
-  if (data.type === "video" || data.type === "audio") {
+  if (contentType === "file") {
+    content = (
+      <a href={data.url} target="_blank" download>
+        {data.fileName}
+      </a>
+    )
+  }
+  if (contentType === "video" || contentType === "audio") {
     content = (
       <div
         onClick={() => {
@@ -40,8 +49,8 @@ function MessageBody(props) {
       </div>
     )
   }
-  if (data.type === "invite") {
-    const invitationData = data.metadata
+  if (contentType === "url") {
+    // const invitationData = data.metadata
     // const purposeStr = invitationData.purpose === "chat" ? "聊天邀请" : "求助"
     // const iconType =
     //   invitationData.purpose === "chat" ? "message" : "question-circle"
@@ -49,16 +58,12 @@ function MessageBody(props) {
     content = (
       <div
         title="点击打开网页"
-        className={"sp-invitation-" + invitationData.purpose}
+        // className={"sp-invitation-" + invitationData.purpose}
       >
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={invitationData.pageUrl}
-        >
+        <a target="_blank" rel="noopener noreferrer" href={data.url}>
           <Icon style={{ marginRight: 5 }} type={iconType} />
           {/* {purposeStr}  */}
-          {invitationData.pageTitle}
+          {data.title}
         </a>
       </div>
     )
@@ -72,7 +77,7 @@ function MessageBody(props) {
       icon="delete"
     />
   )
-  const popoverPlacement = data.self ? "left" : "right"
+  const popoverPlacement = self ? "left" : "right"
   if (props.showMenu) {
     return (
       <Popover
