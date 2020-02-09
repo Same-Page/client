@@ -40,8 +40,6 @@ class AnimationDanmu extends Component {
 	}
 
 	createDanmuObj = data => {
-		console.log("danmu")
-		console.log(data)
 		const content = data.content
 		const contentType = content.type
 		const danmu = { ...data, id: this.danmuId++, row: 1 }

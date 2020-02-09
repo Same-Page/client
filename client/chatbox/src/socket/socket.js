@@ -25,7 +25,7 @@ const socketManager = {
       action: "message",
       data: data
     }
-    console.log(data)
+    // console.log(data)
     _sendEvent(payload)
   },
   sendEvent: _sendEvent,

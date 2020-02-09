@@ -231,14 +231,14 @@ function ChatHeader(props) {
           </a>
         </Modal>
 
-        <Button
+        {/* <Button
           style={{ border: "none", position: "absolute", left: 5 }}
           onClick={() => props.showMusic()}
           size="small"
           icon="unordered-list"
         >
-          {/* <span style={{ marginLeft: 5 }}>{props.mediaNum}</span> */}
-        </Button>
+          <span style={{ marginLeft: 5 }}>{props.mediaNum}</span>
+        </Button> */}
         <Radio.Group
           className="sp-toggle-page-site-chat"
           size="small"
