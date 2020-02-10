@@ -1,24 +1,24 @@
 import React from "react"
 import { Button } from "antd"
-import { connect } from "react-redux"
+// import { connect } from "react-redux"
 
 import ProfileMeta from "./ProfileMeta"
 import PrfileBody from "./ProfileBody"
-import { viewOtherUser } from "redux/actions"
+// import { viewOtherUser } from "redux/actions"
 
-function OtherProfile(props) {
-  if (!props.data) return <span />
+function OtherProfile({ otherUser, viewOtherUser }) {
+  if (!otherUser) return <span />
 
   const user = {
-    avatarSrc: props.data.avatarSrc,
-    name: props.data.name,
-    id: props.data.userId || props.data.id
+    avatarSrc: otherUser.avatarSrc,
+    name: otherUser.name,
+    id: otherUser.userId || otherUser.id // TODO
   }
 
   return (
     <div className="sp-special-tab">
       <Button
-        onClick={() => props.viewOtherUser(null)}
+        onClick={() => viewOtherUser(null)}
         className="sp-back-btn"
         icon="arrow-left"
       />
@@ -29,4 +29,5 @@ function OtherProfile(props) {
   )
 }
 
-export default connect(null, { viewOtherUser })(OtherProfile)
+// export default connect(null, { viewOtherUser })(OtherProfile)
+export default OtherProfile

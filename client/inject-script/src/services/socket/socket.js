@@ -1,6 +1,6 @@
 // import * as io from "socket.io-client";
 
-import { socketUrl } from "config/urls"
+// import { socketUrl } from "config/urls"
 import { getDomain, getUrl } from "utils/url"
 import { postMsgToIframe } from "utils/iframe"
 import accountManager from "services/account"

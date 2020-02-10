@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react"
+import React, { useState } from "react"
 // import { connect } from "react-redux"
 
 import Body from "./Body"
@@ -10,12 +10,12 @@ import { getUrl, getDomain } from "utils/url"
 function View(props) {
   const [messages, setMessages] = useState(props.data || [])
   const { chatView, activeView } = props
-  const show = chatView == activeView
+  const show = chatView === activeView
   let roomId = props.roomId
-  if (chatView == "page") {
+  if (chatView === "page") {
     roomId = getUrl()
   }
-  if (chatView == "site") {
+  if (chatView === "site") {
     roomId = getDomain()
   }
 

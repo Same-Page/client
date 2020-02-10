@@ -18,7 +18,7 @@ import { changeTab, viewOtherUser } from "redux/actions"
 
 const TabPane = Tabs.TabPane
 
-function Tab(props) {
+function Tab({ otherUser, activeTab, changeTab, viewOtherUser }) {
   const intl = useIntl()
   // console.log("render tab")
   const tabList = window.spConfig.tabList || [
@@ -58,11 +58,11 @@ function Tab(props) {
               window.parent.postMessage("minimize", "*")
               return
             }
-            props.changeTab(val)
+            changeTab(val)
             // remember last viewed user?
-            props.viewOtherUser(null)
+            viewOtherUser(null)
           }}
-          activeKey={props.tab}
+          activeKey={activeTab}
           type="card"
         >
           {tabList.includes("discover") && (
@@ -160,12 +160,12 @@ function Tab(props) {
           )}
         </Tabs>
       </div>
-      <OtherProfile />
+      <OtherProfile otherUser={otherUser} viewOtherUser={viewOtherUser} />
     </div>
   )
 }
 
 const stateToProps = state => {
-  return { tab: state.tab }
+  return { activeTab: state.tab, otherUser: state.otherUser }
 }
 export default connect(stateToProps, { changeTab, viewOtherUser })(Tab)

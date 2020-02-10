@@ -3,7 +3,7 @@ import Danmu from "./Danmu"
 import storage from "storage.js"
 import "./AnimationDanmu.css"
 
-import { stickersUrl } from "config/urls"
+// import { stickersUrl } from "config/urls"
 // let invitationStr = " invites you to "
 // let lng = window.navigator.userLanguage || window.navigator.language
 // if (lng.indexOf("zh") > -1) {
@@ -52,10 +52,10 @@ class AnimationDanmu extends Component {
 		if (contentType === "image") {
 			danmu.content = "img"
 		}
-		if (contentType == "file") {
+		if (contentType === "file") {
 			danmu.content = "file"
 		}
-		if (contentType == "url") {
+		if (contentType === "url") {
 			danmu.content = content.title
 		}
 		// if (contentType == "text") {

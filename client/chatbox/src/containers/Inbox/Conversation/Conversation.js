@@ -36,7 +36,15 @@ function Conversation(props) {
   let lastMsg = null
   const body = messages.map(msg => {
     msg.time = moment.utc(msg.created)
-
+    // console.log(msg)
+    // TODO: backend should return same format as chat
+    // for consistency
+    if (typeof msg.content === "string") {
+      msg.content = {
+        type: msg.type,
+        value: msg.content
+      }
+    }
     if (msg.self) {
       msg.user = account
       msg.userId = account.id
@@ -74,6 +82,7 @@ function Conversation(props) {
         data={msg}
         showUser={showUser}
         timeDisplay={timeDisplay}
+        imageLoadedCb={scrollToBottomIfNearBottom}
       />
     )
   })

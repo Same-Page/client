@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { message } from "antd"
 import { connect } from "react-redux"
 
@@ -59,6 +59,7 @@ function Chat(props) {
         chatModes={props.chatModes}
         activeView={props.activeView}
         changeChatView={props.changeChatView}
+        viewOtherUser={props.viewOtherUser}
         // mediaNum={mediaNum}
         // showMusic={() => {
         //   setMediaDisplay("block")

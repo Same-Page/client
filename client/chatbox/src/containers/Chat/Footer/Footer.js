@@ -9,7 +9,7 @@ import moment from "moment"
 import InputWithPicker from "components/InputWithPicker"
 import AccountContext from "context/account-context"
 import socketManager from "socket/socket"
-import { getUrl, getDomain } from "utils/url"
+import { getUrl } from "utils/url"
 
 const MESSAGE_TIME_GAP = 2 * 1000
 let lastMsgTime = 0
@@ -24,7 +24,7 @@ function Footer(props) {
 
   const send = payload => {
     const now = new Date()
-    if (payload.type == "file" || now - lastMsgTime > MESSAGE_TIME_GAP) {
+    if (payload.type === "file" || now - lastMsgTime > MESSAGE_TIME_GAP) {
       lastMsgTime = now
 
       const data = {
@@ -68,7 +68,7 @@ function Footer(props) {
       <InputWithPicker
         send={send}
         addonAfter={
-          chatView != "page" && (
+          chatView !== "page" && (
             <span>
               <Modal
                 title={intl.formatMessage({ id: "share.url" })}

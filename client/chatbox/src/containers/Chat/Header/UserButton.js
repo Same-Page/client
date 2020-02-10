@@ -1,18 +1,18 @@
-import React, { useState, useEffect, useContext } from "react"
-import { Button, Tooltip, Icon, Modal, Avatar } from "antd"
+import React, { useState, useEffect } from "react"
+import { Button } from "antd"
 
 import Users from "./Users"
 import socketManager from "socket/socket"
 import { getUrl, getDomain } from "utils/url"
 
-function UserButton({ chatView, show, roomId }) {
+function UserButton({ chatView, show, roomId, viewOtherUser }) {
   const [showUsers, toggleUsers] = useState(false)
   const [users, setUsers] = useState([])
   roomId = roomId || "lobby"
-  if (chatView == "page") {
+  if (chatView === "page") {
     roomId = getUrl()
   }
-  if (chatView == "site") {
+  if (chatView === "site") {
     roomId = getDomain()
   }
   let userNum = users.length
@@ -45,8 +45,6 @@ function UserButton({ chatView, show, roomId }) {
       "other join",
       suffixCb("add_user_to_room"),
       data => {
-        console.log("here")
-        console.log(data)
         setUsers(users => {
           // TODO: dedup NO, server should handle
           return [...users, data.user]
@@ -68,9 +66,6 @@ function UserButton({ chatView, show, roomId }) {
       "room info",
       suffixCb("set_users_in_room"),
       roomDict => {
-        console.log("roomDict")
-        console.log(roomDict)
-
         if (roomId in roomDict) {
           const roomData = roomDict[roomId]
           setUsers(roomData.users)
@@ -127,7 +122,7 @@ function UserButton({ chatView, show, roomId }) {
         >
           <span style={{ marginLeft: 5 }}>{userNum}</span>
         </Button>
-        {showUsers && <Users users={users} />}
+        {showUsers && <Users viewOtherUser={viewOtherUser} users={users} />}
       </span>
     )
   }

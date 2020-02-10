@@ -10,10 +10,10 @@ import { getMessages } from "services/message"
 import AccountContext from "context/account-context"
 
 import storageManager from "utils/storage"
-
+import { msgOtherUser } from "redux/actions"
 function Inbox(props) {
   const user = props.user
-  const setUser = props.setUser
+  const setUser = props.msgOtherUser
   const intl = useIntl()
   const account = useContext(AccountContext).account
 
@@ -349,6 +349,6 @@ function Inbox(props) {
 }
 
 const stateToProps = state => {
-  return { tab: state.tab }
+  return { tab: state.tab, user: state.inboxUser }
 }
-export default connect(stateToProps)(Inbox)
+export default connect(stateToProps, { msgOtherUser })(Inbox)

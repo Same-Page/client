@@ -1,18 +1,25 @@
 import "./Header.css"
 
-import { FormattedMessage, useIntl } from "react-intl"
+// import { FormattedMessage, useIntl } from "react-intl"
+import { useIntl } from "react-intl"
 import { Badge } from "antd"
-import React, { useState, useEffect, useContext } from "react"
-import { Radio, Button, Tooltip, Icon, Modal, Avatar } from "antd"
-import { connect } from "react-redux"
+import React, { useState, useContext } from "react"
+import { Radio, Button, Tooltip, Icon, Modal } from "antd"
+// import { connect } from "react-redux"
 
 import AccountContext from "context/account-context"
 import UserButton from "./UserButton"
 import { getUrl, getDomain } from "utils/url"
-import storageManager from "utils/storage"
-import spDebug from "config/logger"
+// import storageManager from "utils/storage"
+// import spDebug from "config/logger"
 
-function ChatHeader({ chatModes, activeView, changeTab, changeChatView }) {
+function ChatHeader({
+  chatModes,
+  activeView,
+  changeTab,
+  changeChatView,
+  viewOtherUser
+}) {
   // const chatModes = props.chatModes
   // const activeView = props.activeView
 
@@ -221,7 +228,12 @@ function ChatHeader({ chatModes, activeView, changeTab, changeChatView }) {
         </Button>
         {/* <Col style={{ textAlign: "right" }} span={8}> */}
         {chatModes.map((mode, i) => (
-          <UserButton chatView={mode} show={mode == activeView} key={mode} />
+          <UserButton
+            viewOtherUser={viewOtherUser}
+            chatView={mode}
+            show={mode === activeView}
+            key={mode}
+          />
         ))}
       </div>
     )

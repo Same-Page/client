@@ -27,14 +27,14 @@ function MessageBody(props) {
           props.imageLoadedCb()
         }}
         className="sp-message-image"
-        // alt={imgSrc}
+        alt={""}
         src={imgSrc}
       />
     )
   }
   if (contentType === "file") {
     content = (
-      <a href={data.url} target="_blank" download>
+      <a href={data.url} rel="noopener noreferrer" target="_blank" download>
         {data.fileName}
       </a>
     )

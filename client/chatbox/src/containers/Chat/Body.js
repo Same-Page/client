@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react"
+import React, { useEffect, useContext, useRef } from "react"
 import moment from "moment"
 // import { connect } from "react-redux"
 
@@ -19,9 +19,9 @@ const chatBodyStyle = {
 }
 const AUTO_SCROLL_TRESHOLD_DISTANCE = 300
 
-function isMedia(msg) {
-  return msg.type === "audio" || msg.type === "video"
-}
+// function isMedia(msg) {
+//   return msg.type === "audio" || msg.type === "video"
+// }
 
 function ChatBody(props) {
   const { messages, setMessages, chatView } = props
@@ -42,7 +42,7 @@ function ChatBody(props) {
     }
     window.spDebug("[Body.js] register socket events")
     socketManager.addHandler("chat message", chatMsgCallbackName, data => {
-      if (data.roomType != chatView) return
+      if (data.roomType !== chatView) return
       data.self = data.user.id.toString() === account.id.toString()
       data.time = moment()
       spDebug("[chatbox] chat message")
