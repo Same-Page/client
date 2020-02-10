@@ -1,21 +1,43 @@
+import { getDomain, getUrl } from "utils/url"
+
 const usersInRooms = {}
+const getCountArray = () => {
+	const res = []
+	Object.keys(usersInRooms).forEach(roomId => {
+		const room = usersInRooms[roomId]
+		res.push(room.length)
+	})
+	return res
+}
 
 const roomManager = {
 	setUsersInRoom: (roomId, users) => {
 		usersInRooms[roomId] = users
-		window.setUserCount(users.length)
+		if (roomId === getDomain()) window.setUserCount(users.length)
 	},
 	addUserToRoom: (roomId, user) => {
 		if (!(roomId in usersInRooms)) {
 			usersInRooms[roomId] = []
 		}
 		const usersInRoom = usersInRooms[roomId]
-		usersInRoom.push(user)
-		window.setUserCount(usersInRoom.length)
+
+		usersInRooms[roomId] = usersInRoom.filter(u => {
+			return u.id !== user.id
+		})
+		usersInRooms[roomId].push(user)
+
+		if (roomId === getDomain())
+			window.setUserCount(usersInRooms[roomId].length)
 	},
 	removeUserFromRoom: (roomId, user) => {
-		alert("todo")
-		// window.setUserCount(usersInRoom.length)
+		if (!(roomId in usersInRooms)) {
+			usersInRooms[roomId] = []
+		}
+		usersInRooms[roomId] = usersInRooms[roomId].filter(u => {
+			return u.id !== user.id
+		})
+		if (roomId === getDomain())
+			window.setUserCount(usersInRooms[roomId].length)
 	}
 }
 export default roomManager

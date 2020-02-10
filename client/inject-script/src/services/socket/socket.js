@@ -5,7 +5,7 @@ import { getDomain, getUrl } from "utils/url"
 import { postMsgToIframe } from "utils/iframe"
 import accountManager from "services/account"
 import roomManager from "services/room"
-import { addUserToCache, getUserFromCache } from "services/user"
+// import { addUserToCache, getUserFromCache } from "services/user"
 
 let _socket = null
 const lang = window.navigator.userLanguage || window.navigator.language
@@ -106,16 +106,31 @@ const _connect = () => {
 		const msg = JSON.parse(e.data)
 		_postSocketMsgToIframe(msg)
 
-		if (msg.action === "other join") {
+		if (msg.name === "other join") {
 			const data = msg.data
 			const roomId = data.roomId
 			const user = data.user
 			// window.spDebug("other join")
 			// window.spDebug(data)
-			addUserToCache(user)
+			// addUserToCache(user)
 			roomManager.addUserToRoom(roomId, user)
 		}
-
+		if (msg.name === "other left") {
+			const data = msg.data
+			const roomId = data.roomId
+			const user = data.user
+			// window.spDebug("other join")
+			// window.spDebug(data)
+			// addUserToCache(user)
+			roomManager.removeUserFromRoom(roomId, user)
+		}
+		if (msg.name === "room info") {
+			const data = msg.data
+			Object.keys(data).forEach(roomId => {
+				const room = data[roomId]
+				roomManager.setUsersInRoom(roomId, room["users"])
+			})
+		}
 		if (msg.name === "chat message") {
 			window.queueAnimationDanmu(msg.data)
 		}
