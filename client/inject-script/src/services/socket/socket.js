@@ -106,12 +106,12 @@ const _connect = () => {
 		const msg = JSON.parse(e.data)
 		_postSocketMsgToIframe(msg)
 
-		if (msg.action === "other-join") {
+		if (msg.action === "other join") {
 			const data = msg.data
 			const roomId = data.roomId
 			const user = data.user
-			window.spDebug("other join")
-			window.spDebug(data)
+			// window.spDebug("other join")
+			// window.spDebug(data)
 			addUserToCache(user)
 			roomManager.addUserToRoom(roomId, user)
 		}

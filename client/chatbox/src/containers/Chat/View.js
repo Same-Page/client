@@ -3,7 +3,9 @@ import React, { useState, useEffect, useContext, useRef } from "react"
 
 import Body from "./Body"
 import Footer from "./Footer"
+
 import { getUrl, getDomain } from "utils/url"
+// import socketManager from "socket"
 
 function View(props) {
   const [messages, setMessages] = useState(props.data || [])

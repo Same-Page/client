@@ -20,7 +20,8 @@ import ImageModal from "../ImageModal"
 import socketManager from "services/socket"
 import accountManager from "services/account/account"
 
-let urlInput = window.location.href
+const defaultUrl = "http://localhost:3210/"
+let urlInput = defaultUrl
 let fakeUrl = false
 let curUrl = window.location.href
 
@@ -51,7 +52,7 @@ function keepCheckingLocation() {
 function ChatboxIframe(props) {
 	const [createChatboxIframe, setCreateChatboxIframe] = useState(false)
 	window.createChatboxIframe = createChatboxIframe
-	const [url, setUrl] = useState(window.location.href)
+	const [url, setUrl] = useState(defaultUrl)
 	const [display, setDisplay] = useState("block")
 
 	const iframeRef = useRef()

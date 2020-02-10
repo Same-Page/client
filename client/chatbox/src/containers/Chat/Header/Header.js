@@ -6,27 +6,22 @@ import React, { useState, useEffect, useContext } from "react"
 import { Radio, Button, Tooltip, Icon, Modal, Avatar } from "antd"
 import { connect } from "react-redux"
 
-import socketManager from "socket/socket"
-import Users from "./Users"
 import AccountContext from "context/account-context"
-
+import UserButton from "./UserButton"
 import { getUrl, getDomain } from "utils/url"
 import storageManager from "utils/storage"
 import spDebug from "config/logger"
 
-import { changeChatView } from "redux/actions/chat"
-import { viewOtherUser } from "redux/actions"
+function ChatHeader({ chatModes, activeView, changeTab, changeChatView }) {
+  // const chatModes = props.chatModes
+  // const activeView = props.activeView
 
-function ChatHeader(props) {
-  const chatModes = props.chatModes
   const intl = useIntl()
-  const [showUsers, toggleUsers] = useState(false)
   const [showHelp, setShowHelp] = useState(false)
-  const [users, setUsers] = useState([])
   const accountContext = useContext(AccountContext)
 
-  const chatView = props.chatView
-  const room = {} // TODO
+  // const chatView = props.chatView
+
   // const room = chatContext.room || {}
   // site and page also rooms, realRoom means
   // non site and page room id
@@ -58,75 +53,11 @@ function ChatHeader(props) {
   //   storageManager.set("mode", mode)
   // }, [mode])
 
-  useEffect(() => {
-    // No storage listener because user may chat in
-    // different chat rooms
-    // TODO: remove listener on unmount
-    // storageManager.addEventListener("mode", mode => {
-    //   mode = mode || DEFAULT_MODE
-    //   setMode(mode)
-    //   const newRoom
-    //   if (mode == 'site') {
-    //   }
-    //   socketManager.changeRoom(roomId)
-    // })
-
-    // console.log("register user join/left handlers")
-    socketManager.addHandler("new user", "add_user_to_room", user => {
-      setUsers(users => {
-        // TODO: dedup
-        return [...users, user]
-      })
-    })
-    socketManager.addHandler("user gone", "remove_user_from_room", user => {
-      setUsers(users => {
-        return users.filter(u => {
-          return u.id.toString() !== user.id.toString()
-        })
-      })
-    })
-    socketManager.addHandler("users in room", "set_users_in_room", users => {
-      // console.log(users)
-      setUsers(users)
-    })
-    socketManager.addHandler("disconnect", "clear_users_in_room", () => {
-      setUsers([])
-    })
-    // socketManager.addHandler("room info", "set_mode_and_room", data => {
-    //   // useful when user join a popular site, but
-    //   // backend move user into certain room
-    //   // E.g. www.google.com -> lobby
-    //   // Note: should only update UI, do not trigger actual room change!
-    //   // console.log(data)
-    //   chatContext.setMode(data.mode)
-    //   if (data.mode === "room") {
-    //     chatContext.setRoom(data.room)
-    //     chatContext.setRealRoom(data.room)
-    //   }
-    //   if (data.mode === "tags") {
-    //     spDebug(data)
-    //     chatContext.setRoom(data.room)
-    //     chatContext.setRealRoom(data.room)
-    //   }
-    // })
-    // window.setMode = setMode
-    return () => {
-      // No clean up because chat header is never unmounted after mounted
-      console.error("[Headerjs] this cleanup should never run")
-      socketManager.removeHandler("new user", "add_user_to_room")
-      socketManager.removeHandler("user gone", "remove_user_from_room")
-      socketManager.removeHandler("users in room", "set_users_in_room")
-      // socketManager.removeHandler("room info", "set_mode_and_room")
-      socketManager.removeHandler("disconnect", "clear_users_in_room")
-      // window.setMode = null
-    }
-  }, [])
-
   let content = (
     <center>
       <Button
         onClick={() => {
-          props.changeTab("account")
+          changeTab("account")
         }}
         size="small"
         type="primary"
@@ -136,10 +67,6 @@ function ChatHeader(props) {
     </center>
   )
   if (accountContext.account) {
-    let userNum = users.length
-    if (userNum >= 50) {
-      userNum = "50+"
-    }
     let helpTitle = ""
     let helpContent = ""
     // if (mode === "room") {
@@ -242,11 +169,11 @@ function ChatHeader(props) {
         <Radio.Group
           className="sp-toggle-page-site-chat"
           size="small"
-          value={chatView}
+          value={activeView}
           buttonStyle="solid"
           onChange={e => {
             const chatView = e.target.value
-            props.changeChatView(chatView)
+            changeChatView(chatView)
             // if (mode === "room") {
             // }
           }}
@@ -293,26 +220,20 @@ function ChatHeader(props) {
           <Icon type="setting" theme="twoTone" />
         </Button>
         {/* <Col style={{ textAlign: "right" }} span={8}> */}
-
-        <Button
-          style={{ border: "none", position: "absolute", right: 0 }}
-          onClick={() => toggleUsers(!showUsers)}
-          size="small"
-          icon="team"
-        >
-          <span style={{ marginLeft: 5 }}>{userNum}</span>
-        </Button>
-        {showUsers && <Users users={users} />}
+        {chatModes.map((mode, i) => (
+          <UserButton chatView={mode} show={mode == activeView} key={mode} />
+        ))}
       </div>
     )
   }
   return <center className="sp-tab-header">{content}</center>
 }
 
-const stateToProps = state => {
-  return { chatView: state.chatView, chatModes: state.chatModes }
-}
+// const stateToProps = state => {
+//   return { chatView: state.chatView, chatModes: state.chatModes }
+// }
 
-export default connect(stateToProps, { changeChatView, viewOtherUser })(
-  ChatHeader
-)
+// export default connect(null, { changeChatView, viewOtherUser })(
+//   ChatHeader
+// )
+export default ChatHeader

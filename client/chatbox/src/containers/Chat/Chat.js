@@ -8,15 +8,14 @@ import View from "./View"
 // import MusicTab from "containers/Music"
 import socketManager from "socket"
 import storageManager from "utils/storage"
+import { changeChatView } from "redux/actions/chat"
+import { viewOtherUser } from "redux/actions"
 
 function Chat(props) {
   // const [mediaDisplay, setMediaDisplay] = useState("none")
   // const [mediaNum, setMediaNum] = useState(0)
 
   useEffect(() => {
-    // Ask parent about room info when mounted
-    // socketManager.sendEvent("get room info")
-
     socketManager.addHandler("login success", "query_room_info", users => {
       // socketManager.sendEvent("get room info")
     })
@@ -57,10 +56,13 @@ function Chat(props) {
       </span>
        */}
       <Header
-      // mediaNum={mediaNum}
-      // showMusic={() => {
-      //   setMediaDisplay("block")
-      // }}
+        chatModes={props.chatModes}
+        activeView={props.activeView}
+        changeChatView={props.changeChatView}
+        // mediaNum={mediaNum}
+        // showMusic={() => {
+        //   setMediaDisplay("block")
+        // }}
       />
       {props.chatModes.map((mode, i) => (
         <View
@@ -80,4 +82,4 @@ const stateToProps = state => {
   return { chatModes: state.chatModes, activeView: state.chatView }
 }
 
-export default connect(stateToProps)(Chat)
+export default connect(stateToProps, { changeChatView, viewOtherUser })(Chat)
