@@ -23,13 +23,15 @@ const AUTO_SCROLL_TRESHOLD_DISTANCE = 300
 //   return msg.type === "audio" || msg.type === "video"
 // }
 
-function ChatBody(props) {
-  const { messages, setMessages, chatView } = props
+function ChatBody({ show, messages, setMessages, chatView, roomId }) {
   const msgNum = messages.length
   const bodyRef = useRef(null)
   const accountContext = useContext(AccountContext)
   const account = accountContext.account
-  const chatMsgCallbackName = "display_new_message_" + chatView
+  const suffixCb = name => {
+    return name + "_" + chatView
+  }
+  // const chatMsgCallbackName = "display_new_message_" + chatView
   useEffect(() => {
     scrollToBottomIfNearBottom(10)
   }, [msgNum])
@@ -41,70 +43,64 @@ function ChatBody(props) {
       return
     }
     window.spDebug("[Body.js] register socket events")
-    socketManager.addHandler("chat message", chatMsgCallbackName, data => {
-      if (data.roomType !== chatView) return
-      data.self = data.user.id.toString() === account.id.toString()
-      data.time = moment()
-      spDebug("[chatbox] chat message")
-      setMessages(prevMessages => {
-        // update own message
-        let i = 0
-        for (; i < prevMessages.length; i++) {
-          if (prevMessages[i].id.toString() === data.id.toString()) {
-            break
+    socketManager.addHandler(
+      "chat message",
+      suffixCb("display_new_message"),
+      data => {
+        if (data.roomType !== chatView) return
+        data.self = data.user.id.toString() === account.id.toString()
+        data.time = moment()
+        spDebug("[chatbox] chat message")
+        setMessages(prevMessages => {
+          // update own message
+          let i = 0
+          for (; i < prevMessages.length; i++) {
+            if (prevMessages[i].id.toString() === data.id.toString()) {
+              break
+            }
+          }
+          if (i < prevMessages.length) {
+            // if found existing message, update it
+            const messages = [...prevMessages]
+            messages[i] = data
+            return messages
+          }
+
+          return [...prevMessages, data]
+        })
+        if (!data.self) {
+          let timeout = 10
+          scrollToBottomIfNearBottom(timeout)
+        }
+      }
+    )
+    socketManager.addHandler(
+      "room info",
+      suffixCb("display_recent_messages"),
+      roomDict => {
+        if (roomId in roomDict) {
+          const room = roomDict[roomId]
+          if (room.chatHistory) {
+            room.chatHistory.forEach(msg => {
+              msg.self = msg.user.id.toString() === account.id.toString()
+              msg.time = moment.utc(msg.timestamp)
+            })
+            setMessages(room.chatHistory)
           }
         }
-        if (i < prevMessages.length) {
-          // if found existing message, update it
-          const messages = [...prevMessages]
-          messages[i] = data
-          return messages
-        }
-
-        return [...prevMessages, data]
-      })
-      if (!data.self) {
-        let timeout = 10
-        // if (data.type === "sticker") timeout = 500
-        // if (data.type === "image") timeout = 1000
-        // TODO: use onload event rather than hard code time
-        scrollToBottomIfNearBottom(timeout)
       }
-    })
-    // socketManager.addHandler("invitation", "display_new_invitation", data => {
-    //   data.time = moment()
-    //   data.self = data.user.id.toString() === account.id.toString()
-    //   setMessages(prevMessages => {
-    //     return [...prevMessages, data]
-    //   })
-    //   let timeout = 10
-    //   scrollToBottomIfNearBottom(timeout)
-    // })
-    // socketManager.addHandler(
-    //   "recent messages",
-    //   "display_recent_messages",
-    //   recentMessages => {
-    //     // Receive recent messages of the joined room,
-    //     // should receive right after joining room or when iframe
-    //     // is mounted.
-    //     // Shoudn't display recent messages if there's
-    //     // any messages already being displayed, e.g. joined
-    //     // the room then went offline then back online
-    //     // window.spDebug(recentMessages)
-    //     recentMessages.forEach(msg => {
-    //       msg.self = msg.user.id.toString() === account.id.toString()
-    //       msg.time = moment.utc(msg.timestamp)
-    //     })
-    //     setMessages(recentMessages)
-    //     const timeout = 300
-    //     scrollToBottom(timeout)
-    //   }
-    // )
+    )
+
     return () => {
       window.spDebug("[Body.js] unregister socket events")
-      socketManager.removeHandler("chat message", chatMsgCallbackName)
-      // socketManager.removeHandler("invitation", "display_new_invitation")
-      // socketManager.removeHandler("recent messages", "display_recent_messages")
+      socketManager.removeHandler(
+        "chat message",
+        suffixCb("display_new_message")
+      )
+      socketManager.removeHandler(
+        "room info",
+        suffixCb("display_recent_messages")
+      )
     }
   }, [account])
   // useEffect(() => {
@@ -177,7 +173,7 @@ function ChatBody(props) {
         data={msg}
         showUser={showUser}
         timeDisplay={timeDisplay}
-        displayMusicTab={props.displayMusicTab}
+        // displayMusicTab={props.displayMusicTab}
         imageLoadedCb={imageLoadedCb}
       />
     )
@@ -186,7 +182,7 @@ function ChatBody(props) {
 
   return (
     <span>
-      {props.show && (
+      {show && (
         <div ref={bodyRef} style={chatBodyStyle}>
           {res}
         </div>

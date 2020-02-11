@@ -106,10 +106,10 @@ const _connect = () => {
 		// window.spDebug("received msg")
 		// console.log(e.data)
 		const msg = JSON.parse(e.data)
+		if (!msg) return
 		_postSocketMsgToIframe(msg)
-
+		const data = msg.data
 		if (msg.name === "other join") {
-			const data = msg.data
 			const roomId = data.roomId
 			const user = data.user
 			// window.spDebug("other join")
@@ -118,7 +118,6 @@ const _connect = () => {
 			roomManager.addUserToRoom(roomId, user)
 		}
 		if (msg.name === "other left") {
-			const data = msg.data
 			const roomId = data.roomId
 			const user = data.user
 			// window.spDebug("other join")
@@ -127,13 +126,16 @@ const _connect = () => {
 			roomManager.removeUserFromRoom(roomId, user)
 		}
 		if (msg.name === "room info") {
-			const data = msg.data
 			Object.keys(data).forEach(roomId => {
 				const room = data[roomId]
 				roomManager.setUsersInRoom(roomId, room["users"])
 			})
 		}
 		if (msg.name === "chat message") {
+			data.self =
+				data.user.id.toString() ===
+				accountManager.getAccount().id.toString()
+
 			window.queueAnimationDanmu(msg.data)
 		}
 	}

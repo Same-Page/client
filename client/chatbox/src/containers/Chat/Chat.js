@@ -29,6 +29,7 @@ function Chat(props) {
     socketManager.sendEvent({
       action: "room",
       data: {
+        getChatHistory: true,
         rooms: roomIds
       }
     })
