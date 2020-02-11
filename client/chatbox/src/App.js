@@ -154,7 +154,7 @@ class App extends React.Component {
     storageManager.addEventListener("account", account => {
       this.setState({ account: account })
     })
-    socketManager.addHandler("login", "popup", () => {
+    socketManager.addHandler("room info", "popup", () => {
       message.success(intl.formatMessage({ id: "connected" }), 2)
     })
     socketManager.addHandler("disconnect", "popup", () => {

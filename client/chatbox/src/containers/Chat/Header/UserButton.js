@@ -34,12 +34,7 @@ function UserButton({ chatView, show, roomId, viewOtherUser }) {
     //   }
     //   socketManager.changeRoom(roomId)
     // })
-    socketManager.sendEvent({
-      action: "room",
-      data: {
-        rooms: [roomId]
-      }
-    })
+
     // console.log("register user join/left handlers")
     socketManager.addHandler(
       "other join",

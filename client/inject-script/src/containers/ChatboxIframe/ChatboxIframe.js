@@ -109,14 +109,16 @@ function ChatboxIframe(props) {
 		})
 	}, [])
 
-	useEffect(() => {
-		if (createChatboxIframe && accountManager.loggedIn()) {
-			// Attempt to connect socket when
-			// creating iframe if logged in
-			window.spDebug("try connecting when chat box is created")
-			socketManager.connect()
-		}
-	}, [createChatboxIframe])
+	// Commented out because this happen too fast, chatbox
+	// in iframe hasn't registered handler yet
+	// useEffect(() => {
+	// 	if (createChatboxIframe && accountManager.loggedIn()) {
+	// 		// Attempt to connect socket when
+	// 		// creating iframe if logged in
+	// 		window.spDebug("try connecting when chat box is created")
+	// 		socketManager.connect()
+	// 	}
+	// }, [createChatboxIframe])
 
 	useEffect(() => {
 		if (window.location.href !== url && showIframeControl) {

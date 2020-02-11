@@ -10,12 +10,28 @@ import socketManager from "socket"
 import storageManager from "utils/storage"
 import { changeChatView } from "redux/actions/chat"
 import { viewOtherUser } from "redux/actions"
+import { getUrl, getDomain } from "utils/url"
 
 function Chat(props) {
   // const [mediaDisplay, setMediaDisplay] = useState("none")
   // const [mediaNum, setMediaNum] = useState(0)
 
   useEffect(() => {
+    const roomIds = props.chatModes.map(mode => {
+      if (mode === "site") {
+        return getDomain()
+      }
+      if (mode === "page") {
+        return getUrl()
+      }
+      return "lobby"
+    })
+    socketManager.sendEvent({
+      action: "room",
+      data: {
+        rooms: roomIds
+      }
+    })
     socketManager.addHandler("login success", "query_room_info", users => {
       // socketManager.sendEvent("get room info")
     })

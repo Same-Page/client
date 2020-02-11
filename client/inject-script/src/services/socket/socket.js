@@ -48,13 +48,13 @@ const _joinRoom = () => {
 			token: accountManager.getAccount().token
 		}
 	}
-	_sendMsg(payload)
+	_sendEvent(payload)
 }
 
 const _isConnected = () => {
 	return _socket && _socket.readyState === _socket.OPEN
 }
-const _sendMsg = msg => {
+const _sendEvent = msg => {
 	// console.log(msg)
 	if (msg && msg.data && msg.data.content) {
 		msg.data.content.title = document.title
@@ -67,6 +67,8 @@ const _sendMsg = msg => {
 		console.error("socket not connected")
 		_connect()
 		// TODO: show message not sent
+		// User should know they are offline and UI
+		// should block them from doing anything if offline.
 	}
 }
 
@@ -138,8 +140,13 @@ const _connect = () => {
 
 	_socket.onclose = e => {
 		// websocket is closed.
-		window.spDebug(e)
+		// window.spDebug(e)
 		window.spDebug("socket is closed...")
+		_postSocketMsgToIframe("disconnect")
+
+		setTimeout(() => {
+			_connect()
+		}, 10 * 1000)
 	}
 
 	window.spSocket = _socket
@@ -227,8 +234,8 @@ const _postSocketMsgToIframe = data => {
 }
 
 const socketManager = {
-	sendMessage: msg => {
-		_sendMsg(msg)
+	sendEvent: msg => {
+		_sendEvent(msg)
 	},
 	updatePageInfo: data => {
 		if (_socket && _socket.connected) _socket.emit("page update", data)
@@ -268,7 +275,7 @@ window.addEventListener(
 		// }
 		// window.spDebug("sending event")
 		// window.spDebug(data)
-		socketManager.sendMessage(data)
+		socketManager.sendEvent(data)
 	},
 	false
 )
