@@ -5,15 +5,15 @@ import { Icon } from "antd"
 import { connect } from "react-redux"
 
 import storageManager from "utils/storage"
-import { changeTab } from "redux/actions"
-function Rooms(props) {
-  if (props.loading)
+import { joinManMadeRoom } from "redux/actions/chat"
+function Rooms({ loading, rooms, joinManMadeRoom }) {
+  if (loading)
     return (
       <center>
         <Icon type="loading" />
       </center>
     )
-  return props.rooms.map(room => {
+  return rooms.map(room => {
     let roomId = room.id
     return (
       // <Tooltip
@@ -28,7 +28,7 @@ function Rooms(props) {
         className="sp-home-chatroom"
         onClick={() => {
           // if (roomId === "lobby") {
-          props.changeTab("chat")
+          joinManMadeRoom(room)
           // chatContext.setMode("room")
           // chatContext.setRoom(room)
           // chatContext.setRealRoom(room)
@@ -50,11 +50,11 @@ function Rooms(props) {
           <Icon type="user" />
           {room.userCount}
         </span>
-        {room.about}
+        {room.name}
       </div>
       // </Tooltip>
     )
   })
 }
 
-export default connect(null, { changeTab })(Rooms)
+export default connect(null, { joinManMadeRoom })(Rooms)

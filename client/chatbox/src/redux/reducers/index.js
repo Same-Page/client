@@ -1,4 +1,4 @@
-const store = (state = { foo: 1 }, action) => {
+const store = (state = {}, action) => {
   // console.log(action.type)
   // console.log(action.payload)
   switch (action.type) {
@@ -19,7 +19,13 @@ const store = (state = { foo: 1 }, action) => {
       // TODO: compare user id with current user
       // if self then go to profile page
       return { ...state, otherUser: action.payload }
-
+    case "JOIN_MAN_MADE_ROOM":
+      return {
+        ...state,
+        tab: "chat",
+        manMadeRoom: action.payload,
+        chatView: "room"
+      }
     default:
       return state
   }

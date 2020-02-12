@@ -3,7 +3,9 @@ import axios from "axios"
 import urls from "config/urls"
 
 export const getPopularRooms = () => {
-  return axios.get(`${urls.socketAPI}/api/popular_rooms`)
+  // return axios.get(`${urls.socketAPI}/api/popular_rooms`)
+
+  return axios.get("https://api-v3.yiyechat.com/api/room")
 }
 
 export const createRoom = payload => {

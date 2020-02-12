@@ -77,6 +77,7 @@ function Chat(props) {
         activeView={props.activeView}
         changeChatView={props.changeChatView}
         viewOtherUser={props.viewOtherUser}
+        manMadeRoom={props.manMadeRoom}
         // mediaNum={mediaNum}
         // showMusic={() => {
         //   setMediaDisplay("block")
@@ -97,7 +98,11 @@ function Chat(props) {
 }
 
 const stateToProps = state => {
-  return { chatModes: state.chatModes, activeView: state.chatView }
+  return {
+    chatModes: state.chatModes,
+    activeView: state.chatView,
+    manMadeRoom: state.manMadeRoom
+  }
 }
 
 export default connect(stateToProps, { changeChatView, viewOtherUser })(Chat)

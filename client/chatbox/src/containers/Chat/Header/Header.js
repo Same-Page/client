@@ -18,7 +18,8 @@ function ChatHeader({
   activeView,
   changeTab,
   changeChatView,
-  viewOtherUser
+  viewOtherUser,
+  manMadeRoom
 }) {
   // const chatModes = props.chatModes
   // const activeView = props.activeView
@@ -186,11 +187,11 @@ function ChatHeader({
           }}
         >
           {chatModes.includes("room") && (
-            // <Tooltip placement="bottom" title={chatContext.realRoom.name}>
-            <Radio.Button value="room">
-              房间<Badge offset={[3, -3]} count={0}></Badge>
-            </Radio.Button>
-            // </Tooltip>
+            <Tooltip placement="bottom" title={manMadeRoom && manMadeRoom.name}>
+              <Radio.Button value="room">
+                房间<Badge offset={[3, -3]} count={0}></Badge>
+              </Radio.Button>
+            </Tooltip>
           )}
           {chatModes.includes("site") && (
             <Tooltip placement="bottom" title={getDomain()}>
