@@ -42,13 +42,10 @@ function UserButton({ chatView, show, roomId, viewOtherUser }) {
       data => {
         setUsers(users => {
           const user = data.user
-          const existingUsers = users.filter(u => {
-            return u.id.toString() === user.id.toString()
+          const existingUsersWithoutNewUser = users.filter(u => {
+            return u.id.toString() !== user.id.toString()
           })
-          // avoid dup user
-          if (existingUsers.length === 0) {
-            return [...users, data.user]
-          }
+          return [...existingUsersWithoutNewUser, user]
         })
       }
     )
