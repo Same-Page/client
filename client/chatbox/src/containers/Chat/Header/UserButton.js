@@ -5,16 +5,19 @@ import Users from "./Users"
 import socketManager from "socket/socket"
 import { getUrl, getDomain } from "utils/url"
 
-function UserButton({ chatView, show, roomId, viewOtherUser }) {
+function UserButton({ chatView, show, manMadeRoom, viewOtherUser }) {
   const [showUsers, toggleUsers] = useState(false)
   const [users, setUsers] = useState([])
-  roomId = roomId || "lobby"
+  let roomId = null
+
   if (chatView === "page") {
     roomId = getUrl()
-  }
-  if (chatView === "site") {
+  } else if (chatView === "site") {
     roomId = getDomain()
+  } else {
+    roomId = manMadeRoom && manMadeRoom.id
   }
+
   let userNum = users.length
   if (userNum >= 50) {
     userNum = "50+"
@@ -23,41 +26,35 @@ function UserButton({ chatView, show, roomId, viewOtherUser }) {
     return handlerName + "_" + roomId.toString()
   }
   useEffect(() => {
-    // No storage listener because user may chat in
-    // different chat rooms
-    // TODO: remove listener on unmount
-    // storageManager.addEventListener("mode", mode => {
-    //   mode = mode || DEFAULT_MODE
-    //   setMode(mode)
-    //   const newRoom
-    //   if (mode == 'site') {
-    //   }
-    //   socketManager.changeRoom(roomId)
-    // })
+    if (!roomId) return
 
-    // console.log("register user join/left handlers")
+    console.log("register user join/left handlers" + roomId)
     socketManager.addHandler(
       "other join",
       suffixCb("add_user_to_room"),
       data => {
-        setUsers(users => {
-          const user = data.user
-          const existingUsersWithoutNewUser = users.filter(u => {
-            return u.id.toString() !== user.id.toString()
+        if (data.roomId === roomId) {
+          setUsers(users => {
+            const user = data.user
+            const existingUsersWithoutNewUser = users.filter(u => {
+              return u.id.toString() !== user.id.toString()
+            })
+            return [...existingUsersWithoutNewUser, user]
           })
-          return [...existingUsersWithoutNewUser, user]
-        })
+        }
       }
     )
     socketManager.addHandler(
       "other left",
       suffixCb("remove_user_from_room"),
       data => {
-        setUsers(users => {
-          return users.filter(u => {
-            return u.id.toString() !== data.user.id.toString()
+        if (data.roomId === roomId) {
+          setUsers(users => {
+            return users.filter(u => {
+              return u.id.toString() !== data.user.id.toString()
+            })
           })
-        })
+        }
       }
     )
     socketManager.addHandler(
@@ -96,19 +93,16 @@ function UserButton({ chatView, show, roomId, viewOtherUser }) {
     // })
     // window.setMode = setMode
     return () => {
-      // No clean up because chat header is never unmounted after mounted
-      console.error("[Headerjs] this cleanup should never run")
+      console.error("[Headerjs] clean up because room id changed " + roomId)
       socketManager.removeHandler("other join", suffixCb("add_user_to_room"))
       socketManager.removeHandler(
         "other left",
         suffixCb("remove_user_from_room")
       )
       socketManager.removeHandler("room info", suffixCb("set_users_in_room"))
-      // socketManager.removeHandler("room info", "set_mode_and_room")
       socketManager.removeHandler("disconnect", suffixCb("clear_users_in_room"))
-      // window.setMode = null
     }
-  }, [])
+  }, [roomId])
   if (show) {
     return (
       <span>

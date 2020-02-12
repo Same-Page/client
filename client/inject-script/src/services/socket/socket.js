@@ -39,12 +39,22 @@ const _disconnect = () => {
 }
 
 const _joinRoom = () => {
+	// TODO: read modes from config
+	// also need to know which man-made room to join
+	const rooms = [
+		{
+			type: "page",
+			id: getUrl()
+		},
+		{
+			type: "site",
+			id: getDomain()
+		}
+	]
 	const payload = {
 		action: "join",
 		data: {
-			domain: getDomain(),
-			url: getUrl(),
-			title: document.title,
+			rooms: rooms,
 			token: accountManager.getAccount().token
 		}
 	}
@@ -247,12 +257,12 @@ const socketManager = {
 	},
 	connect: _connect,
 	changeRoom: roomId => {
-		window.spDebug("change room")
-		_roomId = roomId
-		_disconnect()
-		setTimeout(() => {
-			_connect()
-		}, 500)
+		window.spDebug("TODO: change room")
+		// _roomId = roomId
+		// _disconnect()
+		// setTimeout(() => {
+		// 	_connect()
+		// }, 500)
 	},
 	disconnect: _disconnect
 }
@@ -264,19 +274,6 @@ window.addEventListener(
 	e => {
 		if (!e || !e.data || e.data.type !== "sp-socket") return
 		const data = e.data.data
-		// if (data.action === "send message v2") {
-		// 	const payload = data.msg
-		// 	if (payload.type === "invite") {
-		// 		payload.title = document.title
-		// 		payload.url = window.location.href
-		// 	}
-		// 	socketManager.sendMessage(payload)
-		// }
-		// if (data.action === "change room") {
-		// 	socketManager.changeRoom(data.roomId)
-		// }
-		// window.spDebug("sending event")
-		// window.spDebug(data)
 		socketManager.sendEvent(data)
 	},
 	false

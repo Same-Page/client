@@ -24,6 +24,9 @@ const AUTO_SCROLL_TRESHOLD_DISTANCE = 300
 // }
 
 function ChatBody({ show, messages, setMessages, chatView, roomId }) {
+  if (!roomId) {
+    console.error("no roomId, should not render ChatBody")
+  }
   const msgNum = messages.length
   const bodyRef = useRef(null)
   const accountContext = useContext(AccountContext)

@@ -28,39 +28,6 @@ function ChatHeader({
   const [showHelp, setShowHelp] = useState(false)
   const accountContext = useContext(AccountContext)
 
-  // const chatView = props.chatView
-
-  // const room = chatContext.room || {}
-  // site and page also rooms, realRoom means
-  // non site and page room id
-  // useEffect(() => {
-  //   // setUsers([])
-  //   if (room && mode) {
-  //     socketManager.changeRoom(room.id, mode)
-  //   }
-  //   // console.log("room changed")
-  // }, [room, mode])
-  // useEffect(() => {
-  //   if (mode === "site") {
-  //     const room = {
-  //       title: getDomain(),
-  //       id: getDomain()
-  //     }
-  //     chatContext.setRoom(room)
-  //   }
-  //   if (mode === "page") {
-  //     const room = {
-  //       title: getUrl(),
-  //       id: getUrl()
-  //     }
-  //     chatContext.setRoom(room)
-  //   }
-  //   // if mode is room, Rooms.js will set room
-
-  //   // console.log("mode change")
-  //   storageManager.set("mode", mode)
-  // }, [mode])
-
   let content = (
     <center>
       <Button
@@ -234,6 +201,7 @@ function ChatHeader({
             chatView={mode}
             show={mode === activeView}
             key={mode}
+            manMadeRoom={manMadeRoom}
           />
         ))}
       </div>

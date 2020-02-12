@@ -29,21 +29,12 @@ const socketManager = {
     _sendEvent(payload)
   },
   sendEvent: _sendEvent,
-  // changeRoom: roomId => {
-  //   window.parent.postMessage(
-  //     { type: "sp-socket", roomId: roomId, action: "change room" },
-  //     "*"
-  //   )
-  // },
-  changeRoom: (roomId, mode) => {
-    // alert("todo")
-    // if (roomId && mode) {
-    //   window.spDebug("change room to " + roomId)
-    //   _sendEvent("change room", {
-    //     roomId: roomId,
-    //     mode: mode
-    //   })
-    // }
+  setRooms: data => {
+    const payload = {
+      action: "join",
+      data: data
+    }
+    _sendEvent(payload)
   }
 }
 

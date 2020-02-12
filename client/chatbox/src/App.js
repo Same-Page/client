@@ -6,6 +6,7 @@ import msg_zh from "i18n/zh.json"
 import msg_en from "i18n/en.json"
 import React from "react"
 import { Icon, message } from "antd"
+import { connect } from "react-redux"
 
 import Tab from "containers/Tab"
 import AccountContext from "context/account-context"
@@ -14,7 +15,7 @@ import socketManager from "socket/socket"
 import storageManager from "utils/storage"
 import urls from "config/urls"
 import { changeChatView, setChatModes } from "redux/actions/chat"
-import { changeTab } from "redux/actions"
+import { changeTab, setAccount } from "redux/actions"
 import store from "redux/store"
 
 // import { setPageTitle, getPageTitle } from "utils/pageTitle"
@@ -37,7 +38,7 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      account: null,
+      // account: null,
       // A few steps before mounting the app
       // 1. Check local/chrome storage to see if there's account data
       // , if so, mount the app.
@@ -87,7 +88,7 @@ class App extends React.Component {
         let errorMessage = "出错了"
         // set account to null when we receive 401
         if (error.response && error.response.status === 401) {
-          this.setAccount(null)
+          this.props.setAccount(null)
           errorMessage = intl.formatMessage({ id: "not.login" })
         }
         if (
@@ -144,7 +145,8 @@ class App extends React.Component {
       if (account) {
         window.spDebug("found account in storage")
         // window.spDebug(account)
-        this.setState({ account: account })
+        this.props.setAccount(account)
+        // this.setState({ account: account })
       } else {
         this.setState({ autoLogin: true })
         window.spDebug("no account found in storage")
@@ -153,6 +155,7 @@ class App extends React.Component {
     })
     storageManager.addEventListener("account", account => {
       this.setState({ account: account })
+      this.props.setAccount(account)
     })
     socketManager.addHandler("room info", "popup", () => {
       message.success(intl.formatMessage({ id: "connected" }), 2)
@@ -208,27 +211,27 @@ class App extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     // Need to differentiate login/logout with profile info update
     // maybe shouldn't have grouped them in one object?
-    const login = !prevState.account && this.state.account
-    const logout = prevState.account && !this.state.account
-    if (login) {
-      window.spDebug("logged in")
-      axios.defaults.headers.common["token"] = this.state.account.token
-    }
-    if (logout) {
-      window.spDebug("logged out")
-      axios.defaults.headers.common["token"] = null
-      // clear storage
-      storageManager.set("unread", false)
-      storageManager.set("inbox", null)
-      storageManager.set("inbox-offset", 0)
-      // TODO:  change tab?
-    }
+    // const login = !prevState.account && this.state.account
+    // const logout = prevState.account && !this.state.account
+    // if (login) {
+    //   window.spDebug("logged in")
+    //   axios.defaults.headers.common["token"] = this.state.account.token
+    // }
+    // if (logout) {
+    //   window.spDebug("logged out")
+    //   axios.defaults.headers.common["token"] = null
+    //   // clear storage
+    //   storageManager.set("unread", false)
+    //   storageManager.set("inbox", null)
+    //   storageManager.set("inbox-offset", 0)
+    //   // TODO:  change tab?
+    // }
   }
 
-  setAccount = account => {
-    // window.spDebug("set account")
-    storageManager.set("account", account)
-  }
+  // setAccount = account => {
+  //   // window.spDebug("set account")
+  //   storageManager.set("account", account)
+  // }
 
   stopAutoLogin = () => {
     this.setState({ autoLogin: false })
@@ -252,8 +255,8 @@ class App extends React.Component {
       <IntlProvider locale={locale} messages={msg}>
         <AccountContext.Provider
           value={{
-            account: this.state.account,
-            setAccount: this.setAccount,
+            account: this.props.account,
+            setAccount: this.props.setAccount,
             autoLogin: this.state.autoLogin,
             stopAutoLogin: this.stopAutoLogin
           }}
@@ -265,4 +268,10 @@ class App extends React.Component {
   }
 }
 
-export default App
+// export default App
+const stateToProps = state => {
+  return {
+    account: state.account
+  }
+}
+export default connect(stateToProps, { setAccount })(App)

@@ -86,8 +86,10 @@ function Chat(props) {
       {props.chatModes.map((mode, i) => (
         <View
           chatView={mode}
-          activeView={props.activeView}
+          show={mode === props.activeView}
           key={mode}
+          manMadeRoom={props.manMadeRoom}
+
           // displayMusicTab={() => {
           //   setMediaDisplay("block")
           // }}

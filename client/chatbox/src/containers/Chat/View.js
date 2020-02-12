@@ -5,21 +5,26 @@ import Body from "./Body"
 import Footer from "./Footer"
 
 import { getUrl, getDomain } from "utils/url"
+import Discover from "containers/Home/Discover"
 // import socketManager from "socket"
 
-function View(props) {
-  const [messages, setMessages] = useState(props.data || [])
-  const { chatView, activeView } = props
-  const show = chatView === activeView
-  let roomId = props.roomId
+function View({ chatView, show, manMadeRoom }) {
+  const [messages, setMessages] = useState([])
+  let roomId = null
   if (chatView === "page") {
     roomId = getUrl()
-  }
-  if (chatView === "site") {
+  } else if (chatView === "site") {
     roomId = getDomain()
+  } else {
+    if (manMadeRoom) {
+      roomId = manMadeRoom.id
+    } else {
+      if (show) return <Discover />
+      else return <span />
+    }
   }
 
-  //   console.log("roomId" + roomId)
+  // Body component is always mounted because of the socket handlers
   return (
     <span>
       <Body
