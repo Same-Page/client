@@ -20,7 +20,7 @@ const roomManager = {
 			usersInRooms[roomId] = []
 		}
 		const usersInRoom = usersInRooms[roomId]
-
+		// avoid dup because in some case we receive this event multiple times
 		usersInRooms[roomId] = usersInRoom.filter(u => {
 			return u.id !== user.id
 		})

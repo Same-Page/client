@@ -41,8 +41,14 @@ function UserButton({ chatView, show, roomId, viewOtherUser }) {
       suffixCb("add_user_to_room"),
       data => {
         setUsers(users => {
-          // TODO: dedup NO, server should handle
-          return [...users, data.user]
+          const user = data.user
+          const existingUsers = users.filter(u => {
+            return u.id.toString() === user.id.toString()
+          })
+          // avoid dup user
+          if (existingUsers.length === 0) {
+            return [...users, data.user]
+          }
         })
       }
     )
