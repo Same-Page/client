@@ -14,6 +14,9 @@ function Discover(props) {
   const loadRooms = () => {
     getPopularRooms()
       .then(resp => {
+        resp.data.forEach(r => {
+          r.type = "room"
+        })
         setRooms(resp.data)
       })
       .catch(err => {})

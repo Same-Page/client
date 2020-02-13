@@ -3,20 +3,12 @@ import { Button } from "antd"
 
 import Users from "./Users"
 import socketManager from "socket/socket"
-import { getUrl, getDomain } from "utils/url"
+// import { getUrl, getDomain } from "utils/url"
 
-function UserButton({ chatView, show, manMadeRoom, viewOtherUser }) {
+function UserButton({ chatView, show, room, viewOtherUser }) {
   const [showUsers, toggleUsers] = useState(false)
   const [users, setUsers] = useState([])
-  let roomId = null
-
-  if (chatView === "page") {
-    roomId = getUrl()
-  } else if (chatView === "site") {
-    roomId = getDomain()
-  } else {
-    roomId = manMadeRoom && manMadeRoom.id
-  }
+  let roomId = room.id
 
   let userNum = users.length
   if (userNum >= 50) {
@@ -62,8 +54,10 @@ function UserButton({ chatView, show, manMadeRoom, viewOtherUser }) {
       suffixCb("set_users_in_room"),
       roomDict => {
         if (roomId in roomDict) {
-          const roomData = roomDict[roomId]
-          setUsers(roomData.users)
+          const room = roomDict[roomId]
+          if (room.users) {
+            setUsers(room.users)
+          }
         }
       }
     )
@@ -93,7 +87,6 @@ function UserButton({ chatView, show, manMadeRoom, viewOtherUser }) {
     // })
     // window.setMode = setMode
     return () => {
-      console.error("[Headerjs] clean up because room id changed " + roomId)
       socketManager.removeHandler("other join", suffixCb("add_user_to_room"))
       socketManager.removeHandler(
         "other left",

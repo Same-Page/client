@@ -138,7 +138,9 @@ const _connect = () => {
 		if (msg.name === "room info") {
 			Object.keys(data).forEach(roomId => {
 				const room = data[roomId]
-				roomManager.setUsersInRoom(roomId, room["users"])
+				if (room.users) {
+					roomManager.setUsersInRoom(roomId, room.users)
+				}
 			})
 		}
 		if (msg.name === "chat message") {

@@ -157,9 +157,9 @@ class App extends React.Component {
       this.setState({ account: account })
       this.props.setAccount(account)
     })
-    socketManager.addHandler("room info", "popup", () => {
-      message.success(intl.formatMessage({ id: "connected" }), 2)
-    })
+    // socketManager.addHandler("room info", "popup", () => {
+    //   message.success(intl.formatMessage({ id: "connected" }), 2)
+    // })
     socketManager.addHandler("disconnect", "popup", () => {
       message.warn(intl.formatMessage({ id: "disconnected" }), 2)
     })

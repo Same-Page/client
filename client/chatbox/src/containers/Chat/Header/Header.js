@@ -9,7 +9,7 @@ import { Radio, Button, Tooltip, Icon, Modal } from "antd"
 
 import AccountContext from "context/account-context"
 import UserButton from "./UserButton"
-import { getUrl, getDomain } from "utils/url"
+// import { getUrl, getDomain } from "utils/url"
 // import storageManager from "utils/storage"
 // import spDebug from "config/logger"
 
@@ -19,7 +19,7 @@ function ChatHeader({
   changeTab,
   changeChatView,
   viewOtherUser,
-  manMadeRoom
+  rooms
 }) {
   // const chatModes = props.chatModes
   // const activeView = props.activeView
@@ -27,7 +27,17 @@ function ChatHeader({
   const intl = useIntl()
   const [showHelp, setShowHelp] = useState(false)
   const accountContext = useContext(AccountContext)
-
+  const getRoom = mode => {
+    let room = rooms.filter(r => {
+      return r.type === mode
+    })
+    if (room.length) {
+      room = room[0]
+    } else {
+      room = null
+    }
+    return room
+  }
   let content = (
     <center>
       <Button
@@ -153,23 +163,25 @@ function ChatHeader({
             // }
           }}
         >
-          {chatModes.includes("room") && (
-            <Tooltip placement="bottom" title={manMadeRoom && manMadeRoom.name}>
-              <Radio.Button value="room">
-                房间<Badge offset={[3, -3]} count={0}></Badge>
-              </Radio.Button>
-            </Tooltip>
-          )}
-          {chatModes.includes("site") && (
-            <Tooltip placement="bottom" title={getDomain()}>
-              <Radio.Button value="site">网站</Radio.Button>
-            </Tooltip>
-          )}
-          {chatModes.includes("page") && (
-            <Tooltip placement="bottom" title={getUrl()}>
-              <Radio.Button value="page">网页</Radio.Button>
-            </Tooltip>
-          )}
+          {chatModes.map(mode => {
+            const room = getRoom(mode)
+            let roomTitle = ""
+            if (room) {
+              if (mode === "room") {
+                roomTitle = room.name
+              } else {
+                roomTitle = room.id
+              }
+            }
+            return (
+              <Tooltip key={mode} placement="bottom" title={roomTitle}>
+                <Radio.Button value={mode}>
+                  {mode}
+                  <Badge offset={[3, -3]} count={0}></Badge>
+                </Radio.Button>
+              </Tooltip>
+            )
+          })}
         </Radio.Group>
         {/* <div style={{ maxWidth: "45%", display: "inline-flex" }}>
           <span
@@ -195,15 +207,22 @@ function ChatHeader({
           <Icon type="setting" theme="twoTone" />
         </Button>
         {/* <Col style={{ textAlign: "right" }} span={8}> */}
-        {chatModes.map((mode, i) => (
-          <UserButton
-            viewOtherUser={viewOtherUser}
-            chatView={mode}
-            show={mode === activeView}
-            key={mode}
-            manMadeRoom={manMadeRoom}
-          />
-        ))}
+        {chatModes.map((mode, i) => {
+          const room = getRoom(mode)
+          if (room) {
+            return (
+              <UserButton
+                viewOtherUser={viewOtherUser}
+                chatView={mode}
+                show={mode === activeView}
+                key={mode}
+                room={getRoom(mode)}
+              />
+            )
+          } else {
+            return <span key={mode} />
+          }
+        })}
       </div>
     )
   }

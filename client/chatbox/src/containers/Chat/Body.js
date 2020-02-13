@@ -39,8 +39,10 @@ function ChatBody({ show, messages, setMessages, chatView, roomId }) {
     scrollToBottomIfNearBottom(10)
   }, [msgNum])
   useEffect(() => {
+    scrollToBottom(10)
+  }, [show])
+  useEffect(() => {
     // TODO: seems no need to remove socket handler when account state change
-
     if (!account) {
       console.warn("[Body.js] no account, won't register socket events")
       return
@@ -50,7 +52,7 @@ function ChatBody({ show, messages, setMessages, chatView, roomId }) {
       "chat message",
       suffixCb("display_new_message"),
       data => {
-        if (data.roomType !== chatView) return
+        if (data.roomId !== roomId) return
         data.self = data.user.id.toString() === account.id.toString()
         data.time = moment()
         spDebug("[chatbox] chat message")
@@ -89,6 +91,7 @@ function ChatBody({ show, messages, setMessages, chatView, roomId }) {
               msg.time = moment.utc(msg.timestamp)
             })
             setMessages(room.chatHistory)
+            scrollToBottom(20)
           }
         }
       }
@@ -105,7 +108,7 @@ function ChatBody({ show, messages, setMessages, chatView, roomId }) {
         suffixCb("display_recent_messages")
       )
     }
-  }, [account])
+  }, [account, roomId])
   // useEffect(() => {
   //   // Find media messages and pass to playlist
   //   // TODO: better to use a playlist context
@@ -133,8 +136,10 @@ function ChatBody({ show, messages, setMessages, chatView, roomId }) {
     }
   }
   const scrollToBottom = timeout => {
-    timeout = timeout || 100
     const bodyDiv = bodyRef.current
+    if (!bodyDiv) return
+    timeout = timeout || 100
+
     setTimeout(() => {
       bodyDiv.scrollTop = bodyDiv.scrollHeight
     }, timeout)

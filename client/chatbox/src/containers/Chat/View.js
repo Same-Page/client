@@ -4,26 +4,20 @@ import React, { useState } from "react"
 import Body from "./Body"
 import Footer from "./Footer"
 
-import { getUrl, getDomain } from "utils/url"
 import Discover from "containers/Home/Discover"
-// import socketManager from "socket"
 
-function View({ chatView, show, manMadeRoom }) {
+function View({ chatView, show, room }) {
   const [messages, setMessages] = useState([])
-  let roomId = null
-  if (chatView === "page") {
-    roomId = getUrl()
-  } else if (chatView === "site") {
-    roomId = getDomain()
-  } else {
-    if (manMadeRoom) {
-      roomId = manMadeRoom.id
+  if (chatView === "room") {
+    if (show) {
+      if (!room) {
+        return <Discover />
+      }
     } else {
-      if (show) return <Discover />
-      else return <span />
+      return <span />
     }
   }
-
+  const roomId = room.id
   // Body component is always mounted because of the socket handlers
   return (
     <span>
