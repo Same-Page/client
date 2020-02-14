@@ -3,14 +3,10 @@ import "./Header.css"
 // import { FormattedMessage, useIntl } from "react-intl"
 import { useIntl } from "react-intl"
 import { Badge } from "antd"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Radio, Button, Tooltip, Icon, Modal } from "antd"
-// import { connect } from "react-redux"
-
+import socketManager from "socket/socket"
 import UserButton from "./UserButton"
-// import { getUrl, getDomain } from "utils/url"
-// import storageManager from "utils/storage"
-// import spDebug from "config/logger"
 
 function ChatHeader({
   chatModes,
@@ -26,6 +22,32 @@ function ChatHeader({
 
   const intl = useIntl()
   const [showHelp, setShowHelp] = useState(false)
+  const [unreads, setUnreads] = useState({})
+
+  useEffect(() => {
+    setUnreads(unreads => {
+      const res = { ...unreads }
+      res[activeView] = 0
+      return res
+    })
+    socketManager.addHandler("chat message", "mark_unread_chat", data => {
+      const roomType = data.roomType
+      if (roomType !== activeView) {
+        setUnreads(unreads => {
+          const res = { ...unreads }
+          if (res[roomType]) {
+            res[roomType]++
+          } else {
+            res[roomType] = 1
+          }
+          return res
+        })
+      }
+    })
+    return () => {
+      socketManager.removeHandler("chat message", "mark_unread_chat")
+    }
+  }, [activeView])
   const getRoom = mode => {
     let room = rooms.filter(r => {
       return r.type === mode
@@ -165,6 +187,7 @@ function ChatHeader({
           {chatModes.map(mode => {
             const room = getRoom(mode)
             let roomTitle = ""
+            let unreadCount = unreads[mode] || 0
             if (room) {
               if (mode === "room") {
                 roomTitle = room.name
@@ -176,7 +199,7 @@ function ChatHeader({
               <Tooltip key={mode} placement="bottom" title={roomTitle}>
                 <Radio.Button value={mode}>
                   {mode}
-                  <Badge offset={[3, -3]} count={0}></Badge>
+                  <Badge offset={[3, -3]} count={unreadCount}></Badge>
                 </Radio.Button>
               </Tooltip>
             )

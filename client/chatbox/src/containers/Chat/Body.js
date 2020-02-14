@@ -44,7 +44,7 @@ function ChatBody({ account, show, messages, setMessages, chatView, roomId }) {
       console.warn("[Body.js] no account, won't register socket events")
       return
     }
-    window.spDebug("[Body.js] register socket events")
+    // window.spDebug("[Body.js] register socket events")
     socketManager.addHandler(
       "chat message",
       suffixCb("display_new_message"),
@@ -95,7 +95,7 @@ function ChatBody({ account, show, messages, setMessages, chatView, roomId }) {
     )
 
     return () => {
-      window.spDebug("[Body.js] unregister socket events")
+      // window.spDebug("[Body.js] unregister socket events")
       socketManager.removeHandler(
         "chat message",
         suffixCb("display_new_message")
