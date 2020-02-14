@@ -3,11 +3,10 @@ import "./Header.css"
 // import { FormattedMessage, useIntl } from "react-intl"
 import { useIntl } from "react-intl"
 import { Badge } from "antd"
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import { Radio, Button, Tooltip, Icon, Modal } from "antd"
 // import { connect } from "react-redux"
 
-import AccountContext from "context/account-context"
 import UserButton from "./UserButton"
 // import { getUrl, getDomain } from "utils/url"
 // import storageManager from "utils/storage"
@@ -19,14 +18,14 @@ function ChatHeader({
   changeTab,
   changeChatView,
   viewOtherUser,
-  rooms
+  rooms,
+  account
 }) {
   // const chatModes = props.chatModes
   // const activeView = props.activeView
 
   const intl = useIntl()
   const [showHelp, setShowHelp] = useState(false)
-  const accountContext = useContext(AccountContext)
   const getRoom = mode => {
     let room = rooms.filter(r => {
       return r.type === mode
@@ -51,7 +50,7 @@ function ChatHeader({
       </Button>
     </center>
   )
-  if (accountContext.account) {
+  if (account) {
     let helpTitle = ""
     let helpContent = ""
     // if (mode === "room") {

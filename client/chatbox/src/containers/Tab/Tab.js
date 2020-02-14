@@ -166,6 +166,9 @@ function Tab({ otherUser, activeTab, changeTab, viewOtherUser }) {
 }
 
 const stateToProps = state => {
-  return { activeTab: state.tab, otherUser: state.otherUser }
+  return {
+    activeTab: state.tab,
+    otherUser: state.otherUser
+  }
 }
 export default connect(stateToProps, { changeTab, viewOtherUser })(Tab)

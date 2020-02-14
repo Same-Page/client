@@ -1,3 +1,5 @@
+import axios from "axios"
+
 import socketManager from "socket/socket"
 import { getUrl, getDomain } from "utils/url"
 
@@ -54,9 +56,12 @@ const store = (state = initState, action) => {
         otherUser: null
       }
     case "SET_ACCOUNT":
+      const account = action.payload
+      axios.defaults.headers.common["token"] = account.token
+
       return {
         ...state,
-        account: action.payload
+        account: account
       }
 
     case "VIEW_OTHER_USER":

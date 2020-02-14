@@ -12,6 +12,7 @@ import { changeChatView } from "redux/actions/chat"
 import { viewOtherUser } from "redux/actions"
 
 function Chat({
+  account,
   rooms,
   manMadeRoom,
   chatModes,
@@ -74,6 +75,7 @@ function Chat({
       </span>
        */}
       <Header
+        account={account}
         chatModes={chatModes}
         activeView={activeView}
         changeChatView={changeChatView}
@@ -97,6 +99,7 @@ function Chat({
 
         return (
           <View
+            account={account}
             chatView={mode}
             show={mode === activeView}
             key={mode}
@@ -117,7 +120,8 @@ const stateToProps = state => {
     chatModes: state.chatModes,
     activeView: state.chatView,
     manMadeRoom: state.manMadeRoom,
-    rooms: state.rooms
+    rooms: state.rooms,
+    account: state.account
   }
 }
 

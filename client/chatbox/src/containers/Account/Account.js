@@ -1,19 +1,16 @@
-import React, { useState, useContext, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "antd"
+import { connect } from "react-redux"
 
-import AccountContext from "context/account-context"
 import ResetPassword from "./ResetPassword"
 import EditProfile from "./EditProfile"
 import Profile from "./Profile"
 import Follow from "./Follow"
 import Login from "containers/Account/Login"
 import { getAccount } from "services/account"
+import { setAccount } from "redux/actions"
 
-function Account(props) {
-  const accountContext = useContext(AccountContext)
-  const account = accountContext.account
-  const setAccount = accountContext.setAccount
-
+function Account({ account, setAccount }) {
   const [resettingPassword, setResetPasswordState] = useState(false)
   const [edittingProfile, setEdittingProfileState] = useState(false)
   // showingFollow is for toggling the Follow view
@@ -57,6 +54,7 @@ function Account(props) {
       {resettingPassword && <ResetPassword back={backToMainPage} />}
       {showingFollow && (
         <Follow
+          account={account}
           showFollowers={showFollowers}
           followingCount={account.followingCount}
           followerCount={account.followerCount}
@@ -87,5 +85,9 @@ function Account(props) {
     </div>
   )
 }
-
-export default Account
+const stateToProps = state => {
+  return {
+    account: state.account
+  }
+}
+export default connect(stateToProps, { setAccount })(Account)

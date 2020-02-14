@@ -6,7 +6,7 @@ import Footer from "./Footer"
 
 import Discover from "containers/Home/Discover"
 
-function View({ chatView, show, room }) {
+function View({ chatView, show, room, account }) {
   const [messages, setMessages] = useState([])
   if (chatView === "room") {
     if (show) {
@@ -22,6 +22,7 @@ function View({ chatView, show, room }) {
   return (
     <span>
       <Body
+        account={account}
         show={show}
         chatView={chatView}
         messages={messages}
@@ -29,7 +30,12 @@ function View({ chatView, show, room }) {
         roomId={roomId}
       />
       {show && (
-        <Footer roomId={roomId} chatView={chatView} setMessages={setMessages} />
+        <Footer
+          account={account}
+          roomId={roomId}
+          chatView={chatView}
+          setMessages={setMessages}
+        />
       )}
     </span>
   )

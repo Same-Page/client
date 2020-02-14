@@ -1,10 +1,9 @@
-import React, { useEffect, useContext, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import moment from "moment"
 // import { connect } from "react-redux"
 
 import Message from "./Message"
 import socketManager from "socket/socket"
-import AccountContext from "context/account-context"
 import spDebug from "config/logger"
 
 const chatBodyStyle = {
@@ -23,14 +22,12 @@ const AUTO_SCROLL_TRESHOLD_DISTANCE = 300
 //   return msg.type === "audio" || msg.type === "video"
 // }
 
-function ChatBody({ show, messages, setMessages, chatView, roomId }) {
+function ChatBody({ account, show, messages, setMessages, chatView, roomId }) {
   if (!roomId) {
     console.error("no roomId, should not render ChatBody")
   }
   const msgNum = messages.length
   const bodyRef = useRef(null)
-  const accountContext = useContext(AccountContext)
-  const account = accountContext.account
   const suffixCb = name => {
     return name + "_" + chatView
   }

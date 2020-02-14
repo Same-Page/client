@@ -1,6 +1,6 @@
 import "./Conversation.css"
 
-import React, { useContext, useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { Button } from "antd"
 import moment from "moment"
 import { connect } from "react-redux"
@@ -8,7 +8,7 @@ import { connect } from "react-redux"
 import socketManager from "socket"
 import Message from "containers/Chat/Message"
 import { postMessage } from "services/message"
-import AccountContext from "context/account-context"
+
 import InputWithPicker from "components/InputWithPicker"
 import { viewOtherUser } from "redux/actions"
 
@@ -26,7 +26,7 @@ const conversationBodyStyle = {
 const AUTO_SCROLL_TRESHOLD_DISTANCE = 500
 
 function Conversation(props) {
-  const account = useContext(AccountContext).account
+  const account = props.account
   const messages = props.conversation.messages
   const other = props.conversation.user
   const offset = props.offset

@@ -9,7 +9,6 @@ import { Icon, message } from "antd"
 import { connect } from "react-redux"
 
 import Tab from "containers/Tab"
-import AccountContext from "context/account-context"
 
 import socketManager from "socket/socket"
 import storageManager from "utils/storage"
@@ -253,16 +252,16 @@ class App extends React.Component {
     // }
     return (
       <IntlProvider locale={locale} messages={msg}>
-        <AccountContext.Provider
+        {/* <AccountContext.Provider
           value={{
             account: this.props.account,
             setAccount: this.props.setAccount,
             autoLogin: this.state.autoLogin,
             stopAutoLogin: this.stopAutoLogin
           }}
-        >
-          <Tab />
-        </AccountContext.Provider>
+        > */}
+        <Tab />
+        {/* </AccountContext.Provider> */}
       </IntlProvider>
     )
   }

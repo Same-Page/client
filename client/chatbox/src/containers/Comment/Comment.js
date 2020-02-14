@@ -8,7 +8,7 @@ import moment from "moment"
 
 import urls from "config/urls"
 import { getUrl } from "utils/url"
-import AccountContext from "context/account-context"
+// import AccountContext from "context/account-context"
 import Header from "./Header"
 import Body from "./Body"
 
@@ -245,6 +245,6 @@ class CommentTab extends React.Component {
   }
 }
 
-CommentTab.contextType = AccountContext
+// CommentTab.contextType = AccountContext
 
 export default CommentTab

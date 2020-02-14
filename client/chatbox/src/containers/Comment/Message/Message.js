@@ -1,9 +1,9 @@
 import "./Message.css"
 
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import { Icon } from "antd"
 import AvatarWithHoverCard from "containers/OtherProfile/AvatarWithHoverCard"
-import AccountContext from "context/account-context"
+// import AccountContext from "context/account-context"
 
 function Comment(props) {
   const data = props.data
@@ -16,7 +16,7 @@ function Comment(props) {
 
   const [score, setScore] = useState(data.score)
   const [voted, setVoted] = useState(data.voted)
-  const account = useContext(AccountContext).account
+  const account = props.account
 
   function theme() {
     if (voted) return "twoTone"

@@ -1,17 +1,15 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
+import { connect } from "react-redux"
 
 import { getUser } from "services/user"
-import AccountContext from "context/account-context"
 import followEventHandler from "containers/Account/Follow/event"
 import { followUser } from "services/follow"
-
+import { setAccount } from "redux/actions"
 function ProfileMeta(props) {
   // Use this container to fetch other user's data
   // it's a wrapper that handles state and api calls
   // but doesn't contain html layout
-
-  const accountContext = useContext(AccountContext)
-
+  const { account, setAccount } = props
   const [user, setUser] = useState(props.user)
   const [followerCount, setFollowerCount] = useState("")
   const [following, setFollowing] = useState(false)
@@ -24,13 +22,13 @@ function ProfileMeta(props) {
   function updateAccountFollowing(follow) {
     // context.account needs to know about
     // following number has changed
-    const newAccountData = { ...accountContext.account }
+    const newAccountData = { ...account }
     if (follow) {
       newAccountData.followingCount++
     } else {
       newAccountData.followingCount--
     }
-    accountContext.setAccount(newAccountData)
+    setAccount(newAccountData)
   }
 
   function toggleFollow(follow) {
@@ -79,6 +77,7 @@ function ProfileMeta(props) {
   const childrenWithProps = React.Children.map(props.children, child =>
     React.cloneElement(child, {
       ...child.props,
+      account: account,
       loading: loading,
       loaded: loaded,
       user: user,
@@ -90,5 +89,9 @@ function ProfileMeta(props) {
   )
   return <span>{childrenWithProps}</span>
 }
-
-export default ProfileMeta
+const stateToProps = state => {
+  return {
+    account: state.account
+  }
+}
+export default connect(stateToProps, { setAccount })(ProfileMeta)

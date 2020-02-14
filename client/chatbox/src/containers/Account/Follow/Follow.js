@@ -1,11 +1,10 @@
 import "./Follow.css"
 import axios from "axios"
 
-import React, { useEffect, useState, useContext, useRef } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { Avatar, Icon, Radio, Button } from "antd"
 import { connect } from "react-redux"
 
-import AccountContext from "context/account-context"
 import urls from "config/urls"
 import followEventHandler from "./event"
 import { viewOtherUser } from "redux/actions"
@@ -16,8 +15,7 @@ function Follow(props) {
   const [loadingMore, setLoadingMore] = useState(false)
   const [users, setUsers] = useState([])
 
-  const accountContext = useContext(AccountContext)
-  const account = accountContext.account
+  const account = props.account
   const usersRef = useRef([])
 
   useEffect(() => {

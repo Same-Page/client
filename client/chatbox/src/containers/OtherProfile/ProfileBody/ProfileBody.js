@@ -1,9 +1,8 @@
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import { Button, Avatar, Icon, Row, Col, message } from "antd"
 import { useIntl } from "react-intl"
 import { connect } from "react-redux"
 
-import AccountContext from "context/account-context"
 import { msgOtherUser } from "redux/actions"
 import socketManager from "socket"
 // import { blockUser, unblockUser, thankUser } from "services/user"
@@ -32,6 +31,7 @@ const aboutStyle = {
 
 function ProfileBody(props) {
   const {
+    account,
     msgOtherUser,
     loading,
     loaded,
@@ -43,8 +43,6 @@ function ProfileBody(props) {
   const intl = useIntl()
   // const [thanking, setThanking] = useState(false)
   const [toggleBlocking, setToggleBlocking] = useState(false)
-  const accountContext = useContext(AccountContext)
-  const account = accountContext.account
   // const self = account && account.id.toString() === user.id.toString()
   return (
     <div>

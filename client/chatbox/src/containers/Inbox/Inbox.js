@@ -1,5 +1,5 @@
 import "./Inbox.css"
-import React, { useEffect, useState, useContext, useRef } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import { Avatar, Icon, Radio, Button, message } from "antd"
 import moment from "moment"
 import { useIntl } from "react-intl"
@@ -7,7 +7,6 @@ import { connect } from "react-redux"
 
 import Conversation from "./Conversation"
 import { getMessages } from "services/message"
-import AccountContext from "context/account-context"
 
 import storageManager from "utils/storage"
 import { msgOtherUser } from "redux/actions"
@@ -15,7 +14,7 @@ function Inbox(props) {
   const user = props.user
   const setUser = props.msgOtherUser
   const intl = useIntl()
-  const account = useContext(AccountContext).account
+  const account = props.account
 
   const activeTab = props.tab
   let storageKey = "inbox"
@@ -288,6 +287,7 @@ function Inbox(props) {
     <div className="sp-inbox-tab">
       {selectedConversation && !showNotifications && (
         <Conversation
+          account={account}
           back={() => {
             setUser(null)
           }}
@@ -349,6 +349,6 @@ function Inbox(props) {
 }
 
 const stateToProps = state => {
-  return { tab: state.tab, user: state.inboxUser }
+  return { tab: state.tab, user: state.inboxUser, account: state.account }
 }
 export default connect(stateToProps, { msgOtherUser })(Inbox)

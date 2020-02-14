@@ -1,26 +1,22 @@
 import "./Footer.css"
 
-import React, { useContext, useState } from "react"
+import React, { useState } from "react"
 import { message, Button, Modal, Tooltip } from "antd"
 import { useIntl } from "react-intl"
 // import { connect } from "react-redux"
 import moment from "moment"
 
 import InputWithPicker from "components/InputWithPicker"
-import AccountContext from "context/account-context"
 import socketManager from "socket/socket"
 import { getUrl } from "utils/url"
 
 const MESSAGE_TIME_GAP = 2 * 1000
 let lastMsgTime = 0
-function Footer(props) {
+function Footer({ account, setMessages, chatView, roomId }) {
   const intl = useIntl()
   const [showInvitationModal, setShowInvitationModal] = useState(false)
-  const { setMessages, chatView, roomId } = props
   // const [invitationType, setInvitationType] = useState("room")
   // const [invitationPurpose, setInvitationPurpose] = useState("chat")
-  const accountContext = useContext(AccountContext)
-  const account = accountContext.account
 
   const send = payload => {
     const now = new Date()
