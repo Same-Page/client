@@ -3,6 +3,7 @@ import axios from "axios"
 import socketManager from "socket/socket"
 
 import { getUrl, getDomain } from "utils/url"
+import { msgOtherUser } from "../actions"
 
 const initState = {
   chatModes: [],
@@ -35,8 +36,8 @@ function getRooms(modes, manMadeRoom) {
   return rooms
 }
 const store = (state = initState, action) => {
-  // console.log(action.type)
-  // console.log(action.payload)
+  console.log(action.type)
+  console.log(action.payload)
   switch (action.type) {
     case "SET_CHAT_MODES":
       const modes = action.payload
@@ -50,9 +51,13 @@ const store = (state = initState, action) => {
     case "CHANGE_TAB":
       return { ...state, tab: action.payload }
     case "MESSAGE_OTHER_USER":
+      let tab = state.tab
+      if (action.payload) {
+        tab = "inbox"
+      }
       return {
         ...state,
-        tab: "inbox",
+        tab: tab,
         inboxUser: action.payload,
         otherUser: null
       }
