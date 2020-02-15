@@ -5,7 +5,7 @@
 }
 
 .sp-message-body.text {
-  background: white;
+  background: rgba(255, 255, 255, 0.502);
   border-radius: 5px;
   padding: 10px;
   padding-top: 5px;

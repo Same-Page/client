@@ -27,7 +27,7 @@ function View({ chatView, show, room, account }) {
         chatView={chatView}
         messages={messages}
         setMessages={setMessages}
-        roomId={roomId}
+        room={room}
       />
       {show && (
         <Footer

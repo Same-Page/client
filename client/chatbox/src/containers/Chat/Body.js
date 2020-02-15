@@ -22,14 +22,20 @@ const AUTO_SCROLL_TRESHOLD_DISTANCE = 300
 //   return msg.type === "audio" || msg.type === "video"
 // }
 
-function ChatBody({ account, show, messages, setMessages, chatView, roomId }) {
-  if (!roomId) {
+function ChatBody({ account, show, messages, setMessages, chatView, room }) {
+  if (!room) {
     console.error("no roomId, should not render ChatBody")
   }
+  const roomId = room.id
   const msgNum = messages.length
   const bodyRef = useRef(null)
   const suffixCb = name => {
     return name + "_" + chatView
+  }
+  const bodyStyle = { ...chatBodyStyle }
+  if (room.background) {
+    bodyStyle.backgroundImage = `url('${room.background}')`
+    bodyStyle.backgroundSize = "cover"
   }
   // const chatMsgCallbackName = "display_new_message_" + chatView
   useEffect(() => {
@@ -188,7 +194,7 @@ function ChatBody({ account, show, messages, setMessages, chatView, roomId }) {
   return (
     <span>
       {show && (
-        <div ref={bodyRef} style={chatBodyStyle}>
+        <div ref={bodyRef} style={bodyStyle}>
           {res}
         </div>
       )}
