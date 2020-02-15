@@ -87,7 +87,8 @@ class App extends React.Component {
         let errorMessage = "出错了"
         // set account to null when we receive 401
         if (error.response && error.response.status === 401) {
-          this.props.setAccount(null)
+          storageManager.set("account", null)
+
           errorMessage = intl.formatMessage({ id: "not.login" })
         }
         if (
@@ -126,7 +127,10 @@ class App extends React.Component {
 
     if (window.parent && window.parent !== window) {
       window.parent.postMessage({ action: "getConfig" }, "*")
-      storageManager.pushToParentWindow()
+      window.parent.postMessage({ action: "getAccount" }, "*")
+      // storageManager.pushToParentWindow()
+      // shouldn't need to push to parent on chatbox load
+      // should pull from parent instead
     } else {
       window.spConfig = {}
       this.setState({ waitingForConfigFromParent: false })
@@ -153,7 +157,7 @@ class App extends React.Component {
       this.setState({ loadingAccountFromStorage: false })
     })
     storageManager.addEventListener("account", account => {
-      this.setState({ account: account })
+      // this.setState({ account: account })
       this.props.setAccount(account)
     })
     // socketManager.addHandler("room info", "popup", () => {
@@ -188,8 +192,10 @@ class App extends React.Component {
     window.addEventListener(
       "message",
       e => {
-        if (e && e.data && e.data.type === "config") {
-          const spConfig = e.data.data
+        if (e && e.data && e.data.type === "sp-parent-data") {
+          const data = e.data.data
+
+          const spConfig = data.spConfig
           window.spConfig = spConfig
           urls.dbAPI = spConfig.apiUrl || urls.dbAPI
           urls.socketAPI = spConfig.socketUrl || urls.socketAPI
@@ -199,6 +205,9 @@ class App extends React.Component {
             spConfig.defaultChatView || spConfig.chatModes[0]
           store.dispatch(changeChatView(spConfig.defaultChatView))
           store.dispatch(changeTab(spConfig.defaultTab))
+          if (data.account) {
+            storageManager.set("account", data.account)
+          }
 
           this.setState({ waitingForConfigFromParent: false })
         }

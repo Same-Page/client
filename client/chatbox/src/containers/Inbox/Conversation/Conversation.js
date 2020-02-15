@@ -27,7 +27,11 @@ const AUTO_SCROLL_TRESHOLD_DISTANCE = 500
 
 function Conversation(props) {
   const account = props.account
-  const messages = props.conversation.messages
+  // had to do a deep copy here only because
+  // <Message /> expects content to be object while
+  // <Inbox /> expects content to be string
+
+  const messages = JSON.parse(JSON.stringify(props.conversation.messages))
   const other = props.conversation.user
   const offset = props.offset
   const [sending, setSending] = useState(false)

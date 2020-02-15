@@ -11,6 +11,12 @@ const getCountArray = () => {
 }
 
 const roomManager = {
+	clear: () => {
+		Object.keys(usersInRooms).forEach(roomId => {
+			usersInRooms[roomId] = []
+		})
+		window.setUserCount(0)
+	},
 	setUsersInRoom: (roomId, users) => {
 		usersInRooms[roomId] = users
 		if (roomId === getDomain()) window.setUserCount(users.length)

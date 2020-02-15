@@ -67,7 +67,8 @@ class NormalLoginForm extends React.Component {
         window.spDebug(res.data)
         const account = res.data
         this.setState({ loading: false })
-        this.props.setAccount(account)
+        // this.props.setAccount(account)
+        storageManager.set("account", account)
         storageManager.set("login", values)
       })
       .catch(err => {

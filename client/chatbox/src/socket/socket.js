@@ -5,7 +5,6 @@ const _sendEvent = data => {
     {
       type: "sp-socket",
       data: data
-      // eventName: eventName
     },
     "*"
   )
@@ -29,6 +28,9 @@ const socketManager = {
     _sendEvent(payload)
   },
   sendEvent: _sendEvent,
+  disconnect: () => {
+    _sendEvent("disconnect socket")
+  },
   setRooms: data => {
     const payload = {
       action: "join",

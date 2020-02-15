@@ -87,12 +87,16 @@ function ChatboxIframe(props) {
 					setDisplay("none")
 				}
 				if (data.action === "updateStorage") {
-					// window.spDebug(data)
+					window.spDebug("updateStorage")
+					window.spDebug(data)
 					storage.set(data.key, data.value)
 				}
 				if (data.action === "getConfig") {
-					spDebug("post config to chatbox")
-					postMsgToIframe("config", spConfig)
+					spDebug("post config & account to chatbox")
+					postMsgToIframe("sp-parent-data", {
+						spConfig: spConfig,
+						account: accountManager.getAccount()
+					})
 				}
 			},
 			false

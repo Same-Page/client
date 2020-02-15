@@ -21,14 +21,7 @@ const TabPane = Tabs.TabPane
 function Tab({ otherUser, activeTab, changeTab, viewOtherUser }) {
   const intl = useIntl()
   // console.log("render tab")
-  const tabList = window.spConfig.tabList || [
-    "discover",
-    "chat",
-    "comment",
-    "inbox",
-    "profile",
-    "close"
-  ]
+  const tabList = window.spConfig.tabList
   // const defaultTab = window.spConfig.defaultTab || props.tab
   // const [activeTab, changeTab] = useState(defaultTab)
   // view other's profile

@@ -3,6 +3,7 @@ import { useIntl } from "react-intl"
 
 import React, { useState } from "react"
 import { Avatar, Button, Row, Col } from "antd"
+import storageManager from "utils/storage"
 
 import { logout } from "services/account"
 
@@ -108,7 +109,7 @@ function Profile(props) {
               })
               .then(() => {
                 setLoggingOut(false)
-                props.setAccount(null)
+                storageManager.set("account", null)
               })
           }}
           loading={loggingOut}

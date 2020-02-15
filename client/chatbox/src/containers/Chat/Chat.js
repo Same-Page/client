@@ -1,5 +1,5 @@
 import React, { useEffect } from "react"
-import { message } from "antd"
+// import { message } from "antd"
 import { connect } from "react-redux"
 
 import Header from "./Header"
@@ -7,9 +7,8 @@ import View from "./View"
 // import Footer from "./Footer"
 // import MusicTab from "containers/Music"
 import socketManager from "socket"
-import storageManager from "utils/storage"
 import { changeChatView } from "redux/actions/chat"
-import { viewOtherUser } from "redux/actions"
+import { viewOtherUser, changeTab } from "redux/actions"
 
 function Chat({
   account,
@@ -18,6 +17,7 @@ function Chat({
   chatModes,
   activeView,
   changeChatView,
+  changeTab,
   viewOtherUser
 }) {
   // const [mediaDisplay, setMediaDisplay] = useState("none")
@@ -82,6 +82,7 @@ function Chat({
         viewOtherUser={viewOtherUser}
         manMadeRoom={manMadeRoom}
         rooms={rooms}
+        changeTab={changeTab}
         // mediaNum={mediaNum}
         // showMusic={() => {
         //   setMediaDisplay("block")
@@ -125,4 +126,8 @@ const stateToProps = state => {
   }
 }
 
-export default connect(stateToProps, { changeChatView, viewOtherUser })(Chat)
+export default connect(stateToProps, {
+  changeChatView,
+  viewOtherUser,
+  changeTab
+})(Chat)

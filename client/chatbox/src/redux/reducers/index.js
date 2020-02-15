@@ -1,6 +1,7 @@
 import axios from "axios"
 
 import socketManager from "socket/socket"
+
 import { getUrl, getDomain } from "utils/url"
 
 const initState = {
@@ -57,7 +58,11 @@ const store = (state = initState, action) => {
       }
     case "SET_ACCOUNT":
       const account = action.payload
-      axios.defaults.headers.common["token"] = account.token
+      if (account) {
+        axios.defaults.headers.common["token"] = account.token
+      } else {
+        // socketManager.disconnect()  no need, injection script listen on account change too
+      }
 
       return {
         ...state,

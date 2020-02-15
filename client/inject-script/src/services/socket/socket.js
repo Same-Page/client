@@ -25,16 +25,12 @@ const _getClientVersion = () => {
 }
 
 const _disconnect = () => {
-	if (_socket) {
-		if (_socket.connected) {
-			window.spDebug("disconnect socket")
-			_socket.disconnect()
-			window.setUserCount(0)
-		} else {
-			console.warn("socket not connected, no need to disconnect")
-		}
+	if (_isConnected()) {
+		window.spDebug("disconnect socket")
+		_socket.close()
+		roomManager.clear()
 	} else {
-		console.warn("socket not created, nothing to disconnect")
+		console.warn("socket not connected, no need to disconnect")
 	}
 }
 
@@ -157,10 +153,11 @@ const _connect = () => {
 		// window.spDebug(e)
 		window.spDebug("socket is closed...")
 		_postSocketMsgToIframe("disconnect")
-
-		setTimeout(() => {
-			_connect()
-		}, 10 * 1000)
+		if (accountManager.getAccount()) {
+			setTimeout(() => {
+				_connect()
+			}, 10 * 1000)
+		}
 	}
 
 	window.spSocket = _socket
@@ -276,6 +273,9 @@ window.addEventListener(
 	e => {
 		if (!e || !e.data || e.data.type !== "sp-socket") return
 		const data = e.data.data
+		if (data === "disconnect socket") {
+			return socketManager.disconnect()
+		}
 		socketManager.sendEvent(data)
 	},
 	false

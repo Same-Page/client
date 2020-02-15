@@ -63,7 +63,7 @@ function ChatHeader({
     <center>
       <Button
         onClick={() => {
-          changeTab("account")
+          changeTab("profile")
         }}
         size="small"
         type="primary"
