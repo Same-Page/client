@@ -60,7 +60,7 @@ class CreateRoomForm extends React.Component {
     }
     return (
       <Form
-        style={{ width: "90%", margin: "auto" }}
+        style={{ width: "95%", margin: "auto" }}
         {...formItemLayout}
         onSubmit={this.handleSubmit}
       >
@@ -91,8 +91,8 @@ class CreateRoomForm extends React.Component {
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button
-            size="large"
-            style={{ marginRight: 20 }}
+            // size="large"
+            style={{ marginRight: 10 }}
             onClick={this.props.back}
           >
             取消
@@ -100,7 +100,7 @@ class CreateRoomForm extends React.Component {
           <Button
             loading={this.state.submitting}
             type="primary"
-            size="large"
+            // size="large"
             htmlType="submit"
           >
             保存

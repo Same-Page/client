@@ -13,7 +13,11 @@ import Tab from "containers/Tab"
 import socketManager from "socket/socket"
 import storageManager from "utils/storage"
 import urls from "config/urls"
-import { changeChatView, setChatModes } from "redux/actions/chat"
+import {
+  changeChatView,
+  setChatModes,
+  joinManMadeRoom
+} from "redux/actions/chat"
 import { changeTab, setAccount } from "redux/actions"
 import store from "redux/store"
 
@@ -126,8 +130,7 @@ class App extends React.Component {
     // })
 
     if (window.parent && window.parent !== window) {
-      window.parent.postMessage({ action: "getConfig" }, "*")
-      window.parent.postMessage({ action: "getAccount" }, "*")
+      window.parent.postMessage({ action: "sp-parent-data" }, "*")
       // storageManager.pushToParentWindow()
       // shouldn't need to push to parent on chatbox load
       // should pull from parent instead
@@ -144,6 +147,12 @@ class App extends React.Component {
     // })
 
     // console.log("get account from storage, register account change listener")
+    storageManager.get("room", room => {
+      if (room) {
+        this.props.joinManMadeRoom(room)
+      }
+    })
+
     storageManager.get("account", account => {
       if (account) {
         window.spDebug("found account in storage")
@@ -282,4 +291,4 @@ const stateToProps = state => {
     account: state.account
   }
 }
-export default connect(stateToProps, { setAccount })(App)
+export default connect(stateToProps, { setAccount, joinManMadeRoom })(App)

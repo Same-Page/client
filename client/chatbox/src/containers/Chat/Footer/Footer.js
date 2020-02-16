@@ -3,18 +3,30 @@ import "./Footer.css"
 import React, { useState } from "react"
 import { message, Button, Modal, Tooltip } from "antd"
 import { useIntl } from "react-intl"
-// import { connect } from "react-redux"
+import { connect } from "react-redux"
 import moment from "moment"
 
 import InputWithPicker from "components/InputWithPicker"
 import socketManager from "socket/socket"
 import { getUrl } from "utils/url"
+import { setRoomConnectionStatus } from "redux/actions/chat"
 
 const MESSAGE_TIME_GAP = 2 * 1000
 let lastMsgTime = 0
-function Footer({ account, setMessages, chatView, roomId }) {
+function Footer({
+  account,
+  setMessages,
+  chatView,
+  rooms,
+  roomId,
+  connected,
+  setRoomConnectionStatus
+}) {
   const intl = useIntl()
   const [showInvitationModal, setShowInvitationModal] = useState(false)
+  // const roomId = room.id
+  // const connected = room.connected
+  window.spDebug("[Footer.js] connected " + connected)
   // const [invitationType, setInvitationType] = useState("room")
   // const [invitationPurpose, setInvitationPurpose] = useState("chat")
 
@@ -55,45 +67,39 @@ function Footer({ account, setMessages, chatView, roomId }) {
   }
 
   let content = (
-    <center style={{ padding: 10, background: "lightgray" }}>
-      {intl.formatMessage({ id: "not.login" })}
-    </center>
-  )
-  if (account) {
-    content = (
-      <InputWithPicker
-        send={send}
-        addonAfter={
-          chatView !== "page" && (
-            <span>
-              <Modal
-                title={intl.formatMessage({ id: "share.url" })}
-                visible={showInvitationModal}
-                onOk={() => {
-                  const payload = {
-                    // url and title added by content script
-                    type: "url",
-                    url: getUrl()
-                    // invitationType: invitationType,
-                    // invitationPurpose: invitationPurpose
-                  }
-                  send(payload)
-                  // socketManager.sendMessage(payload)
-                  setShowInvitationModal(false)
-                  // if (invitationType !== "room") {
-                  //   // room invitation is much faster
-                  //   // no db lookup
-                  //   message.loading("发送中")
-                  // }
-                }}
-                onCancel={() => {
-                  setShowInvitationModal(false)
-                }}
-                okText={intl.formatMessage({ id: "yes" })}
-                cancelText={intl.formatMessage({ id: "cancel" })}
-              >
-                <p>{intl.formatMessage({ id: "share.url.privacy" })}</p>
-                {/* <b style={{ marginRight: 10 }}>邀请目的</b>
+    <InputWithPicker
+      send={send}
+      addonAfter={
+        chatView !== "page" && (
+          <span>
+            <Modal
+              title={intl.formatMessage({ id: "share.url" })}
+              visible={showInvitationModal}
+              onOk={() => {
+                const payload = {
+                  // url and title added by content script
+                  type: "url",
+                  url: getUrl()
+                  // invitationType: invitationType,
+                  // invitationPurpose: invitationPurpose
+                }
+                send(payload)
+                // socketManager.sendMessage(payload)
+                setShowInvitationModal(false)
+                // if (invitationType !== "room") {
+                //   // room invitation is much faster
+                //   // no db lookup
+                //   message.loading("发送中")
+                // }
+              }}
+              onCancel={() => {
+                setShowInvitationModal(false)
+              }}
+              okText={intl.formatMessage({ id: "yes" })}
+              cancelText={intl.formatMessage({ id: "cancel" })}
+            >
+              <p>{intl.formatMessage({ id: "share.url.privacy" })}</p>
+              {/* <b style={{ marginRight: 10 }}>邀请目的</b>
               <Radio.Group
                 onChange={e => {
                   setInvitationPurpose(e.target.value)
@@ -124,28 +130,59 @@ function Footer({ account, setMessages, chatView, roomId }) {
                   </Radio>
                 </Radio.Group> 
               </div>*/}
-              </Modal>
-              <Tooltip
-                title={intl.formatMessage({ id: "share.url" })}
-                placement="left"
-              >
-                <Button
-                  onClick={() => {
-                    setShowInvitationModal(true)
-                  }}
-                  icon="share-alt"
-                />
-              </Tooltip>
-            </span>
-          )
-        }
-      />
+            </Modal>
+            <Tooltip
+              title={intl.formatMessage({ id: "share.url" })}
+              placement="left"
+            >
+              <Button
+                onClick={() => {
+                  setShowInvitationModal(true)
+                }}
+                icon="share-alt"
+              />
+            </Tooltip>
+          </span>
+        )
+      }
+    />
+  )
+
+  if (!connected) {
+    content = (
+      <center
+        style={{
+          padding: 20,
+          background: "white",
+          borderTop: "lightgray 1px solid"
+        }}
+      >
+        <Button
+          style={{ width: "100%" }}
+          onClick={() => {
+            setRoomConnectionStatus(roomId, true)
+            socketManager.joinRoom(roomId, rooms, account.token)
+          }}
+          type="primary"
+          size="large"
+        >
+          {intl.formatMessage({ id: "join.room" })}
+        </Button>
+      </center>
+    )
+  }
+
+  if (!account) {
+    content = (
+      <center style={{ padding: 20, background: "lightgray" }}>
+        {intl.formatMessage({ id: "not.login" })}
+      </center>
     )
   }
 
   return <div className="sp-chat-bottom">{content}</div>
 }
-export default Footer
+// export default Footer
 // const stateToProps = (state, props) => {
 //   let roomId = "lobby"
 //   if (state.chatView == "page") {
@@ -158,4 +195,4 @@ export default Footer
 //     roomId: roomId
 //   }
 // }
-// export default connect(stateToProps)(Footer)
+export default connect(null, { setRoomConnectionStatus })(Footer)

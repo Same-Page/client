@@ -1,9 +1,9 @@
 import axios from "axios"
 
 import socketManager from "socket/socket"
-
+import storageManager from "utils/storage"
 import { getUrl, getDomain } from "utils/url"
-import { msgOtherUser } from "../actions"
+import { connect } from "react-redux"
 
 const initState = {
   chatModes: [],
@@ -14,6 +14,7 @@ const initState = {
   otherUser: null
 }
 function getRooms(modes, manMadeRoom) {
+  // return room regardless connected or not
   let rooms = modes.map(mode => {
     if (mode === "page") {
       return {
@@ -36,6 +37,7 @@ function getRooms(modes, manMadeRoom) {
   return rooms
 }
 const store = (state = initState, action) => {
+  const rooms = [...state.rooms]
   console.log(action.type)
   console.log(action.payload)
   switch (action.type) {
@@ -73,34 +75,43 @@ const store = (state = initState, action) => {
         ...state,
         account: account
       }
-
+    case "SET_ROOM_STATUS":
+      console.log("SET_ROOM_STATUS")
+      console.log(action.payload.roomId)
+      console.log(action.payload.connected)
+      rooms.forEach(r => {
+        if (r.id === action.payload.roomId) {
+          r.connected = action.payload.connected
+        }
+      })
+      return { ...state, rooms: rooms }
     case "VIEW_OTHER_USER":
       // TODO: compare user id with current user
       // if self then go to profile page
       return { ...state, otherUser: action.payload }
     case "JOIN_MAN_MADE_ROOM":
       const manMadeRoom = action.payload
-      const rooms = state.rooms.filter(room => {
+      const roomsCopy = rooms.filter(room => {
         return room.type !== "room"
       })
-      rooms.push(manMadeRoom)
-
-      const data = {
-        rooms: rooms,
-        token: state.account.token
+      roomsCopy.push(manMadeRoom)
+      if (state.account) {
+        socketManager.joinRoom(manMadeRoom.id, roomsCopy, state.account.token)
+        socketManager.sendEvent({
+          action: "room",
+          data: {
+            getChatHistory: true,
+            rooms: [manMadeRoom.id]
+          }
+        })
       }
-      socketManager.setRooms(data)
-      socketManager.sendEvent({
-        action: "room",
-        data: {
-          getChatHistory: true,
-          rooms: [manMadeRoom.id]
-        }
-      })
+      // do not save connected status
+      delete manMadeRoom["connected"]
+      storageManager.set("room", manMadeRoom)
       return {
         ...state,
         tab: "chat",
-        rooms: rooms,
+        rooms: roomsCopy,
         manMadeRoom: manMadeRoom,
         chatView: "room"
       }

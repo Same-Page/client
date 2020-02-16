@@ -91,7 +91,7 @@ function ChatboxIframe(props) {
 					window.spDebug(data)
 					storage.set(data.key, data.value)
 				}
-				if (data.action === "getConfig") {
+				if (data.action === "sp-parent-data") {
 					spDebug("post config & account to chatbox")
 					postMsgToIframe("sp-parent-data", {
 						spConfig: spConfig,

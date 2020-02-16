@@ -7,7 +7,7 @@ import View from "./View"
 // import Footer from "./Footer"
 // import MusicTab from "containers/Music"
 import socketManager from "socket"
-import { changeChatView } from "redux/actions/chat"
+import { changeChatView, setRoomConnectionStatus } from "redux/actions/chat"
 import { viewOtherUser, changeTab } from "redux/actions"
 
 function Chat({
@@ -18,23 +18,18 @@ function Chat({
   activeView,
   changeChatView,
   changeTab,
-  viewOtherUser
+  viewOtherUser,
+  setRoomConnectionStatus
 }) {
   // const [mediaDisplay, setMediaDisplay] = useState("none")
   // const [mediaNum, setMediaNum] = useState(0)
 
   useEffect(() => {
-    console.log(rooms)
-    const roomIds = rooms.map(r => {
-      return r.id
-    })
-    socketManager.sendEvent({
-      action: "room",
-      data: {
-        getChatHistory: true,
-        rooms: roomIds
-      }
-    })
+    // console.log(rooms)
+    // const roomIds = rooms.map(r => {
+    //   return r.id
+    // })
+    socketManager.getRoomInfo()
     // socketManager.addHandler("login success", "query_room_info", users => {
     //   // socketManager.sendEvent("get room info")
     // })
@@ -83,6 +78,7 @@ function Chat({
         manMadeRoom={manMadeRoom}
         rooms={rooms}
         changeTab={changeTab}
+        setRoomConnectionStatus={setRoomConnectionStatus}
         // mediaNum={mediaNum}
         // showMusic={() => {
         //   setMediaDisplay("block")
@@ -105,6 +101,7 @@ function Chat({
             show={mode === activeView}
             key={mode}
             room={room}
+            rooms={rooms}
 
             // displayMusicTab={() => {
             //   setMediaDisplay("block")
@@ -129,5 +126,6 @@ const stateToProps = state => {
 export default connect(stateToProps, {
   changeChatView,
   viewOtherUser,
-  changeTab
+  changeTab,
+  setRoomConnectionStatus
 })(Chat)

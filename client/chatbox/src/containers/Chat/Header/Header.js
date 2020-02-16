@@ -2,11 +2,11 @@ import "./Header.css"
 
 // import { FormattedMessage, useIntl } from "react-intl"
 import { useIntl } from "react-intl"
-import { Badge } from "antd"
 import React, { useState, useEffect } from "react"
-import { Radio, Button, Tooltip, Icon, Modal } from "antd"
+import { Badge, Radio, Button, Tooltip, Icon } from "antd"
 import socketManager from "socket/socket"
 import UserButton from "./UserButton"
+import RoomInfo from "./RoomInfo"
 
 function ChatHeader({
   chatModes,
@@ -15,7 +15,8 @@ function ChatHeader({
   changeChatView,
   viewOtherUser,
   rooms,
-  account
+  account,
+  setRoomConnectionStatus
 }) {
   // const chatModes = props.chatModes
   // const activeView = props.activeView
@@ -23,6 +24,7 @@ function ChatHeader({
   const intl = useIntl()
   const [showHelp, setShowHelp] = useState(false)
   const [unreads, setUnreads] = useState({})
+  const [showUsers, toggleUsers] = useState(false)
 
   useEffect(() => {
     setUnreads(unreads => {
@@ -73,97 +75,38 @@ function ChatHeader({
     </center>
   )
   if (account) {
-    let helpTitle = ""
-    let helpContent = ""
-    // if (mode === "room") {
-    //   helpTitle = room.name
-    //   helpContent = (
-    //     <div>
-    //       <h4>介绍</h4>
-    //       {room.about}
-    //       <br />
-    //       <br />
-    //       <h4>房主</h4>
-    //       {room.owner && (
-    //         <div>
-    //           <Avatar
-    //             // icon={icon}
-    //             // className={props.className}
-    //             src={room.owner.avatarSrc}
-    //             size="large"
-    //             style={{ cursor: "pointer", marginRight: 10 }}
-    //             onClick={() => {
-    //               setShowHelp(false)
-    //               props.viewOtherUser(room.owner)
-    //             }}
-    //           />
-    //           {room.owner.name}
-    //         </div>
-    //       )}
-    //     </div>
-    //   )
-    // }
-    // if (mode === "site") {
-    //   helpTitle = "同网站聊天"
-    //   helpContent = (
-    //     <div>
-    //       <h4>介绍</h4>
-    //       和其他也在{getDomain()}的用户聊天。
-    //     </div>
-    //   )
-    // }
-    // if (mode === "page") {
-    //   helpTitle = "同网页聊天"
-    //   helpContent = (
-    //     <div>
-    //       <h4>介绍</h4>
-    //       和其他也在{getUrl()}的用户聊天。
-    //     </div>
-    //   )
-    // }
-    // if (mode === "tags") {
-    //   helpTitle = intl.formatMessage({ id: "room" }) + " " + room.id
-    //   helpContent = (
-    //     <div>
-    //       {/* <p>浏览相似内容的用户会进入该聊天室</p> */}
-    //       <p>{intl.formatMessage({ id: "keywords.of.room" })}</p>
-    //       <b>{room.tags && room.tags.join(", ")}</b>
-    //       {(!room.tags || !room.tags.length) && (
-    //         <span>{intl.formatMessage({ id: "no.keyword" })}</span>
-    //       )}
-    //     </div>
-    //   )
-    // }
+    const room = getRoom(activeView)
+
     content = (
       <div>
-        {/* <Switch
-        className="sp-toggle-online"
-        checkedChildren="在线"
-        unCheckedChildren="离线"
-        defaultChecked
-        onChange={toggleOnline}
-      /> */}
-        <Modal
-          title={helpTitle}
-          visible={showHelp}
-          onCancel={() => {
-            setShowHelp(false)
-          }}
-          wrapClassName="sp-modal"
-          footer={null}
-          bodyStyle={{ maxHeight: "calc(100% - 55px)", overflowY: "auto" }}
-        >
-          {helpContent}
-          <a
-            className="yiyelink"
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://yiyechat.com"
+        {showHelp && (
+          <RoomInfo
+            account={account}
+            rooms={rooms}
+            room={room}
+            setShowHelp={setShowHelp}
+          />
+        )}
+        {room.connected && (
+          <Button
+            style={{
+              color: "red",
+              border: "none",
+              position: "absolute",
+              left: 5
+            }}
+            onClick={() => {
+              console.log("leave" + room.id)
+              setRoomConnectionStatus(room.id, false)
+              socketManager.leaveRoom(room.id, rooms, account.token)
+            }}
+            size="small"
+            // icon="info-circle"
           >
-            {intl.formatMessage({ id: "sp" })}
-          </a>
-        </Modal>
-
+            {/* <Icon type="info-circle" theme="twoTone" /> */}
+            <Icon type="poweroff" />
+          </Button>
+        )}
         {/* <Button
           style={{ border: "none", position: "absolute", left: 5 }}
           onClick={() => props.showMusic()}
@@ -180,8 +123,6 @@ function ChatHeader({
           onChange={e => {
             const chatView = e.target.value
             changeChatView(chatView)
-            // if (mode === "room") {
-            // }
           }}
         >
           {chatModes.map(mode => {
@@ -198,7 +139,7 @@ function ChatHeader({
             return (
               <Tooltip key={mode} placement="bottom" title={roomTitle}>
                 <Radio.Button value={mode}>
-                  {mode}
+                  {intl.formatMessage({ id: mode })}
                   <Badge offset={[3, -3]} count={unreadCount}></Badge>
                 </Radio.Button>
               </Tooltip>
@@ -231,6 +172,7 @@ function ChatHeader({
         {/* <Col style={{ textAlign: "right" }} span={8}> */}
         {chatModes.map((mode, i) => {
           const room = getRoom(mode)
+          const connected = room.connected
           if (room) {
             return (
               <UserButton
@@ -238,7 +180,10 @@ function ChatHeader({
                 chatView={mode}
                 show={mode === activeView}
                 key={mode}
-                room={getRoom(mode)}
+                room={room}
+                connected={connected}
+                showUsers={showUsers}
+                toggleUsers={toggleUsers}
               />
             )
           } else {

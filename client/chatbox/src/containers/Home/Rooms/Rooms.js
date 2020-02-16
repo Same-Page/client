@@ -4,7 +4,6 @@ import React from "react"
 import { Icon } from "antd"
 import { connect } from "react-redux"
 
-import storageManager from "utils/storage"
 import { joinManMadeRoom } from "redux/actions/chat"
 function Rooms({ loading, rooms, joinManMadeRoom }) {
   if (loading)
@@ -32,7 +31,7 @@ function Rooms({ loading, rooms, joinManMadeRoom }) {
           // chatContext.setMode("room")
           // chatContext.setRoom(room)
           // chatContext.setRealRoom(room)
-          storageManager.set("realRoom", room)
+          // storageManager.set("room", room)
           // return
           // }
           // window.open(room.url)

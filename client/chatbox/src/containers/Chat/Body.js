@@ -26,6 +26,7 @@ function ChatBody({ account, show, messages, setMessages, chatView, room }) {
   if (!room) {
     console.error("no roomId, should not render ChatBody")
   }
+  spDebug("[ChatBody] " + chatView)
   const roomId = room.id
   const msgNum = messages.length
   const bodyRef = useRef(null)
@@ -50,7 +51,7 @@ function ChatBody({ account, show, messages, setMessages, chatView, room }) {
       console.warn("[Body.js] no account, won't register socket events")
       return
     }
-    // window.spDebug("[Body.js] register socket events")
+    window.spDebug("[Body.js] register socket events " + roomId)
     socketManager.addHandler(
       "chat message",
       suffixCb("display_new_message"),
@@ -95,6 +96,8 @@ function ChatBody({ account, show, messages, setMessages, chatView, room }) {
             })
             setMessages(room.chatHistory)
             scrollToBottom(20)
+          } else {
+            socketManager.getRoomInfo([roomId])
           }
         }
       }

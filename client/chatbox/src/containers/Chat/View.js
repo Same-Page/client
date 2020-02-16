@@ -6,15 +6,12 @@ import Footer from "./Footer"
 
 import Discover from "containers/Home/Discover"
 
-function View({ chatView, show, room, account }) {
+function View({ chatView, show, room, rooms, account }) {
   const [messages, setMessages] = useState([])
+  window.spDebug("[View.js] " + chatView)
   if (chatView === "room") {
-    if (show) {
-      if (!room) {
-        return <Discover />
-      }
-    } else {
-      return <span />
+    if (!room) {
+      return <Discover />
     }
   }
   const roomId = room.id
@@ -32,7 +29,9 @@ function View({ chatView, show, room, account }) {
       {show && (
         <Footer
           account={account}
-          roomId={roomId}
+          roomId={room.id}
+          rooms={rooms}
+          connected={room.connected}
           chatView={chatView}
           setMessages={setMessages}
         />

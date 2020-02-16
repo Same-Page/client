@@ -1,10 +1,10 @@
-// import * as io from "socket.io-client";
-
 // import { socketUrl } from "config/urls"
 import { getDomain, getUrl } from "utils/url"
 import { postMsgToIframe } from "utils/iframe"
 import accountManager from "services/account"
 import roomManager from "services/room"
+import storage from "storage.js"
+
 // import { addUserToCache, getUserFromCache } from "services/user"
 
 let _socket = null
@@ -37,24 +37,39 @@ const _disconnect = () => {
 const _joinRoom = () => {
 	// TODO: read modes from config
 	// also need to know which man-made room to join
-	const rooms = [
-		{
-			type: "page",
-			id: getUrl()
-		},
-		{
-			type: "site",
-			id: getDomain()
+	storage.get("room", room => {
+		const rooms = [
+			{
+				type: "page",
+				id: getUrl()
+			},
+			{
+				type: "site",
+				id: getDomain()
+			}
+		]
+		if (room) {
+			rooms.push(room)
 		}
-	]
-	const payload = {
-		action: "join",
-		data: {
-			rooms: rooms,
-			token: accountManager.getAccount().token
-		}
-	}
-	_sendEvent(payload)
+		window.spDebug("[Inject] rooms")
+		window.spDebug(rooms)
+		storage.get("noJoin", noJoin => {
+			noJoin = noJoin || []
+			const filteredRooms = rooms.filter(r => {
+				return !noJoin.includes(r.id)
+			})
+			window.spDebug("[Inject] filtered rooms")
+			window.spDebug(filteredRooms)
+			const payload = {
+				action: "join",
+				data: {
+					rooms: filteredRooms,
+					token: accountManager.getAccount().token
+				}
+			}
+			_sendEvent(payload)
+		})
+	})
 }
 
 const _isConnected = () => {

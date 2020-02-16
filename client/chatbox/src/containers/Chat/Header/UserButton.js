@@ -1,26 +1,35 @@
 import React, { useState, useEffect } from "react"
 import { Button } from "antd"
-
+import { connect } from "react-redux"
 import Users from "./Users"
 import socketManager from "socket/socket"
+import { setRoomConnectionStatus } from "redux/actions/chat"
 // import { getUrl, getDomain } from "utils/url"
 
-function UserButton({ chatView, show, room, viewOtherUser }) {
-  const [showUsers, toggleUsers] = useState(false)
+function UserButton({
+  chatView,
+  show,
+  room,
+  viewOtherUser,
+  setRoomConnectionStatus,
+  connected,
+  toggleUsers,
+  showUsers
+}) {
   const [users, setUsers] = useState([])
+  // const connected = room.connected
   let roomId = room.id
-
   let userNum = users.length
-  if (userNum >= 50) {
-    userNum = "50+"
-  }
+  // if (userNum >= 50) {
+  //   userNum = "50+"
+  // }
   const suffixCb = handlerName => {
     return handlerName + "_" + roomId.toString()
   }
   useEffect(() => {
     if (!roomId) return
 
-    console.log("register user join/left handlers" + roomId)
+    console.log("register user join/left handlers " + roomId)
     socketManager.addHandler(
       "other join",
       suffixCb("add_user_to_room"),
@@ -54,6 +63,8 @@ function UserButton({ chatView, show, room, viewOtherUser }) {
       suffixCb("set_users_in_room"),
       roomDict => {
         if (roomId in roomDict) {
+          // console.log("set connected")
+          setRoomConnectionStatus(roomId, true)
           const room = roomDict[roomId]
           if (room.users) {
             setUsers(room.users)
@@ -96,7 +107,9 @@ function UserButton({ chatView, show, room, viewOtherUser }) {
       socketManager.removeHandler("disconnect", suffixCb("clear_users_in_room"))
     }
   }, [roomId])
-  if (show) {
+  // console.log(room)
+
+  if (show && connected) {
     return (
       <span>
         <Button
@@ -111,7 +124,8 @@ function UserButton({ chatView, show, room, viewOtherUser }) {
       </span>
     )
   }
+
   return <span />
 }
 
-export default UserButton
+export default connect(null, { setRoomConnectionStatus })(UserButton)
