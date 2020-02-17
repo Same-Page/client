@@ -70,20 +70,21 @@ const accountManager = {
 						window.spDebug("found login in storage")
 						window.spDebug("auto login")
 						loginUser(values)
-					} else {
-						window.spDebug(
-							"no login found in storage, use visitor accout"
-						)
-
-						// Use a visitor account
-						// Once user open chat box, visitor account should be wiped
-						_account = {
-							name: "visitor",
-							id: -1,
-							isVisitor: true
-						}
-						socketManager.connect()
 					}
+					// else {
+					// 	window.spDebug(
+					// 		"no login found in storage, use visitor accout"
+					// 	)
+
+					// 	// Use a visitor account
+					// 	// Once user open chat box, visitor account should be wiped
+					// 	_account = {
+					// 		name: "visitor",
+					// 		id: -1,
+					// 		isVisitor: true
+					// 	}
+					// 	socketManager.connect()
+					// }
 				})
 			}
 		})

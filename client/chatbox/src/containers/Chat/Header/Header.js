@@ -76,7 +76,7 @@ function ChatHeader({
   )
   if (account) {
     const room = getRoom(activeView)
-
+    const connected = room && room.connected
     content = (
       <div>
         {showHelp && (
@@ -87,7 +87,7 @@ function ChatHeader({
             setShowHelp={setShowHelp}
           />
         )}
-        {room.connected && (
+        {connected && (
           <Button
             style={{
               color: "red",
@@ -172,8 +172,9 @@ function ChatHeader({
         {/* <Col style={{ textAlign: "right" }} span={8}> */}
         {chatModes.map((mode, i) => {
           const room = getRoom(mode)
-          const connected = room.connected
           if (room) {
+            const connected = room.connected
+
             return (
               <UserButton
                 viewOtherUser={viewOtherUser}

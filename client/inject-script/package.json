@@ -67,7 +67,7 @@
 	"scripts": {
 		"start": "node scripts/start.js",
 		"start:dev": "REACT_APP_SP_ENV=dev npm start",
-		"buildit": "node scripts/build.js && rm -r ../extension/build/content-static && cp -r build/content-static ../extension/build/content-static",
+		"buildit": "node scripts/build.js && rm -r ../extension/build/content-static ; cp -r build/content-static ../extension/build/content-static",
 		"build": "REACT_APP_SP_ENV=prod  npm run buildit",
 		"build:dev": "REACT_APP_SP_ENV=dev  npm run buildit",
 		"test": "node scripts/test.js",

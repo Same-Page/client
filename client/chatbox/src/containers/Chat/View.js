@@ -11,7 +11,11 @@ function View({ chatView, show, room, rooms, account }) {
   window.spDebug("[View.js] " + chatView)
   if (chatView === "room") {
     if (!room) {
-      return <Discover />
+      if (account && show) {
+        return <Discover />
+      } else {
+        return <span />
+      }
     }
   }
 
