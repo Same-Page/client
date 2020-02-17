@@ -1,14 +1,14 @@
-import { getDomain, getUrl } from "utils/url"
+import { getDomain } from "utils/url"
 
 const usersInRooms = {}
-const getCountArray = () => {
-	const res = []
-	Object.keys(usersInRooms).forEach(roomId => {
-		const room = usersInRooms[roomId]
-		res.push(room.length)
-	})
-	return res
-}
+// const getCountArray = () => {
+// 	const res = []
+// 	Object.keys(usersInRooms).forEach(roomId => {
+// 		const room = usersInRooms[roomId]
+// 		res.push(room.length)
+// 	})
+// 	return res
+// }
 
 const roomManager = {
 	clear: () => {

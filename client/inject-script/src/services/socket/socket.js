@@ -1,16 +1,13 @@
-// import { socketUrl } from "config/urls"
+import { socketUrl } from "config/urls"
 import { getDomain, getUrl } from "utils/url"
 import { postMsgToIframe } from "utils/iframe"
 import accountManager from "services/account"
 import roomManager from "services/room"
 import storage from "storage.js"
 
-// import { addUserToCache, getUserFromCache } from "services/user"
-
 let _socket = null
 const lang = window.navigator.userLanguage || window.navigator.language
 // let _account = null
-let _roomId = getDomain()
 
 const _getClientVersion = () => {
 	let version = "999" // not ran as chrome extension
@@ -63,6 +60,8 @@ const _joinRoom = () => {
 			const payload = {
 				action: "join",
 				data: {
+					lang: lang,
+					version: _getClientVersion,
 					rooms: filteredRooms,
 					token: accountManager.getAccount().token
 				}
@@ -109,9 +108,7 @@ const _connect = () => {
 	}
 	window.spDebug("create socket and connect!")
 
-	_socket = new WebSocket(
-		"wss://7dvmt9p591.execute-api.ap-southeast-1.amazonaws.com/prod"
-	)
+	_socket = new WebSocket("wss://" + socketUrl)
 
 	_socket.onopen = e => {
 		window.spDebug("websocket connected")

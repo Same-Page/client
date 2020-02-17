@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react"
-import { Modal, Switch, Button } from "antd"
+import { Modal, Switch } from "antd"
 import { useIntl } from "react-intl"
 import { connect } from "react-redux"
 
 import storageManager from "utils/storage"
-import socketManager from "socket"
+// import socketManager from "socket"
 import { setRoomConnectionStatus } from "redux/actions/chat"
 function RoomInfo({
   account,

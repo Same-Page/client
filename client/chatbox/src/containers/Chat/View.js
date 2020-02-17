@@ -14,7 +14,7 @@ function View({ chatView, show, room, rooms, account }) {
       return <Discover />
     }
   }
-  const roomId = room.id
+
   // Body component is always mounted because of the socket handlers
   return (
     <span>

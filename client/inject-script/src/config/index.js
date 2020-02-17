@@ -3,9 +3,9 @@ const defaultConfig = {
 	defaultTab: "chat",
 	chatModes: ["site", "page", "room"],
 	defaultChatView: "site",
-	debug: true,
+	debug: false,
 	autoConnect: true,
-	socketUrl: "https://chat-v5.yiyechat.com",
+	socketUrl: "chat-v6.yiyechat.com/prod",
 	apiUrl: "https://api-v2.yiyechat.com",
 	chatboxSrc: "https://yiyechat.com/extension"
 }

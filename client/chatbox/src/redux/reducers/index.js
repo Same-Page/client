@@ -3,7 +3,6 @@ import axios from "axios"
 import socketManager from "socket/socket"
 import storageManager from "utils/storage"
 import { getUrl, getDomain } from "utils/url"
-import { connect } from "react-redux"
 
 const initState = {
   chatModes: [],
@@ -38,8 +37,8 @@ function getRooms(modes, manMadeRoom) {
 }
 const store = (state = initState, action) => {
   const rooms = [...state.rooms]
-  console.log(action.type)
-  console.log(action.payload)
+  // console.log(action.type)
+  // console.log(action.payload)
   switch (action.type) {
     case "SET_CHAT_MODES":
       const modes = action.payload
@@ -76,9 +75,9 @@ const store = (state = initState, action) => {
         account: account
       }
     case "SET_ROOM_STATUS":
-      console.log("SET_ROOM_STATUS")
-      console.log(action.payload.roomId)
-      console.log(action.payload.connected)
+      // console.log("SET_ROOM_STATUS")
+      // console.log(action.payload.roomId)
+      // console.log(action.payload.connected)
       rooms.forEach(r => {
         if (r.id === action.payload.roomId) {
           r.connected = action.payload.connected

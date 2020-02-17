@@ -29,7 +29,7 @@ function UserButton({
   useEffect(() => {
     if (!roomId) return
 
-    console.log("register user join/left handlers " + roomId)
+    // console.log("register user join/left handlers " + roomId)
     socketManager.addHandler(
       "other join",
       suffixCb("add_user_to_room"),
