@@ -57,20 +57,22 @@ function RoomInfo({
     )
   }
   if (room.type === "site") {
-    helpTitle = "同网站聊天"
+    helpTitle = intl.formatMessage({ id: "same.site.chat" })
     helpContent = (
       <div>
         <h4>{intl.formatMessage({ id: "room.about" })}</h4>
-        和其他也在{room.id}的用户聊天。
+        {intl.formatMessage({ id: "same.site.chat" })} @{" "}
+        <span style={{ color: "#1890ff" }}>{room.id}</span>
       </div>
     )
   }
   if (room.type === "page") {
-    helpTitle = "同网页聊天"
+    helpTitle = intl.formatMessage({ id: "same.page.chat" })
     helpContent = (
       <div>
         <h4>{intl.formatMessage({ id: "room.about" })}</h4>
-        和其他也在{room.id}的用户聊天。
+        {intl.formatMessage({ id: "same.page.chat" })} @{" "}
+        <span style={{ color: "#1890ff" }}>{room.id}</span>
       </div>
     )
   }

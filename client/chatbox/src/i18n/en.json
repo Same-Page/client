@@ -24,6 +24,8 @@
   "password": "Password",
 
   "room": "Fixed room",
+  "same.page.chat": "Same page chat",
+  "same.site.chat": "Same site chat",
   "keywords.of.room": "Keywords of this room",
   "share.url": "Share your url",
   "share.url.privacy": "Please be cautious when sharing your URL",
@@ -31,6 +33,7 @@
   "room.owner": "Owner",
   "auto.join": "Auto join",
   "join.room": "Join room",
+  "create.room": "Create room",
 
   "popular.rooms": "Popular rooms",
   "fixed.rooms": "Fixed rooms",

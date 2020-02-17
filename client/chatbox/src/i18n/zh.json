@@ -25,6 +25,8 @@
   "password": "密码",
 
   "room": "固定房间",
+  "same.page.chat": "同网页聊天",
+  "same.site.chat": "同网站聊天",
   "keywords.of.room": "该房间的关键词有:",
   "share.url": "分享你所在的网址",
   "share.url.privacy": "分享网址时请注意保护个人隐私",
@@ -32,6 +34,7 @@
   "room.owner": "房主",
   "auto.join": "自动进入",
   "join.room": "进入房间",
+  "create.room": "创建房间",
 
   "popular.rooms": "热门房间",
   "fixed.rooms": "固定房间",

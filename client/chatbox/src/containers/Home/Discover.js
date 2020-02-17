@@ -67,7 +67,7 @@ function Discover(props) {
             setShowCreateRoomModal(true)
           }}
         >
-          创建房间
+          {intl.formatMessage({ id: "create.room" })}
         </Button>
         <Rooms rooms={rooms} />
       </div>
@@ -79,7 +79,7 @@ function Discover(props) {
           maxHeight: "calc(100% - 40px)",
           overflowY: "auto"
         }}
-        title="创建房间"
+        title={intl.formatMessage({ id: "create.room" })}
         visible={showCreateRoomModal}
         onCancel={() => {
           setShowCreateRoomModal(false)
