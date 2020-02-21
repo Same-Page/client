@@ -20,7 +20,8 @@ import ImageModal from "../ImageModal"
 import socketManager from "services/socket"
 import accountManager from "services/account/account"
 
-const defaultUrl = "http://localhost:3210/"
+// const defaultUrl = "http://localhost:3210/"
+const defaultUrl = window.location.href
 let urlInput = defaultUrl
 let fakeUrl = false
 let curUrl = window.location.href
