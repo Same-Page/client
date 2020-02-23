@@ -117,7 +117,7 @@ function RoomHeader({
               })
             }
             size="small"
-            icon="unordered-list"
+            icon="menu"
           ></Button>
         )}
         {connected && (
