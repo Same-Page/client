@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useState, useEffect } from "react"
 // import { message } from "antd"
 import { connect } from "react-redux"
 
@@ -23,6 +23,7 @@ function Chat({
 }) {
   // const [mediaDisplay, setMediaDisplay] = useState("none")
   // const [mediaNum, setMediaNum] = useState(0)
+  const [showRoomList, setShowRoomList] = useState(false)
 
   useEffect(() => {
     // console.log(rooms)
@@ -79,6 +80,8 @@ function Chat({
         rooms={rooms}
         changeTab={changeTab}
         setRoomConnectionStatus={setRoomConnectionStatus}
+        showRoomList={showRoomList}
+        setShowRoomList={setShowRoomList}
         // mediaNum={mediaNum}
         // showMusic={() => {
         //   setMediaDisplay("block")
@@ -101,7 +104,8 @@ function Chat({
             show={mode === activeView}
             key={mode}
             room={room}
-            rooms={rooms}
+            showRoomList={showRoomList}
+            setShowRoomList={setShowRoomList}
 
             // displayMusicTab={() => {
             //   setMediaDisplay("block")

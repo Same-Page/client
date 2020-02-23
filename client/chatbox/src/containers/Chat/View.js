@@ -4,22 +4,30 @@ import React, { useState } from "react"
 import Body from "./Body"
 import Footer from "./Footer"
 
-import Discover from "containers/Home/Discover"
+import RoomsWrapper from "containers/Home/RoomsWrapper"
 
-function View({ chatView, show, room, rooms, account }) {
+function View({
+  chatView,
+  show,
+  room,
+  account,
+  showRoomList,
+  setShowRoomList
+}) {
   const [messages, setMessages] = useState([])
   window.spDebug("[View.js] " + chatView)
-  if (chatView === "room") {
-    if (!room) {
-      if (account && show) {
-        return <Discover />
-      } else {
-        return <span />
-      }
-    }
-  }
+  // if (chatView === "room") {
+  //   if (!room) {
+  //     if (account && show) {
+  //       return <Discover />
+  //     } else {
+  //       return <span />
+  //     }
+  //   }
+  // }
 
   // Body component is always mounted because of the socket handlers
+
   return (
     <span>
       <Body
@@ -30,7 +38,10 @@ function View({ chatView, show, room, rooms, account }) {
         setMessages={setMessages}
         room={room}
       />
-      {show && (
+      {show && chatView === "room" && (showRoomList || !room) && (
+        <RoomsWrapper setShowRoomList={setShowRoomList} />
+      )}
+      {show && room && (
         <Footer
           account={account}
           room={room}

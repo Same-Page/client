@@ -14,7 +14,8 @@ const chatBodyStyle = {
   position: "fixed",
   background: "#f6f9fc",
   padding: 10,
-  paddingBottom: 50
+  paddingBottom: 50,
+  scrollBehavior: "smooth"
 }
 const bodyMaskStyle = {
   height: "100%",
@@ -35,7 +36,8 @@ const AUTO_SCROLL_TRESHOLD_DISTANCE = 300
 
 function ChatBody({ account, show, messages, setMessages, chatView, room }) {
   if (!room) {
-    console.error("no roomId, should not render ChatBody")
+    return <span />
+    // console.error("no roomId, should not render ChatBody")
   }
   spDebug("[ChatBody] " + chatView)
   const roomId = room.id
@@ -68,6 +70,9 @@ function ChatBody({ account, show, messages, setMessages, chatView, room }) {
     // TODO: seems no need to remove socket handler when account state change
     if (!account) {
       console.warn("[Body.js] no account, won't register socket events")
+      return
+    }
+    if (!roomId) {
       return
     }
     window.spDebug("[Body.js] register socket events " + roomId)

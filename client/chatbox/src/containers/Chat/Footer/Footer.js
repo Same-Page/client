@@ -3,7 +3,7 @@ import "./Footer.css"
 import React, { useState, useEffect } from "react"
 import { message, Button, Modal, Tooltip } from "antd"
 import { useIntl } from "react-intl"
-import { connect } from "react-redux"
+// import { connect } from "react-redux"
 import moment from "moment"
 
 import InputWithPicker from "components/InputWithPicker"

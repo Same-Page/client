@@ -6,7 +6,14 @@ import { connect } from "react-redux"
 
 import { joinManMadeRoom } from "redux/actions/chat"
 import socketManager from "socket"
-function Rooms({ loading, rooms, joinManMadeRoom, manMadeRoom }) {
+
+function Rooms({
+  loading,
+  rooms,
+  joinManMadeRoom,
+  manMadeRoom,
+  setShowRoomList
+}) {
   if (loading)
     return (
       <center>
@@ -28,10 +35,11 @@ function Rooms({ loading, rooms, joinManMadeRoom, manMadeRoom }) {
         className="sp-home-chatroom"
         onClick={() => {
           joinManMadeRoom(room)
-          socketManager.joinRoom(room)
+          setShowRoomList(false)
           if (manMadeRoom) {
             socketManager.leaveRoom(manMadeRoom)
           }
+          socketManager.joinRoom(room)
         }}
       >
         <span style={{ marginRight: 15, display: "inline-block", width: 25 }}>

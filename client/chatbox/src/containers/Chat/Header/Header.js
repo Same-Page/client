@@ -15,7 +15,8 @@ function ChatHeader({
   changeChatView,
   viewOtherUser,
   rooms,
-  account
+  account,
+  setShowRoomList
 }) {
   // const chatModes = props.chatModes
   // const activeView = props.activeView
@@ -58,7 +59,7 @@ function ChatHeader({
     } else {
       room = null
     }
-    return room
+    return { ...room }
   }
   let content = (
     <center>
@@ -75,7 +76,6 @@ function ChatHeader({
   )
   if (account) {
     const room = getRoom(activeView)
-    const connected = room && room.connected
     content = (
       <div>
         {showHelp && (
@@ -140,6 +140,7 @@ function ChatHeader({
           if (room) {
             return (
               <RoomHeader
+                account={account}
                 viewOtherUser={viewOtherUser}
                 chatView={mode}
                 show={mode === activeView}
@@ -147,6 +148,7 @@ function ChatHeader({
                 room={room}
                 showUsers={showUsers}
                 toggleUsers={toggleUsers}
+                setShowRoomList={setShowRoomList}
               />
             )
           } else {

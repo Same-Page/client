@@ -180,7 +180,7 @@ class App extends React.Component {
       if (roomTypes.length > 0) {
         message.success(
           roomTypes.join(", ") + " " + intl.formatMessage({ id: "connected" }),
-          3
+          2
         )
       }
     })

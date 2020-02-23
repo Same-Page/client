@@ -6,14 +6,17 @@ import socketManager from "socket/socket"
 import { setRoomConnectionStatus } from "redux/actions/chat"
 
 function RoomHeader({
+  account,
   chatView,
   show,
   room,
   viewOtherUser,
   setRoomConnectionStatus,
   toggleUsers,
-  showUsers
+  showUsers,
+  setShowRoomList
 }) {
+  // console.log(room)
   const connected = room.connected
   const [users, setUsers] = useState([])
 
@@ -63,10 +66,21 @@ function RoomHeader({
       roomDict => {
         if (roomId in roomDict) {
           // console.log("set connected")
-          setRoomConnectionStatus(roomId, true)
           const room = roomDict[roomId]
           if (room.users) {
             setUsers(room.users)
+            // make sure user himself is in the response
+            // sometimes user isn't added to room properly
+            const userInRoom = room.users.filter(u => {
+              return u.id === account.id
+            })
+            if (userInRoom.length > 0) {
+              setRoomConnectionStatus(roomId, true)
+              // console.log("setRoomConnectionStatus " + roomId)
+            } else {
+              setRoomConnectionStatus(roomId, false)
+              console.error("User not added to room properly! ")
+            }
           }
         }
       }
@@ -78,24 +92,7 @@ function RoomHeader({
         setUsers([])
       }
     )
-    // socketManager.addHandler("room info", "set_mode_and_room", data => {
-    //   // useful when user join a popular site, but
-    //   // backend move user into certain room
-    //   // E.g. www.google.com -> lobby
-    //   // Note: should only update UI, do not trigger actual room change!
-    //   // console.log(data)
-    //   chatContext.setMode(data.mode)
-    //   if (data.mode === "room") {
-    //     chatContext.setRoom(data.room)
-    //     chatContext.setRealRoom(data.room)
-    //   }
-    //   if (data.mode === "tags") {
-    //     spDebug(data)
-    //     chatContext.setRoom(data.room)
-    //     chatContext.setRealRoom(data.room)
-    //   }
-    // })
-    // window.setMode = setMode
+
     return () => {
       socketManager.removeHandler("other join", suffixCb("add_user_to_room"))
       socketManager.removeHandler(
@@ -108,38 +105,54 @@ function RoomHeader({
   }, [roomId])
   // console.log(room)
 
-  if (show && connected) {
+  if (show) {
     return (
       <span>
-        <Button
-          style={{
-            color: "red",
-            border: "none",
-            position: "absolute",
-            left: 5
-          }}
-          onClick={() => {
-            window.spDebug("leave" + room.id)
-            setRoomConnectionStatus(room.id, false)
-            socketManager.leaveRoom(room)
-            setUsers([])
-          }}
-          size="small"
-          // icon="info-circle"
-        >
-          {/* <Icon type="info-circle" theme="twoTone" /> */}
-          <Icon type="poweroff" />
-        </Button>
+        {chatView === "room" && (
+          <Button
+            style={{ border: "none" }}
+            onClick={() =>
+              setShowRoomList(srl => {
+                return !srl
+              })
+            }
+            size="small"
+            icon="unordered-list"
+          ></Button>
+        )}
+        {connected && (
+          <span>
+            <Button
+              style={{
+                color: "red",
+                border: "none",
+                position: "absolute",
+                left: 5
+              }}
+              onClick={() => {
+                window.spDebug("leave" + room.id)
+                setRoomConnectionStatus(room.id, false)
+                socketManager.leaveRoom(room)
+                setUsers([])
+              }}
+              size="small"
+              // icon="info-circle"
+            >
+              {/* <Icon type="info-circle" theme="twoTone" /> */}
+              <Icon type="poweroff" />
+            </Button>
 
-        <Button
-          style={{ border: "none", position: "absolute", right: 0 }}
-          onClick={() => toggleUsers(!showUsers)}
-          size="small"
-          icon="team"
-        >
-          <span style={{ marginLeft: 5 }}>{userNum}</span>
-        </Button>
-        {showUsers && <Users viewOtherUser={viewOtherUser} users={users} />}
+            <Button
+              style={{ border: "none", position: "absolute", right: 0 }}
+              onClick={() => toggleUsers(!showUsers)}
+              size="small"
+              icon="team"
+            >
+              <span style={{ marginLeft: 5 }}>{userNum}</span>
+            </Button>
+            {showUsers && <Users viewOtherUser={viewOtherUser} users={users} />}
+          </span>
+        )}
       </span>
     )
   }

@@ -1,6 +1,6 @@
 import axios from "axios"
 
-import socketManager from "socket/socket"
+// import socketManager from "socket/socket"
 import storageManager from "utils/storage"
 import { getUrl, getDomain } from "utils/url"
 
