@@ -1,5 +1,6 @@
 // import Rooms from "../containers/Home/Rooms"
 // import storageManager from "utils/storage"
+import store from "redux/store"
 
 const _socketEventHanders = {}
 
@@ -45,27 +46,26 @@ const socketManager = {
   disconnect: () => {
     _sendEvent("disconnect socket")
   },
-  leaveRoom: (roomId, rooms, token) => {
-    const filteredRooms = rooms.filter(r => {
-      return r.connected && r.id !== roomId
-    })
+  leaveRoom: room => {
+    const state = store.getState()
+    const token = state.account.token
+
     const payload = {
-      action: "join",
+      action: "leave_single",
       data: {
-        rooms: filteredRooms,
+        room: room,
         token: token
       }
     }
     _sendEvent(payload)
   },
-  joinRoom: (roomId, rooms, token) => {
-    const filteredRooms = rooms.filter(r => {
-      return r.connected || r.id === roomId
-    })
+  joinRoom: room => {
+    const state = store.getState()
+    const token = state.account.token
     const payload = {
-      action: "join",
+      action: "join_single",
       data: {
-        rooms: filteredRooms,
+        room: room,
         token: token
       }
     }

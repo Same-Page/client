@@ -16,6 +16,17 @@ const chatBodyStyle = {
   padding: 10,
   paddingBottom: 50
 }
+const bodyMaskStyle = {
+  height: "100%",
+  width: "100%",
+  position: "fixed",
+  background: "black",
+  opacity: 0,
+  marginTop: -10,
+  marginLeft: -10,
+  zIndex: 10,
+  pointerEvents: "none" // still allow scrolling
+}
 const AUTO_SCROLL_TRESHOLD_DISTANCE = 300
 
 // function isMedia(msg) {
@@ -34,6 +45,10 @@ function ChatBody({ account, show, messages, setMessages, chatView, room }) {
     return name + "_" + chatView
   }
   const bodyStyle = { ...chatBodyStyle }
+  const maskStyle = { ...bodyMaskStyle }
+  if (!room.connected) {
+    maskStyle.opacity = 0.5
+  }
   if (room.background) {
     bodyStyle.backgroundImage = `url('${room.background}')`
     bodyStyle.backgroundSize = "cover"
@@ -45,6 +60,10 @@ function ChatBody({ account, show, messages, setMessages, chatView, room }) {
   useEffect(() => {
     scrollToBottom(10)
   }, [show])
+  useEffect(() => {
+    // clear room message when room change (only for man made rooms)
+    setMessages([])
+  }, [roomId])
   useEffect(() => {
     // TODO: seems no need to remove socket handler when account state change
     if (!account) {
@@ -198,6 +217,7 @@ function ChatBody({ account, show, messages, setMessages, chatView, room }) {
     <span>
       {show && (
         <div ref={bodyRef} style={bodyStyle}>
+          <div style={maskStyle}>Offline</div>
           {res}
         </div>
       )}

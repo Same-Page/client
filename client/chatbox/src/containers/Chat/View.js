@@ -33,8 +33,7 @@ function View({ chatView, show, room, rooms, account }) {
       {show && (
         <Footer
           account={account}
-          roomId={room.id}
-          rooms={rooms}
+          room={room}
           connected={room.connected}
           chatView={chatView}
           setMessages={setMessages}

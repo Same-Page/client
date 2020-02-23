@@ -1,6 +1,6 @@
 import "./Footer.css"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { message, Button, Modal, Tooltip } from "antd"
 import { useIntl } from "react-intl"
 import { connect } from "react-redux"
@@ -9,21 +9,19 @@ import moment from "moment"
 import InputWithPicker from "components/InputWithPicker"
 import socketManager from "socket/socket"
 import { getUrl } from "utils/url"
-import { setRoomConnectionStatus } from "redux/actions/chat"
 
 const MESSAGE_TIME_GAP = 2 * 1000
 let lastMsgTime = 0
-function Footer({
-  account,
-  setMessages,
-  chatView,
-  rooms,
-  roomId,
-  connected,
-  setRoomConnectionStatus
-}) {
+function Footer({ account, setMessages, chatView, room, connected }) {
+  const roomId = room.id
   const intl = useIntl()
+  const [joining, setJoining] = useState(false)
   const [showInvitationModal, setShowInvitationModal] = useState(false)
+  useEffect(() => {
+    if (connected) {
+      setJoining(false)
+    }
+  }, [connected])
   // const roomId = room.id
   // const connected = room.connected
   window.spDebug("[Footer.js] connected " + connected)
@@ -160,9 +158,10 @@ function Footer({
         <Button
           style={{ width: "100%" }}
           onClick={() => {
-            setRoomConnectionStatus(roomId, true)
-            socketManager.joinRoom(roomId, rooms, account.token)
+            socketManager.joinRoom(room)
+            setJoining(true)
           }}
+          loading={joining}
           type="primary"
           size="large"
         >
@@ -182,7 +181,7 @@ function Footer({
 
   return <div className="sp-chat-bottom">{content}</div>
 }
-// export default Footer
+export default Footer
 // const stateToProps = (state, props) => {
 //   let roomId = "lobby"
 //   if (state.chatView == "page") {
@@ -195,4 +194,4 @@ function Footer({
 //     roomId: roomId
 //   }
 // }
-export default connect(null, { setRoomConnectionStatus })(Footer)
+// export default connect(null, { setRoomConnectionStatus })(Footer)

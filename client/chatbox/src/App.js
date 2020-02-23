@@ -169,9 +169,21 @@ class App extends React.Component {
       // this.setState({ account: account })
       this.props.setAccount(account)
     })
-    // socketManager.addHandler("room info", "popup", () => {
-    //   message.success(intl.formatMessage({ id: "connected" }), 2)
-    // })
+    socketManager.addHandler("room info", "popup", rooms => {
+      const roomTypes = []
+      Object.keys(rooms).forEach(roomId => {
+        const room = rooms[roomId]
+        if (room.chatHistory) {
+          roomTypes.push(intl.formatMessage({ id: room.type }))
+        }
+      })
+      if (roomTypes.length > 0) {
+        message.success(
+          roomTypes.join(", ") + " " + intl.formatMessage({ id: "connected" }),
+          3
+        )
+      }
+    })
     socketManager.addHandler("disconnect", "popup", () => {
       message.warn(intl.formatMessage({ id: "disconnected" }), 2)
     })

@@ -5,7 +5,7 @@ import { useIntl } from "react-intl"
 import React, { useState, useEffect } from "react"
 import { Badge, Radio, Button, Tooltip, Icon } from "antd"
 import socketManager from "socket/socket"
-import UserButton from "./UserButton"
+import RoomHeader from "./RoomHeader"
 import RoomInfo from "./RoomInfo"
 
 function ChatHeader({
@@ -15,8 +15,7 @@ function ChatHeader({
   changeChatView,
   viewOtherUser,
   rooms,
-  account,
-  setRoomConnectionStatus
+  account
 }) {
   // const chatModes = props.chatModes
   // const activeView = props.activeView
@@ -87,26 +86,6 @@ function ChatHeader({
             setShowHelp={setShowHelp}
           />
         )}
-        {connected && (
-          <Button
-            style={{
-              color: "red",
-              border: "none",
-              position: "absolute",
-              left: 5
-            }}
-            onClick={() => {
-              console.log("leave" + room.id)
-              setRoomConnectionStatus(room.id, false)
-              socketManager.leaveRoom(room.id, rooms, account.token)
-            }}
-            size="small"
-            // icon="info-circle"
-          >
-            {/* <Icon type="info-circle" theme="twoTone" /> */}
-            <Icon type="poweroff" />
-          </Button>
-        )}
         {/* <Button
           style={{ border: "none", position: "absolute", left: 5 }}
           onClick={() => props.showMusic()}
@@ -146,20 +125,6 @@ function ChatHeader({
             )
           })}
         </Radio.Group>
-        {/* <div style={{ maxWidth: "45%", display: "inline-flex" }}>
-          <span
-            style={{
-              whiteSpace: "nowrap",
-              textOverflow: "ellipsis",
-              overflow: "hidden"
-            }}
-          >
-            {room.tags && room.tags.join(", ")}
-            {(!room.tags || !room.tags.length) && (
-              <FormattedMessage id="no.keyword"></FormattedMessage>
-            )}
-          </span>
-        </div> */}
         <Button
           style={{ border: "none" }}
           onClick={() => setShowHelp(true)}
@@ -173,16 +138,13 @@ function ChatHeader({
         {chatModes.map((mode, i) => {
           const room = getRoom(mode)
           if (room) {
-            const connected = room.connected
-
             return (
-              <UserButton
+              <RoomHeader
                 viewOtherUser={viewOtherUser}
                 chatView={mode}
                 show={mode === activeView}
                 key={mode}
                 room={room}
-                connected={connected}
                 showUsers={showUsers}
                 toggleUsers={toggleUsers}
               />

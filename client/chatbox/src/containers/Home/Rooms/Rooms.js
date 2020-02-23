@@ -5,7 +5,8 @@ import { Icon } from "antd"
 import { connect } from "react-redux"
 
 import { joinManMadeRoom } from "redux/actions/chat"
-function Rooms({ loading, rooms, joinManMadeRoom }) {
+import socketManager from "socket"
+function Rooms({ loading, rooms, joinManMadeRoom, manMadeRoom }) {
   if (loading)
     return (
       <center>
@@ -26,25 +27,13 @@ function Rooms({ loading, rooms, joinManMadeRoom }) {
         title={room.about}
         className="sp-home-chatroom"
         onClick={() => {
-          // if (roomId === "lobby") {
           joinManMadeRoom(room)
-          // chatContext.setMode("room")
-          // chatContext.setRoom(room)
-          // chatContext.setRealRoom(room)
-          // storageManager.set("room", room)
-          // return
-          // }
-          // window.open(room.url)
+          socketManager.joinRoom(room)
+          if (manMadeRoom) {
+            socketManager.leaveRoom(manMadeRoom)
+          }
         }}
       >
-        {/* <span className="sp-chatroom-metadata">
-            <div style={{display: 'inline-flex'}}>
-              <span style={{whiteSpace:'nowrap', textOverflow: 'ellipsis', overflow: 'hidden'}}>{room.name}</span>
-            </div>
-            <br />{" "}
-            <span style={{ fontSize: "smaller" }}>{room.userCount}人</span>
-          </span> */}
-
         <span style={{ marginRight: 15, display: "inline-block", width: 25 }}>
           <Icon type="user" />
           {room.userCount}
@@ -56,4 +45,8 @@ function Rooms({ loading, rooms, joinManMadeRoom }) {
   })
 }
 
-export default connect(null, { joinManMadeRoom })(Rooms)
+const stateToProps = state => {
+  return { manMadeRoom: state.manMadeRoom }
+}
+
+export default connect(stateToProps, { joinManMadeRoom })(Rooms)

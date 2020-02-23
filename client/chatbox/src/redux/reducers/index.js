@@ -90,23 +90,17 @@ const store = (state = initState, action) => {
       return { ...state, otherUser: action.payload }
     case "JOIN_MAN_MADE_ROOM":
       const manMadeRoom = action.payload
-      const roomsCopy = rooms.filter(room => {
-        return room.type !== "room"
-      })
-      roomsCopy.push(manMadeRoom)
-      if (state.account) {
-        socketManager.joinRoom(manMadeRoom.id, roomsCopy, state.account.token)
-        socketManager.sendEvent({
-          action: "room",
-          data: {
-            getChatHistory: true,
-            rooms: [manMadeRoom.id]
-          }
+      let roomsCopy = rooms
+      if (!state.manMadeRoom || state.manMadeRoom.id !== manMadeRoom.id) {
+        roomsCopy = rooms.filter(room => {
+          return room.type !== "room"
         })
+        roomsCopy.push(manMadeRoom)
+        // do not save connected status
+        delete manMadeRoom["connected"]
+        storageManager.set("room", manMadeRoom)
       }
-      // do not save connected status
-      delete manMadeRoom["connected"]
-      storageManager.set("room", manMadeRoom)
+
       return {
         ...state,
         tab: "chat",

@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react"
-import { Button } from "antd"
+import { Button, Icon } from "antd"
 import { connect } from "react-redux"
 import Users from "./Users"
 import socketManager from "socket/socket"
 import { setRoomConnectionStatus } from "redux/actions/chat"
-// import { getUrl, getDomain } from "utils/url"
 
-function UserButton({
+function RoomHeader({
   chatView,
   show,
   room,
   viewOtherUser,
   setRoomConnectionStatus,
-  connected,
   toggleUsers,
   showUsers
 }) {
+  const connected = room.connected
   const [users, setUsers] = useState([])
-  // const connected = room.connected
+
   let roomId = room.id
   let userNum = users.length
   // if (userNum >= 50) {
@@ -113,6 +112,26 @@ function UserButton({
     return (
       <span>
         <Button
+          style={{
+            color: "red",
+            border: "none",
+            position: "absolute",
+            left: 5
+          }}
+          onClick={() => {
+            window.spDebug("leave" + room.id)
+            setRoomConnectionStatus(room.id, false)
+            socketManager.leaveRoom(room)
+            setUsers([])
+          }}
+          size="small"
+          // icon="info-circle"
+        >
+          {/* <Icon type="info-circle" theme="twoTone" /> */}
+          <Icon type="poweroff" />
+        </Button>
+
+        <Button
           style={{ border: "none", position: "absolute", right: 0 }}
           onClick={() => toggleUsers(!showUsers)}
           size="small"
@@ -128,4 +147,4 @@ function UserButton({
   return <span />
 }
 
-export default connect(null, { setRoomConnectionStatus })(UserButton)
+export default connect(null, { setRoomConnectionStatus })(RoomHeader)
