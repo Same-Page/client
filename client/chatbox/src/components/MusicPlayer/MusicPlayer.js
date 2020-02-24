@@ -36,13 +36,16 @@ class VideoPlayer extends React.Component {
   }
 }
 
-function Player() {
+function Player(props) {
   const videoJsOptions = {
-    autoplay: false,
+    autoplay: true,
     dataSetup: { techOrder: ["youtube"] },
     controls: true,
     responsive: true,
-    width: "100%"
+    width: "100%",
+    // src:
+    //   "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4"
+    ...props
   }
 
   return <VideoPlayer {...videoJsOptions} />

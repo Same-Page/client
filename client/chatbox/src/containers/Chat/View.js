@@ -16,15 +16,6 @@ function View({
 }) {
   const [messages, setMessages] = useState([])
   window.spDebug("[View.js] " + chatView)
-  // if (chatView === "room") {
-  //   if (!room) {
-  //     if (account && show) {
-  //       return <Discover />
-  //     } else {
-  //       return <span />
-  //     }
-  //   }
-  // }
 
   // Body component is always mounted because of the socket handlers
 
@@ -33,7 +24,7 @@ function View({
       <Body
         account={account}
         show={show}
-        chatView={chatView}
+        // chatView={chatView}
         messages={messages}
         setMessages={setMessages}
         room={room}

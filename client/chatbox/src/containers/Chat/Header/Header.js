@@ -4,10 +4,12 @@ import "./Header.css"
 import { useIntl } from "react-intl"
 import React, { useState, useEffect } from "react"
 import { Badge, Radio, Button, Tooltip, Icon } from "antd"
+import { connect } from "react-redux"
+
 import socketManager from "socket/socket"
 import RoomHeader from "./RoomHeader"
 import RoomInfo from "./RoomInfo"
-
+import { setRoomConnectionStatus } from "redux/actions/chat"
 function ChatHeader({
   chatModes,
   activeView,
@@ -16,7 +18,8 @@ function ChatHeader({
   viewOtherUser,
   rooms,
   account,
-  setShowRoomList
+  setShowRoomList,
+  setRoomConnectionStatus
 }) {
   // const chatModes = props.chatModes
   // const activeView = props.activeView
@@ -149,6 +152,7 @@ function ChatHeader({
                 showUsers={showUsers}
                 toggleUsers={toggleUsers}
                 setShowRoomList={setShowRoomList}
+                setRoomConnectionStatus={setRoomConnectionStatus}
               />
             )
           } else {
@@ -168,4 +172,5 @@ function ChatHeader({
 // export default connect(null, { changeChatView, viewOtherUser })(
 //   ChatHeader
 // )
-export default ChatHeader
+// export default ChatHeader
+export default connect(null, { setRoomConnectionStatus })(ChatHeader)

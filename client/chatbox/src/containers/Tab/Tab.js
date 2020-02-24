@@ -18,7 +18,7 @@ import { changeTab, viewOtherUser } from "redux/actions"
 
 const TabPane = Tabs.TabPane
 
-function Tab({ otherUser, activeTab, changeTab, viewOtherUser }) {
+function Tab({ account, otherUser, activeTab, changeTab, viewOtherUser }) {
   const intl = useIntl()
   // console.log("render tab")
   const tabList = window.spConfig.tabList
@@ -70,7 +70,7 @@ function Tab({ otherUser, activeTab, changeTab, viewOtherUser }) {
               }
               key="discover"
             >
-              <Discover />
+              <Discover account={account} viewOtherUser={viewOtherUser} />
             </TabPane>
           )}
           {tabList.includes("chat") && (
@@ -160,6 +160,7 @@ function Tab({ otherUser, activeTab, changeTab, viewOtherUser }) {
 
 const stateToProps = state => {
   return {
+    account: state.account,
     activeTab: state.tab,
     otherUser: state.otherUser
   }

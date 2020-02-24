@@ -14,9 +14,9 @@ function RoomHeader({
   setRoomConnectionStatus,
   toggleUsers,
   showUsers,
-  setShowRoomList
+  setShowRoomList,
+  disconnectBtnLeft
 }) {
-  // console.log(room)
   const connected = room.connected
   const [users, setUsers] = useState([])
 
@@ -127,7 +127,7 @@ function RoomHeader({
                 color: "red",
                 border: "none",
                 position: "absolute",
-                left: 5
+                left: disconnectBtnLeft || 5
               }}
               onClick={() => {
                 window.spDebug("leave" + room.id)
@@ -160,4 +160,5 @@ function RoomHeader({
   return <span />
 }
 
-export default connect(null, { setRoomConnectionStatus })(RoomHeader)
+export default RoomHeader
+// export default connect(null, { setRoomConnectionStatus })(RoomHeader)
