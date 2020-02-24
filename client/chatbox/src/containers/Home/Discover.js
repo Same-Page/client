@@ -29,13 +29,13 @@ function Discover({ account, viewOtherUser }) {
             id: "video-room",
             type: "media",
             name: "放映厅",
-            src:
-              "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_5mb.mp4"
+            src: "https://yiyechat.com/media/jay20.mp4"
           },
           {
             id: "music-room",
             type: "media",
-            name: "音悦台"
+            name: "音悦台",
+            src: "https://yiyechat.com/media/jay20.mp4"
           },
           {
             id: "joke-room",
