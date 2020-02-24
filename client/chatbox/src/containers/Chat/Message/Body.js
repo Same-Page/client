@@ -1,11 +1,12 @@
 import "./Body.css"
 
-import React from "react"
+import React, { useState } from "react"
 import { Popover, Button, Icon } from "antd"
 
 import socketManager from "socket"
-
+import Iframe from "components/Iframe"
 function MessageBody(props) {
+  const [showIframe, setShowIframe] = useState(false)
   const data = props.data.content
   const self = props.data.self
   let content = data.value
@@ -60,13 +61,21 @@ function MessageBody(props) {
     const iconType = "link"
     content = (
       <div
-        title="点击打开网页"
-        // className={"sp-invitation-" + invitationData.purpose}
+      // title="点击打开网页"
+      // className={"sp-invitation-" + invitationData.purpose}
       >
-        <a target="_blank" rel="noopener noreferrer" href={data.url}>
-          <Icon style={{ marginRight: 5 }} type={iconType} />
-          {/* {purposeStr}  */}
+        <a
+          onClick={() => {
+            setShowIframe(s => {
+              return !s
+            })
+          }}
+        >
           {data.title}
+        </a>
+        <a target="_blank" rel="noopener noreferrer" href={data.url}>
+          <Icon style={{ marginLeft: 5, color: "black" }} type={iconType} />
+          {/* {purposeStr}  */}
         </a>
       </div>
     )
@@ -81,31 +90,31 @@ function MessageBody(props) {
     />
   )
   const popoverPlacement = self ? "left" : "right"
+  let contentWrapper = <div className={className}>{content}</div>
   if (props.showMenu) {
-    return (
+    contentWrapper = (
       <Popover
         overlayClassName="sp-message-menu"
         placement={popoverPlacement}
         content={popoverContent}
         trigger="hover"
       >
-        <div className={className}>{content}</div>
+        {contentWrapper}
       </Popover>
     )
   }
-  let extra = null
-  // console.log(data)
-  // if (window.roomId !== data.roomId) {
-  //   extra = (
-  //     <p style={{ color: "gray", fontSize: "smaller", margin: 2 }}>
-  //       来自网页聊天室
-  //     </p>
-  //   )
-  // }
+
   return (
     <div>
-      <div className={className}>{content}</div>
-      {extra}
+      {contentWrapper}
+      {contentType === "url" && (
+        <Iframe
+          // title={" "}
+          show={showIframe}
+          setShow={setShowIframe}
+          url={data.iframe_url || data.raw_url || data.url}
+        />
+      )}
     </div>
   )
 }

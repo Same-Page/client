@@ -53,7 +53,7 @@ function Discover(props) {
         >
           {loadingRooms && <Icon type="loading" />}
         </span>
-        {intl.formatMessage({ id: "fixed.rooms" })}
+        {intl.formatMessage({ id: "discover" })}
       </center>
       <div
         style={{ padding: 10, paddingLeft: 20, paddingRight: 20 }}
