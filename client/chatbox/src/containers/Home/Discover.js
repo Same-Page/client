@@ -58,7 +58,11 @@ function Discover({ account, setDiscoveryRoom, room }) {
               }}
               className="sp-discover-entry"
             >
-              {r.name}
+              {r.name}&nbsp;
+              <Icon type="team" />
+              {r.userCount}
+              <br />
+              <p>{r.about}</p>
             </div>
           ))}
 

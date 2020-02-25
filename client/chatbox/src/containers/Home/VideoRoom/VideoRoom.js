@@ -35,6 +35,7 @@ function VideoRoom({
       />
 
       <center className="sp-tab-header">
+        {room.about}
         {/* <RoomHeader
           disconnectBtnLeft={35}
           account={account}
