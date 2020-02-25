@@ -70,13 +70,7 @@ function VideoRoom({
           /> */}
       </center>
       <div className="sp-tab-body">
-        <MusicPlayer
-          sources={[
-            {
-              src: room.src
-            }
-          ]}
-        />
+        <MusicPlayer sources={[room.src]} />
         {/* <div
           style={{
             padding: 20,

@@ -59,6 +59,7 @@ function Discover({ account, setDiscoveryRoom, room }) {
               className="sp-discover-entry"
             >
               {r.name}&nbsp;
+              <br />
               <Icon type="team" />
               {r.userCount}
               <br />
