@@ -15,7 +15,7 @@ function RoomsWrapper(props) {
   const [showCreateRoomModal, setShowCreateRoomModal] = useState(false)
 
   const loadRooms = () => {
-    getPopularRooms()
+    getPopularRooms("room")
       .then(resp => {
         resp.data.forEach(r => {
           r.type = "room"

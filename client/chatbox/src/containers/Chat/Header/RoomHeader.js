@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react"
-import { Button, Icon } from "antd"
+import { Button, Icon, message } from "antd"
 import { connect } from "react-redux"
+import { useIntl } from "react-intl"
+
 import Users from "./Users"
 import socketManager from "socket/socket"
 import { setRoomConnectionStatus } from "redux/actions/chat"
@@ -19,6 +21,7 @@ function RoomHeader({
 }) {
   const connected = room.connected
   const [users, setUsers] = useState([])
+  const intl = useIntl()
 
   let roomId = room.id
   let userNum = users.length
@@ -76,6 +79,12 @@ function RoomHeader({
             })
             if (userInRoom.length > 0) {
               setRoomConnectionStatus(roomId, true)
+              // message.success(
+              //   intl.formatMessage({ id: room.type }) +
+              //     " " +
+              //     intl.formatMessage({ id: "connected" }),
+              //   2
+              // )
               // console.log("setRoomConnectionStatus " + roomId)
             } else {
               setRoomConnectionStatus(roomId, false)
@@ -160,5 +169,5 @@ function RoomHeader({
   return <span />
 }
 
-export default RoomHeader
-// export default connect(null, { setRoomConnectionStatus })(RoomHeader)
+// export default RoomHeader
+export default connect(null, { setRoomConnectionStatus })(RoomHeader)

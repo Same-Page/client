@@ -10,6 +10,12 @@ import socketManager from "socket"
 import { changeChatView, setRoomConnectionStatus } from "redux/actions/chat"
 import { viewOtherUser, changeTab } from "redux/actions"
 
+function syncRoomsPeriodically() {
+  setTimeout(() => {
+    socketManager.syncRooms()
+    syncRoomsPeriodically()
+  }, 10 * 1000)
+}
 function Chat({
   account,
   rooms,
@@ -31,6 +37,7 @@ function Chat({
     //   return r.id
     // })
     socketManager.getRoomInfo()
+    syncRoomsPeriodically()
     // socketManager.addHandler("login success", "query_room_info", users => {
     //   // socketManager.sendEvent("get room info")
     // })

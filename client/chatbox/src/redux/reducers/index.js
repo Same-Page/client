@@ -36,7 +36,7 @@ function getRooms(modes, manMadeRoom) {
   return rooms
 }
 const store = (state = initState, action) => {
-  const rooms = [...state.rooms]
+  let rooms = [...state.rooms]
   // console.log(action.type)
   // console.log(action.payload)
   switch (action.type) {
@@ -90,24 +90,34 @@ const store = (state = initState, action) => {
       return { ...state, otherUser: action.payload }
     case "JOIN_MAN_MADE_ROOM":
       const manMadeRoom = action.payload
-      let roomsCopy = rooms
       if (!state.manMadeRoom || state.manMadeRoom.id !== manMadeRoom.id) {
-        roomsCopy = rooms.filter(room => {
+        rooms = rooms.filter(room => {
           return room.type !== "room"
         })
-        roomsCopy.push(manMadeRoom)
-        // do not save connected status
-        delete manMadeRoom["connected"]
-        storageManager.set("room", manMadeRoom)
+        if (manMadeRoom) {
+          rooms.push(manMadeRoom)
+          // do not save connected status
+          delete manMadeRoom["connected"]
+          storageManager.set("room", manMadeRoom)
+        }
       }
 
       return {
         ...state,
         tab: "chat",
-        rooms: roomsCopy,
+        rooms: rooms,
         manMadeRoom: manMadeRoom,
         chatView: "room"
       }
+    case "SET_DISCOVERY_ROOM":
+      const discoveryRoom = action.payload
+      rooms = rooms.filter(room => {
+        return room.type !== "discovery"
+      })
+      if (discoveryRoom) {
+        rooms.push(discoveryRoom)
+      }
+      return { ...state, rooms }
     default:
       return state
   }

@@ -6,15 +6,18 @@ import MusicPlayer from "components/MusicPlayer"
 import Body from "containers/Chat/Body"
 import Footer from "containers/Chat/Footer"
 import RoomHeader from "containers/Chat/Header/RoomHeader"
-import socketManager from "socket"
 const ROOM_TYPE = "media"
-function VideoRoom({ back, room, account, viewOtherUser, setRoom }) {
+function VideoRoom({
+  back,
+  room,
+  account,
+  viewOtherUser,
+  setRoomConnectionStatus
+}) {
   // const [showHelp, setShowHelp] = useState(false)
   const [messages, setMessages] = useState([])
   const [showUsers, setShowUsers] = useState(false)
-  useEffect(() => {
-    socketManager.joinRoom(room)
-  }, [])
+
   return (
     <div className="sp-special-tab">
       <Button
@@ -102,13 +105,11 @@ function VideoRoom({ back, room, account, viewOtherUser, setRoom }) {
             room={room}
             showUsers={showUsers}
             toggleUsers={setShowUsers}
-            setRoomConnectionStatus={(roomId, status) => {
-              setRoom({ ...room, connected: status })
-            }}
+            setRoomConnectionStatus={setRoomConnectionStatus}
           />
         </div>
         <Body
-          height="calc(55% - 114px)"
+          height="calc(60% - 114px)"
           account={account}
           show={true}
           messages={messages}

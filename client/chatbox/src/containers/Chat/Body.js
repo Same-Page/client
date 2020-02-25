@@ -124,9 +124,10 @@ function ChatBody({ height, account, show, messages, setMessages, room }) {
             })
             setMessages(room.chatHistory)
             scrollToBottom(20)
-          } else {
-            socketManager.getRoomInfo([roomId])
           }
+          //  else {
+          //   socketManager.getRoomInfo([roomId])
+          // }
         }
       }
     )

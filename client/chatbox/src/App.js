@@ -10,7 +10,7 @@ import { connect } from "react-redux"
 
 import Tab from "containers/Tab"
 
-import socketManager from "socket/socket"
+// import socketManager from "socket/socket"
 import storageManager from "utils/storage"
 import urls from "config/urls"
 import {
@@ -168,46 +168,6 @@ class App extends React.Component {
     storageManager.addEventListener("account", account => {
       // this.setState({ account: account })
       this.props.setAccount(account)
-    })
-    socketManager.addHandler("room info", "popup", rooms => {
-      const roomTypes = []
-      Object.keys(rooms).forEach(roomId => {
-        const room = rooms[roomId]
-        if (room.chatHistory) {
-          roomTypes.push(intl.formatMessage({ id: room.type }))
-        }
-      })
-      if (roomTypes.length > 0) {
-        message.success(
-          roomTypes.join(", ") + " " + intl.formatMessage({ id: "connected" }),
-          2
-        )
-      }
-    })
-    socketManager.addHandler("disconnect", "popup", () => {
-      message.warn(intl.formatMessage({ id: "disconnected" }), 2)
-    })
-    socketManager.addHandler("alert", "popup", data => {
-      if (data.errorCode === 401) {
-        message.error(intl.formatMessage({ id: "not.login" }), 2)
-      } else if (data.errorCode === 402) {
-        message.error("积分不足", 2)
-      } else if (data.errorCode === 403) {
-        message.error("禁止通行", 2)
-      } else if (data.errorCode === 404) {
-        message.error(intl.formatMessage({ id: "not.found" }), 2)
-      } else if (data.errorCode === 409) {
-        message.error("权限不足", 2)
-      } else if (data.errorCode === 426) {
-        message.error("请升级该扩展", 2)
-      } else if (data.errorCode === 429) {
-        message.error(intl.formatMessage({ id: "slow.down" }), 2)
-      } else {
-        message.error(
-          intl.formatMessage({ id: "error" }) + ": " + data.errorCode,
-          3
-        )
-      }
     })
 
     window.addEventListener(

@@ -12,7 +12,8 @@ body ::-webkit-scrollbar-track {
 
 /* Handle */
 body ::-webkit-scrollbar-thumb {
-  background: #ccc;
+  /* background: #1890ff; */
+  background: rgba(204, 204, 204, 0.445);
   /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); */
 }
 body ::-webkit-scrollbar-thumb:window-inactive {
@@ -21,8 +22,14 @@ body ::-webkit-scrollbar-thumb:window-inactive {
 
 .ant-tabs-bar {
   color: white;
-  background: rgba(0, 0, 0, 0.75);
+  /* background: rgba(0, 0, 0, 0.75); */
+  background: #1890ff;
+
   margin: 0px;
+}
+.ant-tabs-nav .ant-tabs-tab:hover {
+  background: #40a9ff !important;
+  color: white !important;
 }
 
 .ant-tabs-nav-container {
@@ -36,8 +43,11 @@ body ::-webkit-scrollbar-thumb:window-inactive {
   border-color: transparent;
   border-radius: 0;
   background: transparent;
+  height: 35px;
 }
-
+.ant-tabs-bar {
+  border-bottom: none;
+}
 .card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
   /* border-color: #fff; */
   background: #fff;

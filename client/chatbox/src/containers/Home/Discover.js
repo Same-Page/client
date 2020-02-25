@@ -2,48 +2,25 @@ import "./Home.css"
 import { useIntl } from "react-intl"
 import React, { useState, useEffect } from "react"
 import { Icon } from "antd"
+import { connect } from "react-redux"
 
 import { getPopularRooms } from "services/room"
+import { setDiscoveryRoom } from "redux/actions/chat"
 import VideoRoom from "./VideoRoom"
+import socketManager from "socket"
 
-function Discover({ account, viewOtherUser }) {
+function Discover({ account, setDiscoveryRoom, room }) {
   // room joined isn't put to redux state, any problem?
   const intl = useIntl()
   const [loadingRooms, setLoadingRooms] = useState(true)
+  // rooms here mean room list returned from backend
+  // do not confuse with state.rooms
   const [rooms, setRooms] = useState([])
-  const [room, setRoom] = useState()
-  // const setRoom = (r)=>{
-  //   // input is room info from server
-  //   // need to return room from redux state
-  //   _setRoom(r)
-  // }
-  const loadRooms = () => {
-    getPopularRooms()
-      .then(resp => {
-        // resp.data.forEach(r => {
-        //   r.type = "room"
-        // })
 
-        const mockRooms = [
-          {
-            id: "video-room",
-            type: "media",
-            name: "放映厅",
-            src: "https://yiyechat.com/media/jay20.mp4"
-          },
-          {
-            id: "music-room",
-            type: "media",
-            name: "音悦台",
-            src: "https://yiyechat.com/media/jay20.mp4"
-          },
-          {
-            id: "joke-room",
-            type: "text",
-            name: "冷笑话"
-          }
-        ]
-        setRooms(mockRooms)
+  const loadRooms = () => {
+    getPopularRooms("discovery")
+      .then(resp => {
+        setRooms(resp.data)
       })
       .catch(err => {})
       .then(() => {
@@ -76,7 +53,8 @@ function Discover({ account, viewOtherUser }) {
             <div
               key={r.id}
               onClick={() => {
-                setRoom(r)
+                setDiscoveryRoom(r)
+                socketManager.joinRoom(r)
               }}
               className="sp-discover-entry"
             >
@@ -89,13 +67,13 @@ function Discover({ account, viewOtherUser }) {
           {!loadingRooms && <div style={{ float: "right" }}>WIP...</div>}
         </div>
       </div>
-      {room && room.type == "media" && (
+      {room && (
         <VideoRoom
           room={room}
-          setRoom={setRoom}
           account={account}
           back={() => {
-            setRoom(null)
+            setDiscoveryRoom(null)
+            socketManager.leaveRoom(room)
           }}
         />
       )}
@@ -103,4 +81,17 @@ function Discover({ account, viewOtherUser }) {
   )
 }
 
-export default Discover
+// export default Discover
+const stateToProps = state => {
+  const rooms = state.rooms.filter(r => {
+    return r.type === "discovery"
+  })
+  let room = null
+  if (rooms.length === 1) {
+    room = { ...rooms[0] }
+  }
+  return {
+    room: room
+  }
+}
+export default connect(stateToProps, { setDiscoveryRoom })(Discover)
