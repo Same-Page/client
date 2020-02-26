@@ -115,7 +115,14 @@ function RoomHeader({
 
   if (show) {
     return (
-      <span style={{ position: "absolute", right: 0 }}>
+      <span
+        style={
+          {
+            // position: "absolute",
+            // right: 0
+          }
+        }
+      >
         {chatView === "room" && (
           <Button
             style={{

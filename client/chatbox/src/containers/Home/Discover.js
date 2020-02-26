@@ -49,23 +49,33 @@ function Discover({ account, setDiscoveryRoom, room }) {
           style={{ padding: 10, paddingLeft: 20, paddingRight: 20 }}
           className="sp-tab-body"
         >
-          {rooms.map(r => (
-            <div
-              key={r.id}
-              onClick={() => {
-                setDiscoveryRoom(r)
-                socketManager.joinRoom(r)
-              }}
-              className="sp-discover-entry"
-            >
-              {r.name}&nbsp;
-              <br />
-              <Icon type="team" />
-              {r.userCount}
-              <br />
-              <p>{r.about}</p>
-            </div>
-          ))}
+          {rooms.map(r => {
+            const style = {}
+            if (r.background) {
+              style.backgroundImage = `url('${r.background}')`
+            } else {
+              style.backgroundColor = "#acacac"
+            }
+            return (
+              <div
+                title={r.about}
+                key={r.id}
+                onClick={() => {
+                  setDiscoveryRoom(r)
+                  socketManager.joinRoom(r)
+                }}
+                className="sp-discover-entry"
+                style={style}
+              >
+                {r.name}&nbsp;
+                <br />
+                <Icon type="team" />
+                {r.userCount}
+                <br />
+                {r.about}
+              </div>
+            )
+          })}
 
           <br />
           <br />

@@ -139,6 +139,8 @@ textarea.ant-input {
   border-bottom: 1px solid lightgray;
   padding: 5px;
   height: 36px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .sp-pointer-cursor {

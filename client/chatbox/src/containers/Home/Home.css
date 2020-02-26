@@ -11,18 +11,20 @@
 .sp-discover-entry {
   width: 100px;
   height: 85px;
-  padding-top: 15px;
-  /* line-height: 70px; */
-  background: #3da9ff;
+  padding: 10px;
   margin: 12px;
   color: white;
   text-align: center;
-  display: inline-table;
+  display: inline-block;
   cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: #acacac;
 }
 .sp-discover-entry p {
   /* margin-top: 10px; */
 }
 .sp-discover-entry:hover {
-  background-color: #008fff;
+  background: #008fff !important;
 }
