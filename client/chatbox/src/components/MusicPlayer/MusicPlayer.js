@@ -13,12 +13,17 @@ class VideoPlayer extends React.Component {
       // console.log("onPlayerReady", this)
     })
     window.player = this.player
+    window.playMedia = src => {
+      window.player.src(src)
+      window.player.play()
+    }
   }
 
   // destroy player on unmount
   componentWillUnmount() {
     if (this.player) {
       this.player.dispose()
+      window.player = null
     }
   }
 

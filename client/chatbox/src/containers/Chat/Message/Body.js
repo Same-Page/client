@@ -40,16 +40,35 @@ function MessageBody(props) {
       </a>
     )
   }
-  if (contentType === "video" || contentType === "audio") {
+  if (contentType === "media") {
+    const src = {
+      src: content
+    }
+    if (content.includes("youtube.com") || content.includes("youtu.be")) {
+      src.type = "video/youtube"
+    }
     content = (
-      <div
-        onClick={() => {
-          window.playMessage(data)
-          props.displayMusicTab()
-        }}
-        className="sp-message-media"
-      >
-        {content}
+      <div className="sp-message-media">
+        <span
+          onClick={() => {
+            if (window.player) {
+              window.playMedia(src)
+            } else {
+              console.error("no player")
+            }
+          }}
+        >
+          <Icon theme="twoTone" style={{ marginRight: 5 }} type="play-circle" />
+          {content}
+        </span>
+        <a
+          style={{ color: "white" }}
+          target="_blank"
+          rel="noopener noreferrer"
+          href={content}
+        >
+          <Icon style={{ marginLeft: 5 }} type="link" />
+        </a>
       </div>
     )
   }

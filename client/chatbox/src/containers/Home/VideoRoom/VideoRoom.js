@@ -35,7 +35,17 @@ function VideoRoom({
       />
 
       <div className="sp-tab-header">
-        {room.about}
+        <a
+          onClick={() => {
+            if (window.player) {
+              window.playMedia(room.src)
+            } else {
+              console.error("no player")
+            }
+          }}
+        >
+          {room.about}
+        </a>
         {/* <RoomHeader
           disconnectBtnLeft={35}
           account={account}
