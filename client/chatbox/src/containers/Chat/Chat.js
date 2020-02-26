@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react"
 // import { message } from "antd"
 import { connect } from "react-redux"
 
-import MusicPlayer from "components/MusicPlayer"
 import Header from "./Header"
 import View from "./View"
 // import Footer from "./Footer"
