@@ -67,7 +67,9 @@ const socketManager = {
     const payload = {
       action: "join",
       data: {
-        rooms: state.rooms,
+        rooms: state.rooms.filter(r => {
+          return r.connected
+        }),
         token: token
       }
     }
