@@ -21,6 +21,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   background-color: #acacac;
+  background-size: cover;
 }
 .sp-discover-entry p {
   /* margin-top: 10px; */

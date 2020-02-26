@@ -33,8 +33,8 @@ function Discover({ account, setDiscoveryRoom, room }) {
 
   return (
     <span>
-      <div className="sp-inbox-tab">
-        <center className="sp-tab-header">
+      <div>
+        <div className="sp-tab-header">
           <span
             style={{
               position: "absolute",
@@ -44,15 +44,20 @@ function Discover({ account, setDiscoveryRoom, room }) {
             {loadingRooms && <Icon type="loading" />}
           </span>
           {intl.formatMessage({ id: "discover" })}
-        </center>
+        </div>
         <div
-          style={{ padding: 10, paddingLeft: 20, paddingRight: 20 }}
+          style={{
+            padding: 10,
+            paddingLeft: 20,
+            paddingRight: 20,
+            backgroundImage: "linear-gradient(#e6f7ff, #40a9ff)"
+          }}
           className="sp-tab-body"
         >
           {rooms.map(r => {
             const style = {}
-            if (r.background) {
-              style.backgroundImage = `url('${r.background}')`
+            if (r.cover) {
+              style.backgroundImage = `url('${r.cover}')`
             } else {
               style.backgroundColor = "#acacac"
             }

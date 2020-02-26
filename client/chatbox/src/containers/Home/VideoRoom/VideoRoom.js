@@ -34,7 +34,7 @@ function VideoRoom({
         icon="arrow-left"
       />
 
-      <center className="sp-tab-header">
+      <div className="sp-tab-header">
         {room.about}
         {/* <RoomHeader
           disconnectBtnLeft={35}
@@ -68,17 +68,19 @@ function VideoRoom({
             size="small"
             icon="question"
           /> */}
-        <RoomHeader
-          account={account}
-          viewOtherUser={viewOtherUser}
-          chatView={ROOM_TYPE}
-          show={true}
-          room={room}
-          showUsers={showUsers}
-          toggleUsers={setShowUsers}
-          setRoomConnectionStatus={setRoomConnectionStatus}
-        />
-      </center>
+        <span style={{ position: "absolute", right: 0 }}>
+          <RoomHeader
+            account={account}
+            viewOtherUser={viewOtherUser}
+            chatView={ROOM_TYPE}
+            show={true}
+            room={room}
+            showUsers={showUsers}
+            toggleUsers={setShowUsers}
+            setRoomConnectionStatus={setRoomConnectionStatus}
+          />
+        </span>
+      </div>
       <div className="sp-tab-body">
         <MusicPlayer sources={[room.src]} />
         {/* <div
