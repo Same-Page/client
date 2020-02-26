@@ -68,6 +68,16 @@ function VideoRoom({
             size="small"
             icon="question"
           /> */}
+        <RoomHeader
+          account={account}
+          viewOtherUser={viewOtherUser}
+          chatView={ROOM_TYPE}
+          show={true}
+          room={room}
+          showUsers={showUsers}
+          toggleUsers={setShowUsers}
+          setRoomConnectionStatus={setRoomConnectionStatus}
+        />
       </center>
       <div className="sp-tab-body">
         <MusicPlayer sources={[room.src]} />
@@ -84,15 +94,15 @@ function VideoRoom({
           }}
         >
         </div> */}
-        <div className="sp-tab-header">
-          {/* placeholder for keeping header from being hiden */}
+        {/* <div className="sp-tab-header">
+         placeholder for keeping header from being hiden 
           <div
             style={{
               display: "inline-block"
             }}
-          ></div>
+          ></div> */}
 
-          <RoomHeader
+        {/* <RoomHeader
             account={account}
             viewOtherUser={viewOtherUser}
             chatView={ROOM_TYPE}
@@ -101,10 +111,10 @@ function VideoRoom({
             showUsers={showUsers}
             toggleUsers={setShowUsers}
             setRoomConnectionStatus={setRoomConnectionStatus}
-          />
-        </div>
+          /> */}
+        {/* </div> */}
         <Body
-          height="calc(60% - 114px)"
+          height="calc(60% - 80px)"
           account={account}
           show={true}
           messages={messages}

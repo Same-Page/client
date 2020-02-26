@@ -101,7 +101,7 @@ function ChatHeader({
           className="sp-toggle-page-site-chat"
           size="small"
           value={activeView}
-          buttonStyle="solid"
+          // buttonStyle="solid"
           onChange={e => {
             const chatView = e.target.value
             changeChatView(chatView)
@@ -129,13 +129,13 @@ function ChatHeader({
           })}
         </Radio.Group>
         <Button
-          style={{ border: "none" }}
+          style={{ border: "none", boxShadow: "none" }}
           onClick={() => setShowHelp(true)}
           size="small"
           // icon="info-circle"
         >
           {/* <Icon type="info-circle" theme="twoTone" /> */}
-          <Icon type="setting" theme="twoTone" />
+          <Icon type="setting" />
         </Button>
         {/* <Col style={{ textAlign: "right" }} span={8}> */}
         {chatModes.map((mode, i) => {
@@ -162,7 +162,7 @@ function ChatHeader({
       </div>
     )
   }
-  return <center className="sp-tab-header">{content}</center>
+  return <div className="sp-tab-header">{content}</div>
 }
 
 // const stateToProps = state => {

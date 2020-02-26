@@ -16,8 +16,7 @@ function RoomHeader({
   setRoomConnectionStatus,
   toggleUsers,
   showUsers,
-  setShowRoomList,
-  disconnectBtnLeft
+  setShowRoomList
 }) {
   const connected = room.connected
   const [users, setUsers] = useState([])
@@ -116,10 +115,15 @@ function RoomHeader({
 
   if (show) {
     return (
-      <span>
+      <span style={{ position: "absolute", right: 0 }}>
         {chatView === "room" && (
           <Button
-            style={{ border: "none" }}
+            style={{
+              border: "none",
+              boxShadow: "none"
+              // position: "absolute",
+              // left: 5
+            }}
             onClick={() =>
               setShowRoomList(srl => {
                 return !srl
@@ -129,14 +133,36 @@ function RoomHeader({
             icon="menu"
           ></Button>
         )}
+
         {connected && (
-          <span>
+          <span
+            style={
+              {
+                // position: "absolute",
+                // right: 5
+              }
+            }
+          >
             <Button
               style={{
-                color: "red",
                 border: "none",
-                position: "absolute",
-                left: disconnectBtnLeft || 5
+                boxShadow: "none"
+                // position: "absolute",
+                // right: 0
+              }}
+              onClick={() => toggleUsers(!showUsers)}
+              size="small"
+              icon="team"
+            >
+              <span style={{ marginLeft: 5 }}>{userNum}</span>
+            </Button>
+            <Button
+              style={{
+                // color: "red",
+                border: "none",
+                boxShadow: "none"
+                // position: "absolute",
+                // right: 20
               }}
               onClick={() => {
                 window.spDebug("leave" + room.id)
@@ -145,19 +171,10 @@ function RoomHeader({
                 setUsers([])
               }}
               size="small"
-              // icon="info-circle"
+              icon="logout"
             >
               {/* <Icon type="info-circle" theme="twoTone" /> */}
-              <Icon type="poweroff" />
-            </Button>
-
-            <Button
-              style={{ border: "none", position: "absolute", right: 0 }}
-              onClick={() => toggleUsers(!showUsers)}
-              size="small"
-              icon="team"
-            >
-              <span style={{ marginLeft: 5 }}>{userNum}</span>
+              {/* <Icon type="logout" /> */}
             </Button>
             {showUsers && <Users viewOtherUser={viewOtherUser} users={users} />}
           </span>

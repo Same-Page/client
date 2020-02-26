@@ -5,9 +5,11 @@ import { Avatar } from "antd"
 import { viewOtherUser } from "redux/actions/"
 
 const usersStyle = {
+  textAlign: "center",
   background: "white",
   position: "fixed",
-  zIndex: 1,
+  zIndex: 10,
+  marginTop: 5,
   left: 0,
   width: "100%",
   overflow: "auto",
