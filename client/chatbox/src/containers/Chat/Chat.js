@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 // import { message } from "antd"
 import { connect } from "react-redux"
 
+import MusicPlayer from "components/MusicPlayer"
 import Header from "./Header"
 import View from "./View"
 // import Footer from "./Footer"
@@ -94,6 +95,7 @@ function Chat({
         //   setMediaDisplay("block")
         // }}
       />
+      {/* <MusicPlayer /> */}
       {chatModes.map(mode => {
         let room = rooms.filter(r => {
           return r.type === mode

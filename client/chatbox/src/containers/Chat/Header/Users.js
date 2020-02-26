@@ -5,6 +5,7 @@ import { Avatar } from "antd"
 import { viewOtherUser } from "redux/actions/"
 
 const usersStyle = {
+  whiteSpace: "normal",
   textAlign: "center",
   background: "white",
   position: "fixed",
