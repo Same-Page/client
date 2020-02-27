@@ -237,21 +237,12 @@ class App extends React.Component {
         </center>
       )
     }
-    // if (!this.state.account) {
+    // if (!this.props.account) {
     //   tab = "account"
     // }
     return (
       <IntlProvider locale={locale} messages={msg}>
-        {/* <AccountContext.Provider
-          value={{
-            account: this.props.account,
-            setAccount: this.props.setAccount,
-            autoLogin: this.state.autoLogin,
-            stopAutoLogin: this.stopAutoLogin
-          }}
-        > */}
         <Tab />
-        {/* </AccountContext.Provider> */}
       </IntlProvider>
     )
   }

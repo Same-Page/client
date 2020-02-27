@@ -8,9 +8,14 @@ import Profile from "./Profile"
 import Follow from "./Follow"
 import Login from "containers/Account/Login"
 import { getAccount } from "services/account"
-import { setAccount } from "redux/actions"
+// import { setAccount } from "redux/actions"
+import storageManager from "utils/storage"
 
-function Account({ account, setAccount }) {
+function setAccount(account) {
+  storageManager.set("account", account)
+}
+
+function Account({ account }) {
   const [resettingPassword, setResetPasswordState] = useState(false)
   const [edittingProfile, setEdittingProfileState] = useState(false)
   // showingFollow is for toggling the Follow view
@@ -90,4 +95,4 @@ const stateToProps = state => {
     account: state.account
   }
 }
-export default connect(stateToProps, { setAccount })(Account)
+export default connect(stateToProps)(Account)
