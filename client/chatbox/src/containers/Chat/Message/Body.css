@@ -4,7 +4,8 @@
   display: inline-block;
 }
 
-.sp-message-body.text {
+.sp-message-body.text,
+.sp-message-body.url {
   background: rgba(255, 255, 255, 0.502);
   border-radius: 5px;
   padding: 10px;
@@ -60,6 +61,9 @@ img.sp-message-image {
 
 .sp-message-menu .ant-popover-inner-content {
   padding: 0;
+}
+.sp-message-menu .ant-btn {
+  border: none;
 }
 
 .sp-message-body .sp-invitation-chat a {

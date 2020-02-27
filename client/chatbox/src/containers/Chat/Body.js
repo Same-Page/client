@@ -25,8 +25,8 @@ const bodyMaskStyle = {
   opacity: 0,
   marginTop: -10,
   marginLeft: -10,
-  zIndex: 10,
-  pointerEvents: "none" // still allow scrolling
+  zIndex: 10
+  // pointerEvents: "none" // still allow scrolling
 }
 const AUTO_SCROLL_TRESHOLD_DISTANCE = 300
 
@@ -210,7 +210,8 @@ function ChatBody({ height, account, show, messages, setMessages, room }) {
 
     res.push(
       <Message
-        showMenu={account && (account.isMod || msg.self)}
+        showMenu={true}
+        // showMenu={account && (account.isMod || msg.self)}
         withHoverCard={true}
         key={msg.id}
         data={msg}
@@ -227,7 +228,7 @@ function ChatBody({ height, account, show, messages, setMessages, room }) {
     <span>
       {show && (
         <div ref={bodyRef} style={bodyStyle}>
-          <div style={maskStyle}>Offline</div>
+          {!room.connected && <div style={maskStyle}>Offline</div>}
           {res}
         </div>
       )}

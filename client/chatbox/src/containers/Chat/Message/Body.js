@@ -48,27 +48,20 @@ function MessageBody(props) {
       src.type = "video/youtube"
     }
     content = (
-      <div className="sp-message-media">
-        <span
-          onClick={() => {
-            if (window.player) {
-              window.playMedia(src)
-            } else {
-              console.error("no player")
-            }
-          }}
-        >
+      <div
+        className="sp-message-media"
+        onClick={() => {
+          if (window.player) {
+            window.playMedia(src)
+          } else {
+            console.error("no player")
+          }
+        }}
+      >
+        <span>
           <Icon theme="twoTone" style={{ marginRight: 5 }} type="play-circle" />
           {content}
         </span>
-        <a
-          style={{ color: "white" }}
-          target="_blank"
-          rel="noopener noreferrer"
-          href={content}
-        >
-          <Icon style={{ marginLeft: 5 }} type="link" />
-        </a>
       </div>
     )
   }
@@ -77,12 +70,14 @@ function MessageBody(props) {
     // const purposeStr = invitationData.purpose === "chat" ? "聊天邀请" : "求助"
     // const iconType =
     //   invitationData.purpose === "chat" ? "message" : "question-circle"
-    const iconType = "link"
+    // const iconType = "link"
     content = (
       <div
       // title="点击打开网页"
       // className={"sp-invitation-" + invitationData.purpose}
       >
+        <Icon style={{ marginRight: 5, color: "#1890ff" }} type="link" />
+
         <a
           onClick={() => {
             setShowIframe(s => {
@@ -92,21 +87,51 @@ function MessageBody(props) {
         >
           {data.title}
         </a>
-        <a target="_blank" rel="noopener noreferrer" href={data.url}>
+        {/* <a target="_blank" rel="noopener noreferrer" href={data.url}>
           <Icon style={{ marginLeft: 5, color: "black" }} type={iconType} />
-          {/* {purposeStr}  */}
-        </a>
+        </a> */}
       </div>
     )
   }
   const popoverContent = (
-    <Button
-      onClick={() => {
-        socketManager.sendEvent("delete message", { messageId: data.id })
-      }}
-      style={{ border: "none" }}
-      icon="delete"
-    />
+    <div>
+      <Button
+        onClick={() => {
+          socketManager.sendEvent("delete message", { messageId: data.id })
+        }}
+      >
+        {/* <a */}
+
+        {/* // style={{ border: "none" }}
+      // icon="delete"
+      > */}
+        <Icon type="delete" />
+      </Button>
+      {contentType === "media" && (
+        <div>
+          <Button>
+            <a
+              // style={{ color: "white" }}
+              target="_blank"
+              rel="noopener noreferrer"
+              href={data.value}
+            >
+              <Icon type="link" />
+            </a>
+          </Button>
+        </div>
+      )}
+
+      {contentType === "url" && (
+        <div>
+          <Button>
+            <a target="_blank" rel="noopener noreferrer" href={data.url}>
+              <Icon type="link" />
+            </a>
+          </Button>
+        </div>
+      )}
+    </div>
   )
   const popoverPlacement = self ? "left" : "right"
   let contentWrapper = <div className={className}>{content}</div>
