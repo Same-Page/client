@@ -125,12 +125,14 @@ function RoomHeader({
       >
         {chatView === "room" && (
           <Button
-            style={{
-              border: "none",
-              boxShadow: "none"
-              // position: "absolute",
-              // left: 5
-            }}
+            style={
+              {
+                // border: "none",
+                // boxShadow: "none"
+                // position: "absolute",
+                // left: 5
+              }
+            }
             onClick={() =>
               setShowRoomList(srl => {
                 return !srl
@@ -151,12 +153,14 @@ function RoomHeader({
             }
           >
             <Button
-              style={{
-                border: "none",
-                boxShadow: "none"
-                // position: "absolute",
-                // right: 0
-              }}
+              style={
+                {
+                  // border: "none",
+                  // boxShadow: "none"
+                  // position: "absolute",
+                  // right: 0
+                }
+              }
               onClick={() => toggleUsers(!showUsers)}
               size="small"
               icon="team"
@@ -164,13 +168,15 @@ function RoomHeader({
               <span style={{ marginLeft: 5 }}>{userNum}</span>
             </Button>
             <Button
-              style={{
-                // color: "red",
-                border: "none",
-                boxShadow: "none"
-                // position: "absolute",
-                // right: 20
-              }}
+              style={
+                {
+                  // color: "red",
+                  // border: "none",
+                  // boxShadow: "none"
+                  // position: "absolute",
+                  // right: 20
+                }
+              }
               onClick={() => {
                 window.spDebug("leave" + room.id)
                 setRoomConnectionStatus(room.id, false)

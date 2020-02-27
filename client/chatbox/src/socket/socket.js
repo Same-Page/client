@@ -47,45 +47,51 @@ const socketManager = {
   },
   leaveRoom: room => {
     const state = store.getState()
-    const token = state.account.token
+    if (state.account) {
+      const token = state.account.token
 
-    const payload = {
-      action: "leave_single",
-      data: {
-        room: room,
-        token: token
+      const payload = {
+        action: "leave_single",
+        data: {
+          room: room,
+          token: token
+        }
       }
+      _sendEvent(payload)
     }
-    _sendEvent(payload)
   },
   syncRooms: () => {
     // join action is actually a set room operation
     // will join rooms included and leave rooms not in
     window.spDebug("sync rooms")
     const state = store.getState()
-    const token = state.account.token
-    const payload = {
-      action: "join",
-      data: {
-        rooms: state.rooms.filter(r => {
-          return r.connected
-        }),
-        token: token
+    if (state.account) {
+      const token = state.account.token
+      const payload = {
+        action: "join",
+        data: {
+          rooms: state.rooms.filter(r => {
+            return r.connected
+          }),
+          token: token
+        }
       }
+      _sendEvent(payload)
     }
-    _sendEvent(payload)
   },
   joinRoom: room => {
     const state = store.getState()
-    const token = state.account.token
-    const payload = {
-      action: "join_single",
-      data: {
-        room: room,
-        token: token
+    if (state.account) {
+      const token = state.account.token
+      const payload = {
+        action: "join_single",
+        data: {
+          room: room,
+          token: token
+        }
       }
+      _sendEvent(payload)
     }
-    _sendEvent(payload)
   }
   // setRooms: (rooms, token, latestNoJoin) => {
   //   // noJoin is passed in sometimes to avoid race condition

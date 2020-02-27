@@ -1,6 +1,6 @@
 body {
   /* background: #eceff1; */
-  background-color: rgb(246, 249, 252);
+  /* background-color: rgb(246, 249, 252); */
 }
 body ::-webkit-scrollbar {
   width: 7px;
@@ -144,8 +144,12 @@ textarea.ant-input {
   text-align: center;
   white-space: nowrap;
 }
-
-.sp-pointer-cursor {
+.sp-tab-header .ant-btn:not(.ant-btn-primary) {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+.s .sp-pointer-cursor {
   cursor: pointer;
 }
 
