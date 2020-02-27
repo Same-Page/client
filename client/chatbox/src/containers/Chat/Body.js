@@ -59,7 +59,7 @@ function ChatBody({
   const roomId = room.id
   spDebug("[ChatBody] " + roomId)
   const [mediaHeight, setMediaHeight] = useState(200)
-
+  const [iframeUrl, setIframeUrl] = useState()
   const msgNum = messages.length
   const bodyRef = useRef(null)
   const suffixCb = name => {
@@ -73,7 +73,7 @@ function ChatBody({
   }
 
   let heightDelta = 110
-  if (showMedia) {
+  if (showMedia || iframeUrl) {
     heightDelta += mediaHeight
   }
 
@@ -248,16 +248,24 @@ function ChatBody({
         playMedia={src => {
           playMedia(src)
           setShowMedia(true)
+          setIframeUrl(null)
+        }}
+        setIframeUrl={url => {
+          setIframeUrl(url)
+          setShowMedia(false)
         }}
       />
     )
     lastMsg = msg
   })
 
-  const resizableStyle = {}
-  if (!show || !showMedia) {
-    resizableStyle.display = "none"
+  const resizableStyle = {
+    display: "none"
   }
+  if (show && (showMedia || iframeUrl)) {
+    resizableStyle.display = "block"
+  }
+
   return (
     <span>
       <Resizable
@@ -287,15 +295,23 @@ function ChatBody({
           setMediaHeight(elm.clientHeight)
         }}
       >
-        <MusicPlayer
-          // show={showMedia}
-          closePlayer={() => {
-            pauseMedia()
-            setShowMedia(false)
-          }}
-          playerRef={playerRef}
-          sources={sources}
-        />
+        <span style={{ display: showMedia ? "unset" : "none" }}>
+          <MusicPlayer
+            // show={showMedia}
+            closePlayer={() => {
+              pauseMedia()
+              setShowMedia(false)
+            }}
+            playerRef={playerRef}
+            sources={sources}
+          />
+        </span>
+        {iframeUrl && (
+          <iframe
+            style={{ height: "100%", width: "100%", border: "none" }}
+            src={iframeUrl}
+          />
+        )}
       </Resizable>
 
       {show && (

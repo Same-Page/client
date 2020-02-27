@@ -58,10 +58,21 @@ class VideoPlayer extends React.Component {
     // if (!this.props.show) {
     //   className += " hide-player"
     // }
+    // let playerStyle = {
+    //   display: "none"
+    // }
+    // if (this.props.show) {
+    //   playerStyle.display = "block"
+    // }
+    // console.log(className)
     return (
       // <div>
       <div data-vjs-player>
-        <video ref={node => (this.videoNode = node)} className={className} />
+        <video
+          ref={node => (this.videoNode = node)}
+          // style={playerStyle}
+          className={className}
+        />
       </div>
       // </div>
     )

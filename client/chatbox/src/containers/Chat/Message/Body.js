@@ -4,9 +4,9 @@ import React, { useState } from "react"
 import { Popover, Button, Icon } from "antd"
 
 import socketManager from "socket"
-import Iframe from "components/Iframe"
+// import Iframe from "components/Iframe"
 function MessageBody(props) {
-  const [showIframe, setShowIframe] = useState(false)
+  // const [showIframe, setShowIframe] = useState(false)
   const data = props.data.content
   const self = props.data.self
   let content = data.value
@@ -81,9 +81,10 @@ function MessageBody(props) {
 
         <a
           onClick={() => {
-            setShowIframe(s => {
-              return !s
-            })
+            props.setIframeUrl(data.iframe_url || data.url)
+            // setShowIframe(s => {
+            //   return !s
+            // })
           }}
         >
           {data.title}
@@ -152,14 +153,14 @@ function MessageBody(props) {
   return (
     <div>
       {contentWrapper}
-      {contentType === "url" && (
+      {/* {contentType === "url" && (
         <Iframe
           // title={" "}
           show={showIframe}
           setShow={setShowIframe}
           url={data.iframe_url || data.raw_url || data.url}
         />
-      )}
+      )} */}
     </div>
   )
 }
