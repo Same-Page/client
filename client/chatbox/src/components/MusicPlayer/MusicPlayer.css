@@ -13,5 +13,20 @@
 .video-js {
   width: 100%;
   /* height: calc(100% - 180px); */
-  height: 40%;
+  height: 100%;
+}
+
+.video-js .vjs-big-play-button {
+  display: none;
+}
+.video-js .vjs-control-bar {
+  display: flex;
+}
+.media-close-button {
+  font-weight: bold;
+  font-size: 14px !important;
+  margin-right: 10px;
+}
+.hide-player {
+  display: none;
 }

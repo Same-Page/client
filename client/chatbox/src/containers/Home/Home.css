@@ -9,12 +9,13 @@
 }
 
 .sp-discover-entry {
-  width: 100px;
-  height: 85px;
-  padding: 10px;
-  margin: 12px;
+  width: 50%;
+  height: 40%;
+  /* padding: 10px; */
+  position: relative;
+  /* margin: 12px; */
   color: white;
-  text-align: center;
+  /* text-align: center; */
   display: inline-block;
   cursor: pointer;
   white-space: nowrap;
@@ -22,8 +23,15 @@
   text-overflow: ellipsis;
   background-color: #acacac;
   background-size: cover;
+  vertical-align: middle;
 }
-.sp-discover-entry p {
+.sp-discover-entry div {
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  /* margin: 0; */
+  position: absolute;
+  transform: translate(-50%, -50%);
   /* margin-top: 10px; */
 }
 .sp-discover-entry:hover {

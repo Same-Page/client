@@ -1,5 +1,6 @@
 body {
   /* background: #eceff1; */
+  background-color: rgb(246, 249, 252);
 }
 body ::-webkit-scrollbar {
   width: 7px;
@@ -101,6 +102,7 @@ textarea.ant-input {
 .sp-special-tab {
   /* covers entire tab except top bar */
   background: white;
+  background-size: cover;
   z-index: 10;
   position: fixed;
   top: 35px;

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { Button, Radio } from "antd"
 
-import MusicPlayer from "components/MusicPlayer"
+// import MusicPlayer from "components/MusicPlayer"
 
 import Body from "containers/Chat/Body"
 import Footer from "containers/Chat/Footer"
@@ -17,9 +17,23 @@ function VideoRoom({
   // const [showHelp, setShowHelp] = useState(false)
   const [messages, setMessages] = useState([])
   const [showUsers, setShowUsers] = useState(false)
+  const [showMedia, setShowMedia] = useState(true)
+
+  const playerRef = useRef(null)
+  const playMedia = src => {
+    setShowMedia(true)
+    playerRef.current.src(src)
+    playerRef.current.play()
+  }
+  const pauseMedia = () => {
+    playerRef.current.pause()
+  }
 
   return (
-    <div className="sp-special-tab">
+    <div
+      className="sp-special-tab"
+      //   style={{ backgroundImage: `url('${room.background}')` }}
+    >
       <Button
         onClick={() => {
           back()
@@ -37,11 +51,7 @@ function VideoRoom({
       <div className="sp-tab-header">
         <a
           onClick={() => {
-            if (window.player) {
-              window.playMedia(room.src)
-            } else {
-              console.error("no player")
-            }
+            playMedia(room.src)
           }}
         >
           {room.about}
@@ -91,8 +101,11 @@ function VideoRoom({
           />
         </span>
       </div>
-      <div className="sp-tab-body">
-        <MusicPlayer sources={[room.src]} />
+      <div
+        style={{ background: "red" }}
+        //   className="sp-tab-body"
+      >
+        {/* <MusicPlayer sources={[room.src]} /> */}
         {/* <div
           style={{
             padding: 20,
@@ -126,12 +139,18 @@ function VideoRoom({
           /> */}
         {/* </div> */}
         <Body
-          height="calc(60% - 80px)"
+          //   height="calc(60% - 80px)"
           account={account}
           show={true}
           messages={messages}
           setMessages={setMessages}
           room={room}
+          playerRef={playerRef}
+          playMedia={playMedia}
+          pauseMedia={pauseMedia}
+          showMedia={showMedia}
+          setShowMedia={setShowMedia}
+          sources={[room.src]}
         />
 
         <Footer

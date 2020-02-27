@@ -1,13 +1,17 @@
-import React, { useEffect, useRef } from "react"
+import "./Body.css"
+
+import React, { useEffect, useRef, useState } from "react"
 import moment from "moment"
+import { Resizable } from "re-resizable"
 // import { connect } from "react-redux"
 
 import Message from "./Message"
 import socketManager from "socket/socket"
 import spDebug from "config/logger"
+import MusicPlayer from "components/MusicPlayer"
 
 const chatBodyStyle = {
-  height: "calc(100% - 107px)",
+  height: "calc(100% - 110px)",
   overflowY: "auto",
   overflowX: "hidden",
   width: "100%",
@@ -34,31 +38,53 @@ const AUTO_SCROLL_TRESHOLD_DISTANCE = 300
 //   return msg.type === "audio" || msg.type === "video"
 // }
 
-function ChatBody({ height, account, show, messages, setMessages, room }) {
+function ChatBody({
+  height,
+  account,
+  show,
+  messages,
+  setMessages,
+  room,
+  playMedia,
+  pauseMedia,
+  playerRef,
+  showMedia,
+  setShowMedia,
+  sources
+}) {
   if (!room) {
     return <span />
     // console.error("no roomId, should not render ChatBody")
   }
   const roomId = room.id
   spDebug("[ChatBody] " + roomId)
+  const [mediaHeight, setMediaHeight] = useState(200)
 
   const msgNum = messages.length
   const bodyRef = useRef(null)
   const suffixCb = name => {
     return name + "_" + roomId
   }
+
   const bodyStyle = { ...chatBodyStyle }
   const maskStyle = { ...bodyMaskStyle }
   if (!room.connected) {
     maskStyle.opacity = 0.5
   }
+
+  let heightDelta = 110
+  if (showMedia) {
+    heightDelta += mediaHeight
+  }
+
+  bodyStyle.height = `calc(100% - ${heightDelta}px)`
   if (room.background) {
     bodyStyle.backgroundImage = `url('${room.background}')`
     bodyStyle.backgroundSize = "cover"
   }
-  if (height) {
-    bodyStyle.height = height
-  }
+  // if (height) {
+  //   bodyStyle.height = height
+  // }
   // const chatMsgCallbackName = "display_new_message_" + chatView
   useEffect(() => {
     scrollToBottomIfNearBottom(10)
@@ -219,13 +245,59 @@ function ChatBody({ height, account, show, messages, setMessages, room }) {
         timeDisplay={timeDisplay}
         // displayMusicTab={props.displayMusicTab}
         imageLoadedCb={imageLoadedCb}
+        playMedia={src => {
+          playMedia(src)
+          setShowMedia(true)
+        }}
       />
     )
     lastMsg = msg
   })
 
+  const resizableStyle = {}
+  if (!show || !showMedia) {
+    resizableStyle.display = "none"
+  }
   return (
     <span>
+      <Resizable
+        style={resizableStyle}
+        enable={{
+          top: true,
+          right: false,
+          bottom: true,
+          left: false,
+          topRight: false,
+          bottomRight: false,
+          bottomLeft: false,
+          topLeft: false
+        }}
+        // maxHeight={300}
+        defaultSize={{
+          width: "100%",
+          height: mediaHeight
+        }}
+        minHeight={30}
+        bounds={bodyRef}
+        onResize={(e, dir, elm, delta) => {
+          // console.log(e)
+          // console.log(dir)
+          // console.log(elm)
+          // window.foo = elm
+          setMediaHeight(elm.clientHeight)
+        }}
+      >
+        <MusicPlayer
+          // show={showMedia}
+          closePlayer={() => {
+            pauseMedia()
+            setShowMedia(false)
+          }}
+          playerRef={playerRef}
+          sources={sources}
+        />
+      </Resizable>
+
       {show && (
         <div ref={bodyRef} style={bodyStyle}>
           {!room.connected && <div style={maskStyle}>Offline</div>}

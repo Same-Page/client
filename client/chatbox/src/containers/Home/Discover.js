@@ -47,10 +47,11 @@ function Discover({ account, setDiscoveryRoom, room }) {
         </div>
         <div
           style={{
-            padding: 10,
-            paddingLeft: 20,
-            paddingRight: 20,
-            backgroundImage: "linear-gradient(#e6f7ff, #40a9ff)"
+            padding: 0,
+            // paddingLeft: 20,
+            // paddingRight: 20,
+            background: "#e6d8d8"
+            // backgroundImage: "linear-gradient(#e6f7ff, #40a9ff)"
           }}
           className="sp-tab-body"
         >
@@ -72,19 +73,22 @@ function Discover({ account, setDiscoveryRoom, room }) {
                 className="sp-discover-entry"
                 style={style}
               >
-                {r.name}&nbsp;
-                <br />
-                <Icon type="team" />
-                {r.userCount}
-                <br />
-                {r.about}
+                <div>
+                  {r.name}&nbsp;
+                  <br />
+                  <Icon type="team" />
+                  {r.userCount}
+                  <br />
+                  <br />
+                  <b>{r.about}</b>
+                </div>
               </div>
             )
           })}
 
           <br />
           <br />
-          {!loadingRooms && <div style={{ float: "right" }}>WIP...</div>}
+          {/* {!loadingRooms && <div style={{ float: "right" }}>WIP...</div>} */}
         </div>
       </div>
       {room && (

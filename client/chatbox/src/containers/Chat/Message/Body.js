@@ -51,11 +51,12 @@ function MessageBody(props) {
       <div
         className="sp-message-media"
         onClick={() => {
-          if (window.player) {
-            window.playMedia(src)
-          } else {
-            console.error("no player")
-          }
+          props.playMedia(src)
+          // if (window.player) {
+          //   window.playMedia(src)
+          // } else {
+          //   console.error("no player")
+          // }
         }}
       >
         <span>

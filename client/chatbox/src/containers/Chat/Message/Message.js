@@ -77,6 +77,7 @@ function ChatMessage(props) {
         displayMusicTab={props.displayMusicTab}
         data={data}
         showMenu={props.showMenu}
+        playMedia={props.playMedia}
       />
     </div>
   )

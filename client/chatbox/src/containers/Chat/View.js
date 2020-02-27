@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 // import { connect } from "react-redux"
 
 import Body from "./Body"
@@ -15,6 +15,17 @@ function View({
   setShowRoomList
 }) {
   const [messages, setMessages] = useState([])
+  const playerRef = useRef(null)
+  const playMedia = src => {
+    setShowMedia(true)
+    playerRef.current.src(src)
+    playerRef.current.play()
+  }
+  const pauseMedia = () => {
+    playerRef.current.pause()
+  }
+  const [showMedia, setShowMedia] = useState(false)
+
   window.spDebug("[View.js] " + chatView)
 
   // Body component is always mounted because of the socket handlers
@@ -28,6 +39,11 @@ function View({
         messages={messages}
         setMessages={setMessages}
         room={room}
+        playerRef={playerRef}
+        playMedia={playMedia}
+        pauseMedia={pauseMedia}
+        showMedia={showMedia}
+        setShowMedia={setShowMedia}
       />
       {show && chatView === "room" && (showRoomList || !room) && (
         <RoomsWrapper setShowRoomList={setShowRoomList} />
