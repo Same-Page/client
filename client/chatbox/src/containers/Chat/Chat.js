@@ -114,6 +114,7 @@ function Chat({
             room={room}
             showRoomList={showRoomList}
             setShowRoomList={setShowRoomList}
+            changeTab={changeTab}
 
             // displayMusicTab={() => {
             //   setMediaDisplay("block")

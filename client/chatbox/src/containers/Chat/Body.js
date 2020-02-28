@@ -2,13 +2,12 @@ import "./Body.css"
 
 import React, { useEffect, useRef, useState } from "react"
 import moment from "moment"
-import { Resizable } from "re-resizable"
 // import { connect } from "react-redux"
 
 import Message from "./Message"
 import socketManager from "socket/socket"
 import spDebug from "config/logger"
-import MusicPlayer from "components/MusicPlayer"
+import ResizableMedia from "./ResizableMedia"
 
 const chatBodyStyle = {
   height: "calc(100% - 110px)",
@@ -60,7 +59,7 @@ function ChatBody({
 
   // spDebug(mediaSources)
   const [mediaHeight, setMediaHeight] = useState(200)
-
+  const [iframeUrl, setIframeUrl] = useState()
   const msgNum = messages.length
   const bodyRef = useRef(null)
   const suffixCb = name => {
@@ -94,6 +93,21 @@ function ChatBody({
     scrollToBottom(10)
   }, [show])
   useEffect(() => {
+    if (showMedia) {
+      setIframeUrl(null)
+    }
+  }, [showMedia])
+  useEffect(() => {
+    if (iframeUrl) {
+      setShowMedia(false)
+      pauseMedia()
+    }
+  }, [iframeUrl])
+  useEffect(() => {
+    setShowMedia(false)
+    pauseMedia()
+    setIframeUrl(null)
+
     // clear room message when room change (only for man made rooms)
     setMessages([])
   }, [roomId])
@@ -250,61 +264,36 @@ function ChatBody({
           playMedia(src)
           setShowMedia(true)
         }}
+        setIframeUrl={setIframeUrl}
       />
     )
     lastMsg = msg
   })
 
-  const resizableStyle = {}
-  if (!show || !showMedia) {
-    resizableStyle.display = "none"
-  }
   return (
     <span>
-      <Resizable
-        style={resizableStyle}
-        enable={{
-          top: true,
-          right: false,
-          bottom: true,
-          left: false,
-          topRight: false,
-          bottomRight: false,
-          bottomLeft: false,
-          topLeft: false
-        }}
-        // maxHeight={300}
-        defaultSize={{
-          width: "100%",
-          height: mediaHeight
-        }}
-        minHeight={30}
-        bounds={bodyRef}
-        onResize={(e, dir, elm, delta) => {
-          // console.log(e)
-          // console.log(dir)
-          // console.log(elm)
-          // window.foo = elm
-          setMediaHeight(elm.clientHeight)
-        }}
-      >
-        <MusicPlayer
-          // show={showMedia}
-          closePlayer={() => {
-            pauseMedia()
-            setShowMedia(false)
-          }}
-          playerRef={playerRef}
-          sources={mediaSources}
-        />
-      </Resizable>
+      <ResizableMedia
+        show={show && (showMedia || iframeUrl)}
+        showMedia={showMedia}
+        setShowMedia={setShowMedia}
+        mediaHeight={mediaHeight}
+        setMediaHeight={setMediaHeight}
+        pauseMedia={pauseMedia}
+        playerRef={playerRef}
+        mediaSources={mediaSources}
+        iframeUrl={iframeUrl}
+        setIframeUrl={setIframeUrl}
+      />
 
-      {show && (
-        <div ref={bodyRef} style={bodyStyle}>
-          {!room.connected && <div style={maskStyle}>Offline</div>}
-          {res}
-        </div>
-      )}
+      {/* {show && ( */}
+      <div
+        ref={bodyRef}
+        style={{ ...bodyStyle, display: show ? "block" : "none" }}
+      >
+        {!room.connected && <div style={maskStyle}>Offline</div>}
+        {res}
+      </div>
+      {/* )} */}
     </span>
   )
 }

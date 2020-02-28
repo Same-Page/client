@@ -30,3 +30,8 @@
 .hide-player {
   display: none;
 }
+
+.video-js:hover .vjs-control-bar {
+  display: flex !important;
+  z-index: 2;
+}

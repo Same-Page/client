@@ -123,7 +123,7 @@ function RoomHeader({
           }
         }
       >
-        {chatView === "room" && (
+        {/* {chatView === "room" && (
           <Button
             style={
               {
@@ -141,7 +141,7 @@ function RoomHeader({
             size="small"
             icon="menu"
           ></Button>
-        )}
+        )} */}
 
         {connected && (
           <span

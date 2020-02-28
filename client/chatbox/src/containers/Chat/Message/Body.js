@@ -81,9 +81,7 @@ function MessageBody(props) {
 
         <a
           onClick={() => {
-            setShowIframe(s => {
-              return !s
-            })
+            props.setIframeUrl(data.iframe_url || data.url)
           }}
         >
           {data.title}
@@ -152,14 +150,14 @@ function MessageBody(props) {
   return (
     <div>
       {contentWrapper}
-      {contentType === "url" && (
+      {/* {contentType === "url" && (
         <Iframe
           // title={" "}
           show={showIframe}
           setShow={setShowIframe}
           url={data.iframe_url || data.raw_url || data.url}
         />
-      )}
+      )} */}
     </div>
   )
 }

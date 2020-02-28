@@ -160,3 +160,18 @@ textarea.ant-input {
 .ant-modal {
   top: 10%;
 }
+
+.resizable-close {
+  position: absolute;
+  right: 0px;
+  /* padding: 5px; */
+  bottom: 0px;
+  /* border-radius: 100%; */
+  font-size: large;
+}
+.resizable-close .ant-btn {
+  border: none;
+  box-shadow: none;
+  background: #00000075;
+  color: white;
+}
