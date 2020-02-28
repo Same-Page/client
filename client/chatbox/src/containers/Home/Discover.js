@@ -5,11 +5,11 @@ import { Icon } from "antd"
 import { connect } from "react-redux"
 
 import { getPopularRooms } from "services/room"
-import { setDiscoveryRoom } from "redux/actions/chat"
-import VideoRoom from "./VideoRoom"
+import { setDiscoveryRoom, joinManMadeRoom } from "redux/actions/chat"
+// import VideoRoom from "./VideoRoom"
 import socketManager from "socket"
 
-function Discover({ account, setDiscoveryRoom, room }) {
+function Discover({ account, setDiscoveryRoom, room, joinManMadeRoom }) {
   // room joined isn't put to redux state, any problem?
   const intl = useIntl()
   const [loadingRooms, setLoadingRooms] = useState(true)
@@ -18,7 +18,7 @@ function Discover({ account, setDiscoveryRoom, room }) {
   const [rooms, setRooms] = useState([])
 
   const loadRooms = () => {
-    getPopularRooms("discovery")
+    getPopularRooms("room")
       .then(resp => {
         setRooms(resp.data)
       })
@@ -43,7 +43,7 @@ function Discover({ account, setDiscoveryRoom, room }) {
           >
             {loadingRooms && <Icon type="loading" />}
           </span>
-          {intl.formatMessage({ id: "discover" })}
+          {intl.formatMessage({ id: "fixed.rooms" })}
         </div>
         <div
           style={{
@@ -53,21 +53,23 @@ function Discover({ account, setDiscoveryRoom, room }) {
             background: "#e6d8d8"
             // backgroundImage: "linear-gradient(#e6f7ff, #40a9ff)"
           }}
-          className="sp-tab-body"
+          className="sp-tab-body discovery"
         >
           {rooms.map(r => {
             const style = {}
             if (r.cover) {
               style.backgroundImage = `url('${r.cover}')`
-            } else {
-              style.backgroundColor = "#acacac"
             }
+            // else {
+            //   style.backgroundColor = "#acacac"
+            // }
             return (
               <div
                 title={r.about}
                 key={r.id}
                 onClick={() => {
-                  setDiscoveryRoom(r)
+                  joinManMadeRoom(r)
+                  // setDiscoveryRoom(r)
                   socketManager.joinRoom(r)
                 }}
                 className="sp-discover-entry"
@@ -76,11 +78,20 @@ function Discover({ account, setDiscoveryRoom, room }) {
                 <div>
                   {r.name}&nbsp;
                   <br />
-                  <Icon type="team" />
+                  <Icon style={{ marginRight: 3 }} type="team" />
                   {r.userCount}
                   <br />
                   <br />
-                  <b>{r.about}</b>
+                  <b>
+                    {r.src && (
+                      <Icon
+                        type="play-circle"
+                        theme="filled"
+                        style={{ marginRight: 3 }}
+                      />
+                    )}
+                    {r.title}
+                  </b>
                 </div>
               </div>
             )
@@ -91,7 +102,7 @@ function Discover({ account, setDiscoveryRoom, room }) {
           {/* {!loadingRooms && <div style={{ float: "right" }}>WIP...</div>} */}
         </div>
       </div>
-      {room && (
+      {/* {room && (
         <VideoRoom
           room={room}
           account={account}
@@ -100,7 +111,7 @@ function Discover({ account, setDiscoveryRoom, room }) {
             socketManager.leaveRoom(room)
           }}
         />
-      )}
+      )} */}
     </span>
   )
 }
@@ -118,4 +129,7 @@ const stateToProps = state => {
     room: room
   }
 }
-export default connect(stateToProps, { setDiscoveryRoom })(Discover)
+
+export default connect(stateToProps, { setDiscoveryRoom, joinManMadeRoom })(
+  Discover
+)

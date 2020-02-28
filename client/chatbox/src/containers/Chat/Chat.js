@@ -102,7 +102,7 @@ function Chat({
         if (room.length) {
           room = room[0]
         } else {
-          room = manMadeRoom
+          room = null
         }
 
         return (

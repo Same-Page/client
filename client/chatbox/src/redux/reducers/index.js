@@ -45,7 +45,7 @@ const store = (state = initState, action) => {
       return {
         ...state,
         chatModes: modes,
-        rooms: getRooms(modes, state.manMadeRoom)
+        rooms: getRooms(modes, { ...state.manMadeRoom })
       }
     case "CHANGE_CHAT_VIEW":
       return { ...state, chatView: action.payload }
@@ -89,18 +89,18 @@ const store = (state = initState, action) => {
       // if self then go to profile page
       return { ...state, otherUser: action.payload }
     case "JOIN_MAN_MADE_ROOM":
-      const manMadeRoom = action.payload
-      if (!state.manMadeRoom || state.manMadeRoom.id !== manMadeRoom.id) {
-        rooms = rooms.filter(room => {
-          return room.type !== "room"
-        })
-        if (manMadeRoom) {
-          rooms.push(manMadeRoom)
-          // do not save connected status
-          delete manMadeRoom["connected"]
-          storageManager.set("room", manMadeRoom)
-        }
+      const manMadeRoom = { ...action.payload }
+      if (!manMadeRoom) {
+        break
       }
+
+      rooms = rooms.filter(room => {
+        return room.type !== "room"
+      })
+      rooms.push(manMadeRoom)
+      // do not save connected status
+      delete manMadeRoom["connected"]
+      storageManager.set("room", manMadeRoom)
 
       return {
         ...state,

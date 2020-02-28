@@ -24,12 +24,12 @@ function View({
   const pauseMedia = () => {
     playerRef.current.pause()
   }
-  const [showMedia, setShowMedia] = useState(false)
-
+  const showMediaInit = room && room.src
+  const [showMedia, setShowMedia] = useState(showMediaInit)
+  const mediaSrc = room && room.src
   window.spDebug("[View.js] " + chatView)
 
   // Body component is always mounted because of the socket handlers
-
   return (
     <span>
       <Body
@@ -44,6 +44,7 @@ function View({
         pauseMedia={pauseMedia}
         showMedia={showMedia}
         setShowMedia={setShowMedia}
+        mediaSources={[mediaSrc]}
       />
       {show && chatView === "room" && (showRoomList || !room) && (
         <RoomsWrapper setShowRoomList={setShowRoomList} />

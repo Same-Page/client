@@ -21,9 +21,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  background-color: #acacac;
+  background-color: gray;
   background-size: cover;
   vertical-align: middle;
+  border-bottom: 1px solid white;
+}
+.sp-discover-entry:nth-child(odd) {
+  border-right: 1px solid white;
 }
 .sp-discover-entry div {
   top: 50%;
@@ -32,7 +36,10 @@
   /* margin: 0; */
   position: absolute;
   transform: translate(-50%, -50%);
-  /* margin-top: 10px; */
+
+  overflow: hidden;
+  max-width: 90%;
+  text-overflow: ellipsis;
 }
 .sp-discover-entry:hover {
   background: #008fff !important;

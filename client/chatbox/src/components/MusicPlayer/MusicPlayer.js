@@ -69,8 +69,9 @@ class VideoPlayer extends React.Component {
 }
 
 function Player(props) {
+  // console.log(props.sources)
   const videoJsOptions = {
-    autoplay: true,
+    autoplay: false,
     dataSetup: { techOrder: ["youtube"] },
     controls: true,
     responsive: true,

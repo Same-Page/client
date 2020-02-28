@@ -14,7 +14,7 @@ body ::-webkit-scrollbar-track {
 /* Handle */
 body ::-webkit-scrollbar-thumb {
   /* background: #1890ff; */
-  background: rgba(204, 204, 204, 0.445);
+  background: rgba(0, 0, 0, 0.173);
   /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); */
 }
 body ::-webkit-scrollbar-thumb:window-inactive {

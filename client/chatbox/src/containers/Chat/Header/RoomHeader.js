@@ -165,7 +165,7 @@ function RoomHeader({
               size="small"
               icon="team"
             >
-              <span style={{ marginLeft: 5 }}>{userNum}</span>
+              <span style={{ marginLeft: 3 }}>{userNum}</span>
             </Button>
             <Button
               style={

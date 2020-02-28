@@ -39,7 +39,6 @@ const AUTO_SCROLL_TRESHOLD_DISTANCE = 300
 // }
 
 function ChatBody({
-  height,
   account,
   show,
   messages,
@@ -50,7 +49,7 @@ function ChatBody({
   playerRef,
   showMedia,
   setShowMedia,
-  sources
+  mediaSources
 }) {
   if (!room) {
     return <span />
@@ -58,6 +57,8 @@ function ChatBody({
   }
   const roomId = room.id
   spDebug("[ChatBody] " + roomId)
+
+  // spDebug(mediaSources)
   const [mediaHeight, setMediaHeight] = useState(200)
 
   const msgNum = messages.length
@@ -294,7 +295,7 @@ function ChatBody({
             setShowMedia(false)
           }}
           playerRef={playerRef}
-          sources={sources}
+          sources={mediaSources}
         />
       </Resizable>
 

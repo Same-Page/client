@@ -13,6 +13,21 @@ const _sendEvent = data => {
     "*"
   )
 }
+const _leaveRoom = room => {
+  const state = store.getState()
+  if (state.account) {
+    const token = state.account.token
+
+    const payload = {
+      action: "leave_single",
+      data: {
+        room: room,
+        token: token
+      }
+    }
+    _sendEvent(payload)
+  }
+}
 const socketManager = {
   addHandler: (eventName, callbackName, callback) => {
     const handlers = _socketEventHanders[eventName] || {}
@@ -45,21 +60,7 @@ const socketManager = {
   disconnect: () => {
     _sendEvent("disconnect socket")
   },
-  leaveRoom: room => {
-    const state = store.getState()
-    if (state.account) {
-      const token = state.account.token
-
-      const payload = {
-        action: "leave_single",
-        data: {
-          room: room,
-          token: token
-        }
-      }
-      _sendEvent(payload)
-    }
-  },
+  leaveRoom: _leaveRoom,
   syncRooms: () => {
     // join action is actually a set room operation
     // will join rooms included and leave rooms not in
@@ -81,6 +82,11 @@ const socketManager = {
   },
   joinRoom: room => {
     const state = store.getState()
+
+    if (room.type === "room" && state.manMadeRoom) {
+      _leaveRoom(state.manMadeRoom)
+    }
+
     if (state.account) {
       const token = state.account.token
       const payload = {
