@@ -58,14 +58,14 @@ function ChatBody({
   spDebug("[ChatBody] " + roomId)
 
   // spDebug(mediaSources)
-  const [mediaHeight, setMediaHeight] = useState(200)
+  const [resizableHeight, setResizableHeight] = useState(200)
   const [iframeUrl, setIframeUrl] = useState()
   const msgNum = messages.length
   const bodyRef = useRef(null)
   const suffixCb = name => {
     return name + "_" + roomId
   }
-
+  const showResizable = show && (showMedia || iframeUrl)
   const bodyStyle = { ...chatBodyStyle }
   const maskStyle = { ...bodyMaskStyle }
   if (!room.connected) {
@@ -73,8 +73,8 @@ function ChatBody({
   }
 
   let heightDelta = 110
-  if (showMedia) {
-    heightDelta += mediaHeight
+  if (showResizable) {
+    heightDelta += resizableHeight
   }
 
   bodyStyle.height = `calc(100% - ${heightDelta}px)`
@@ -273,11 +273,11 @@ function ChatBody({
   return (
     <span>
       <ResizableMedia
-        show={show && (showMedia || iframeUrl)}
+        show={showResizable}
         showMedia={showMedia}
         setShowMedia={setShowMedia}
-        mediaHeight={mediaHeight}
-        setMediaHeight={setMediaHeight}
+        resizableHeight={resizableHeight}
+        setResizableHeight={setResizableHeight}
         pauseMedia={pauseMedia}
         playerRef={playerRef}
         mediaSources={mediaSources}

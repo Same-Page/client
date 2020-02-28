@@ -5,17 +5,9 @@ import { Icon } from "antd"
 import Body from "./Body"
 import Footer from "./Footer"
 
-import RoomsWrapper from "containers/Home/RoomsWrapper"
+// import RoomsWrapper from "containers/Home/RoomsWrapper"
 
-function View({
-  chatView,
-  show,
-  room,
-  account,
-  changeTab,
-  showRoomList,
-  setShowRoomList
-}) {
+function View({ chatView, show, room, account, changeTab }) {
   const [messages, setMessages] = useState([])
   const playerRef = useRef(null)
   const intl = useIntl()

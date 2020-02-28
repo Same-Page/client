@@ -9,8 +9,8 @@ function ResizableMedia({
   show,
   showMedia,
   setShowMedia,
-  mediaHeight,
-  setMediaHeight,
+  resizableHeight,
+  setResizableHeight,
   pauseMedia,
   playerRef,
   mediaSources,
@@ -36,12 +36,12 @@ function ResizableMedia({
       }}
       defaultSize={{
         width: "100%",
-        height: mediaHeight
+        height: resizableHeight
       }}
       minHeight={30}
       //   bounds={bodyRef}
       onResize={(e, dir, elm, delta) => {
-        setMediaHeight(elm.clientHeight)
+        setResizableHeight(elm.clientHeight)
       }}
     >
       <span style={{ display: showMedia ? "unset" : "none" }}>

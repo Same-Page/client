@@ -20,6 +20,9 @@ function Discover({ account, setDiscoveryRoom, room, joinManMadeRoom }) {
   const loadRooms = () => {
     getPopularRooms("room")
       .then(resp => {
+        resp.data.sort((a, b) => {
+          return b.userCount - a.userCount
+        })
         setRooms(resp.data)
       })
       .catch(err => {})
@@ -56,10 +59,15 @@ function Discover({ account, setDiscoveryRoom, room, joinManMadeRoom }) {
           className="sp-tab-body discovery"
         >
           {rooms.map(r => {
-            const style = {}
+            const style = {
+              backgroundColor:
+                "#" + Math.floor(Math.random() * 8777215).toString(16)
+            }
             if (r.cover) {
               style.backgroundImage = `url('${r.cover}')`
             }
+            // const randomColor = Math.floor(Math.random()*16777215).toString(16);
+
             // else {
             //   style.backgroundColor = "#acacac"
             // }

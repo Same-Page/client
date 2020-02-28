@@ -165,7 +165,7 @@ textarea.ant-input {
   position: absolute;
   right: 0px;
   /* padding: 5px; */
-  bottom: 0px;
+  /* bottom: 0px; */
   /* border-radius: 100%; */
   font-size: large;
 }
@@ -173,5 +173,7 @@ textarea.ant-input {
   border: none;
   box-shadow: none;
   background: #00000075;
-  color: white;
+  color: #ffffff;
+  /* background: none; */
+  border-radius: 0;
 }
