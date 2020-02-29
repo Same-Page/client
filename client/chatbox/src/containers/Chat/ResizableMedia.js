@@ -24,6 +24,10 @@ function ResizableMedia({
   return (
     <Resizable
       style={resizableStyle}
+      size={{
+        width: "100%",
+        height: resizableHeight
+      }}
       enable={{
         top: true,
         right: false,
@@ -58,7 +62,13 @@ function ResizableMedia({
       {iframeUrl && (
         <span>
           <iframe
-            style={{ height: "100%", width: "100%", border: "none" }}
+            style={{
+              background: "#d9d9d9",
+              height: "100%",
+              width: "100%",
+              border: "none",
+              borderBottom: "1px solid lightgray"
+            }}
             src={iframeUrl}
           />
           <span

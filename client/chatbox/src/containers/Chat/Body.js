@@ -101,6 +101,7 @@ function ChatBody({
     if (iframeUrl) {
       setShowMedia(false)
       pauseMedia()
+      setResizableHeight(270)
     }
   }, [iframeUrl])
   useEffect(() => {

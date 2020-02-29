@@ -185,7 +185,8 @@ function ChatboxIframe(props) {
 						width: iframeSize.width,
 						height: iframeSize.height
 					}}
-					minWidth={220}
+					minWidth={iframeSize.minWidth}
+					minHeight={iframeSize.minHeight}
 					dragAxis="x"
 				>
 					<div className="sp-chatbox-drag-handle"></div>
