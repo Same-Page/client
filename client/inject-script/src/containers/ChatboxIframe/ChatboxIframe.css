@@ -1,67 +1,67 @@
 .sp-chatbox-iframe {
-  /* don't remove anything, this is fighting other sites' styling*/
-  min-height: 0px;
-  min-width: 0px;
-  height: 100%;
-  width: 100%;
-  max-width: 9999px;
-  max-height: 9999px;
-  border: none;
-  /* put display: none here, but still need to set it in js
+	/* don't remove anything, this is fighting other sites' styling*/
+	min-height: 0px;
+	min-width: 0px;
+	height: 100%;
+	width: 100%;
+	max-width: 9999px;
+	max-height: 9999px;
+	border: none;
+	/* put display: none here, but still need to set it in js
   so that we can read it easily later
   */
-  margin-bottom: 0px;
+	margin-bottom: 0px;
 }
 .sp-chatbox-iframe-wrapper {
-  position: fixed !important;
-  /* left: 0; */
-  bottom: 0;
-  top: unset !important;
-  z-index: 2147483646;
-  /* one less than image modal */
-  display: none;
-  border: 1px solid lightgray;
-  border-bottom: none;
-  /* border-right: none; */
-  /* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.31); */
+	position: fixed !important;
+	/* left: 0; */
+	bottom: 0;
+	top: unset !important;
+	z-index: 2147483646;
+	/* one less than image modal */
+	display: none;
+	/* border: 1px solid lightgray; */
+	border-bottom: none;
+	/* border-right: none; */
+	/* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.31); */
 }
 .sp-chatbox-drag-handle {
-  margin-top: -20px;
-  height: 20px;
+	margin-top: -20px;
+	height: 20px;
 }
 .sp-chatbox-drag-handle center {
-  display: none;
+	display: none;
 }
 .sp-chatbox-drag-handle:hover center {
-  display: inline-block;
+	display: inline-block;
 }
 .sp-blue-button {
-  background-color: #2196f3 !important;
+	background-color: #2196f3 !important;
 }
 .sp-chat-icon-wrapper {
-  z-index: 2147483647;
-  margin: 10px;
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  color: #2096f3;
-  border: 1px solid #2096f3;
-  border-radius: 100%;
-  text-align: center;
-  line-height: 32px;
+	z-index: 2147483647;
+	margin: 10px;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	color: #2096f3;
+	border: 1px solid #2096f3;
+	border-radius: 100%;
+	text-align: center;
+	line-height: 32px;
 }
 .sp-chat-icon-wrapper svg {
-  vertical-align: unset;
+	vertical-align: unset;
 }
 .sp-chat-icon-wrapper img {
-  width: 100%;
-  height: 100%;
-  /* 
+	width: 100%;
+	height: 100%;
+	/* 
   inline style is display none so we don't show the icon
   until css file is properly loaded
    */
-  display: block !important;
+	display: block !important;
 }

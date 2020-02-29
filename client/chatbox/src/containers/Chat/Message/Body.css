@@ -4,16 +4,17 @@
   display: inline-block;
 }
 
+.sp-message-body.file,
 .sp-message-body.text,
 .sp-message-body.url {
-  background: rgba(255, 255, 255, 0.502);
+  background: rgba(255, 255, 255);
   border-radius: 5px;
   padding: 10px;
   padding-top: 5px;
   padding-bottom: 5px;
   word-wrap: break-word;
   white-space: pre-wrap;
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0; */
   color: black;
   text-align: left;
 }
@@ -53,7 +54,7 @@ img.sp-message-image {
   padding-bottom: 5px;
   word-wrap: break-word;
   white-space: pre-wrap;
-  border: 1px solid #e0e0e0;
+  /* border: 1px solid #e0e0e0; */
   color: #ffffff;
   background: #1890ff;
   text-align: left;

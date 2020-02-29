@@ -13,7 +13,7 @@ const avatarStyle = {
   display: "block"
 }
 const ProfileBodyStyle = {
-  height: "calc(100% - 35px)",
+  height: "calc(100% - 40px)",
   overflowY: "auto",
   overflowX: "hidden",
   width: "100%",

@@ -4,9 +4,9 @@ import React, { useState } from "react"
 import { Popover, Button, Icon } from "antd"
 
 import socketManager from "socket"
-import Iframe from "components/Iframe"
+// import Iframe from "components/Iframe"
 function MessageBody(props) {
-  const [showIframe, setShowIframe] = useState(false)
+  // const [showIframe, setShowIframe] = useState(false)
   const data = props.data.content
   const self = props.data.self
   let content = data.value
@@ -36,6 +36,7 @@ function MessageBody(props) {
   if (contentType === "file") {
     content = (
       <a href={data.url} rel="noopener noreferrer" target="_blank" download>
+        <Icon type="cloud-download" style={{ marginRight: 5 }} />
         {data.fileName}
       </a>
     )

@@ -13,7 +13,7 @@ import InputWithPicker from "components/InputWithPicker"
 import { viewOtherUser } from "redux/actions"
 
 const conversationBodyStyle = {
-  height: "calc(100% - 110px)",
+  height: "calc(100% - 119px)",
   overflowY: "auto",
   overflowX: "hidden",
   width: "100%",

@@ -34,17 +34,20 @@ body ::-webkit-scrollbar-thumb:window-inactive {
 }
 
 .ant-tabs-nav-container {
-  font-size: 18px;
+  font-size: 20px;
+}
+.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+  line-height: 41px;
 }
 .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-nav-container {
-  height: 35px;
+  height: 40px;
 }
 
 .card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
   border-color: transparent;
   border-radius: 0;
   background: transparent;
-  height: 35px;
+  height: 40px;
 }
 .ant-tabs-bar {
   border-bottom: none;
@@ -105,9 +108,9 @@ textarea.ant-input {
   background-size: cover;
   z-index: 10;
   position: fixed;
-  top: 35px;
+  top: 40px;
   width: 100%;
-  height: calc(100% - 35px);
+  height: calc(100% - 40px);
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
@@ -117,9 +120,9 @@ textarea.ant-input {
   background: white;
   z-index: 9; /* other profile has z index 10 */
   position: fixed;
-  top: 70px;
+  /* top: 80px; */
   width: 100%;
-  height: calc(100% - 70px);
+  height: calc(100% - 80px);
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
@@ -127,11 +130,12 @@ textarea.ant-input {
 
 .sp-back-btn {
   position: fixed;
-  margin-top: 1px;
-  margin-left: 5px;
+  margin-top: 5px;
+  margin-left: 10px;
   background: none;
   border: none;
   font-size: large;
+  box-shadow: none;
 }
 .sp-back-btn:hover {
   background: none;
@@ -139,8 +143,9 @@ textarea.ant-input {
 
 .sp-tab-header {
   border-bottom: 1px solid lightgray;
-  padding: 5px;
-  height: 36px;
+  /* padding: 5px; */
+  line-height: 40px;
+  height: 40px;
   text-align: center;
   white-space: nowrap;
 }

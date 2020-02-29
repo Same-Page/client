@@ -96,13 +96,14 @@ function Follow(props) {
     <div className="sp-follow-tab">
       <Button
         onClick={props.back}
-        style={{
-          position: "fixed",
-          marginTop: 1,
-          marginLeft: 5,
-          border: "none",
-          fontSize: "large"
-        }}
+        className="sp-back-btn"
+        // style={{
+        //   position: "fixed",
+        //   marginTop: 1,
+        //   marginLeft: 5,
+        //   border: "none",
+        //   fontSize: "large"
+        // }}
         icon="arrow-left"
       />
 

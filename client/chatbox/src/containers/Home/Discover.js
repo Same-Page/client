@@ -8,7 +8,14 @@ import { getPopularRooms } from "services/room"
 import { setDiscoveryRoom, joinManMadeRoom } from "redux/actions/chat"
 // import VideoRoom from "./VideoRoom"
 import socketManager from "socket"
-
+function getRandomRolor() {
+  var letters = "0123456789".split("")
+  var color = "#"
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.round(Math.random() * 10)]
+  }
+  return color
+}
 function Discover({ account, setDiscoveryRoom, room, joinManMadeRoom }) {
   // room joined isn't put to redux state, any problem?
   const intl = useIntl()
@@ -60,8 +67,8 @@ function Discover({ account, setDiscoveryRoom, room, joinManMadeRoom }) {
         >
           {rooms.map(r => {
             const style = {
-              backgroundColor:
-                "#" + Math.floor(Math.random() * 8777215).toString(16)
+              backgroundColor: getRandomRolor()
+              // "#" + Math.floor(Math.random() * 3777215).toString(16)
             }
             if (r.cover) {
               style.backgroundImage = `url('${r.cover}')`

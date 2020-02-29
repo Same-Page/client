@@ -10,12 +10,12 @@ import spDebug from "config/logger"
 import ResizableMedia from "./ResizableMedia"
 
 const chatBodyStyle = {
-  height: "calc(100% - 110px)",
+  height: "calc(100% - 119px)",
   overflowY: "auto",
   overflowX: "hidden",
   width: "100%",
   position: "fixed",
-  background: "#f6f9fc",
+  background: "rgb(243, 243, 243)",
   padding: 10,
   paddingBottom: 50,
   scrollBehavior: "smooth"
@@ -72,7 +72,7 @@ function ChatBody({
     maskStyle.opacity = 0.5
   }
 
-  let heightDelta = 110
+  let heightDelta = 119
   if (showResizable) {
     heightDelta += resizableHeight
   }
