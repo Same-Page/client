@@ -155,7 +155,7 @@ const _connect = () => {
 			data.self =
 				data.user.id.toString() ===
 				accountManager.getAccount().id.toString()
-
+			roomManager.setUserMessage(data.user, data.roomId, data.content)
 			window.queueAnimationDanmu(msg.data)
 		}
 	}

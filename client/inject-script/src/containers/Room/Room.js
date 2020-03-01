@@ -16,7 +16,7 @@ function Room(props) {
 	return (
 		<span>
 			<ChatIcon userCount={users.length} />
-			{/* <Draggable>
+			<Draggable>
 				<span className="sp-users-wrapper">
 					{users.map(u => (
 						<User
@@ -26,7 +26,7 @@ function Room(props) {
 						/>
 					))}
 				</span>
-			</Draggable> */}
+			</Draggable>
 		</span>
 	)
 }
