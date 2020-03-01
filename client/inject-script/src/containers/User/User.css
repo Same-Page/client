@@ -4,6 +4,8 @@
 	/* position: fixed; */
 	/* bottom: 0; */
 	border-radius: 100%;
+	background-size: cover;
+	display: inline-block;
 }
 .sp-chat-bubble {
 	padding: 10px;
@@ -15,6 +17,8 @@
 	max-width: 250px;
 	position: absolute;
 	bottom: 70px;
+	overflow-wrap: break-word;
+	border: 1px solid #666;
 }
 
 .sp-chat-bubble:after {
@@ -28,4 +32,17 @@
 	bottom: -12px;
 	border: 6px solid;
 	border-color: white transparent transparent white;
+}
+
+.sp-chat-bubble:before {
+	content: " ";
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 24px;
+	right: auto;
+	top: auto;
+	bottom: -14px;
+	border: 7px solid;
+	border-color: #666 transparent transparent #666;
 }

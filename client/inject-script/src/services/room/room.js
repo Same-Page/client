@@ -16,6 +16,16 @@ const _setUserMessage = (user, roomId, content) => {
 
 		const usersInRoom = usersInRooms[roomId]
 		let foundUser = false
+
+		// const users = usersInRoom.filter(u => {
+		// 	return u.id.toString() !== user.id.toString()
+		// })
+		// user.message = content.value || content.title || content.url
+		// user.delMessageTimeout = setTimeout(() => {
+		// 	_removeUserMessage(user, roomId)
+		// }, MSG_TIMEOUT)
+		// // move to front
+		// users.unshift(user)
 		const users = usersInRoom.map(u => {
 			if (u.id.toString() === user.id.toString()) {
 				foundUser = true
@@ -72,17 +82,36 @@ const roomManager = {
 		// usersInRooms[roomId] = users
 		// ^^ can't simply set users because will lose the message info
 		const localUsersData = usersInRooms[roomId] || []
-		users = users.map(u => {
-			const localUser = localUsersData.find(lu => {
+		// users = users.map(u => {
+		// 	const localUser = localUsersData.find(lu => {
+		// 		return lu.id.toString() === u.id.toString()
+		// 	})
+		// 	if (localUser) {
+		// 		return localUser
+		// 	}
+		// 	return u
+		// })
+		// also preserve old order
+		let res = localUsersData.map(u => {
+			const user = users.find(lu => {
 				return lu.id.toString() === u.id.toString()
 			})
-			if (localUser) {
-				return localUser
+			if (user) {
+				user.found = true
+				return u
 			}
+			return null
+		})
+		users.forEach(u => {
+			if (!u.found) {
+				res.push(u)
+			}
+		})
+		res = res.filter(u => {
 			return u
 		})
-		usersInRooms[roomId] = users
-		if (roomId === getDomain()) window.setUsers([...users])
+		usersInRooms[roomId] = res
+		if (roomId === getDomain()) window.setUsers(res)
 	},
 	addUserToRoom: (roomId, user) => {
 		if (!(roomId in usersInRooms)) {

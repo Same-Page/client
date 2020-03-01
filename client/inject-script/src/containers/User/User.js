@@ -7,7 +7,11 @@ function User({ user }) {
 			{user.message && (
 				<div className="sp-chat-bubble">{user.message}</div>
 			)}
-			<img draggable="false" src={user.avatarSrc} className="sp-avatar" />
+			<span
+				draggable="false"
+				style={{ backgroundImage: `url('${user.avatarSrc}')` }}
+				className="sp-avatar"
+			/>
 		</span>
 	)
 }
