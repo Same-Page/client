@@ -1,0 +1,15 @@
+.sp-avatar {
+	height: 50px;
+	width: 50px;
+	/* position: fixed; */
+	/* bottom: 0; */
+	border-radius: 100%;
+}
+.sp-chat-bubble {
+	padding: 10px;
+	background-color: white;
+	border-radius: 5%;
+	font-size: medium;
+	width: 50px;
+	max-width: 50px;
+}

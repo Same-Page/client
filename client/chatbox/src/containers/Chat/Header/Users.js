@@ -10,7 +10,7 @@ const usersStyle = {
   background: "white",
   position: "fixed",
   zIndex: 10,
-  // marginTop: 5,
+  marginTop: -1, //to hide above border-botom
   left: 0,
   width: "100%",
   overflow: "auto",

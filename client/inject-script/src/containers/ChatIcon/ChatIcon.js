@@ -8,9 +8,9 @@ import MailIcon from "@material-ui/icons/Mail"
 const SHOW_CHAT_ICON_BY_DEFAULT = true
 let dragging = false
 
-function ChatIcon(props) {
+function ChatIcon({ userCount }) {
 	const [showIcon, setShowIcon] = useState(false)
-	const [userCount, setUserCount] = useState()
+	// const [userCount, setUserCount] = useState()
 	const [unreadMail, setUnreadMail] = useState(false)
 	// const userCountStr = () => {
 	// 	return userCount.join(" | ")
@@ -26,7 +26,7 @@ function ChatIcon(props) {
 		storage.addEventListener("showChatIcon", showChatIcon => {
 			setShowIcon(showChatIcon)
 		})
-		window.setUserCount = setUserCount
+		// window.setUserCount = setUserCount
 
 		storage.get("unread", unread => {
 			// console.log("get unread")

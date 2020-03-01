@@ -29,6 +29,8 @@
   overflow: hidden;
   white-space: nowrap;
   text-align: center;
+  line-height: 10px;
+  padding-top: 5px;
 }
 
 .yiyelink {

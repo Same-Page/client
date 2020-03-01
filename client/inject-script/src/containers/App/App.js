@@ -5,7 +5,7 @@ import React, { useEffect } from "react"
 // powered by css + js, different from video danmu that's powered by canvas
 import AnimationDanmu from "../ChatDanmu/AnimationDanmu"
 import ChatboxIframe from "../ChatboxIframe"
-import ChatIcon from "../ChatIcon"
+import Room from "../Room"
 
 import axios from "axios"
 
@@ -113,7 +113,7 @@ function App(props) {
 
 	return (
 		<span>
-			<ChatIcon />
+			<Room />
 			<ChatboxIframe />
 			<AnimationDanmu />
 		</span>

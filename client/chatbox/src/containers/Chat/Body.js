@@ -32,7 +32,8 @@ const bodyMaskStyle = {
   // pointerEvents: "none" // still allow scrolling
 }
 const AUTO_SCROLL_TRESHOLD_DISTANCE = 300
-
+const VIDEO_DEFAULT_HEIGHT = 200
+const IFRAME_DEFAULT_HEIGHT = 270
 // function isMedia(msg) {
 //   return msg.type === "audio" || msg.type === "video"
 // }
@@ -58,7 +59,10 @@ function ChatBody({
   spDebug("[ChatBody] " + roomId)
 
   // spDebug(mediaSources)
-  const [resizableHeight, setResizableHeight] = useState(200)
+  const resizableDefaultHeight = showMedia
+    ? VIDEO_DEFAULT_HEIGHT
+    : IFRAME_DEFAULT_HEIGHT
+  const [resizableHeight, setResizableHeight] = useState(resizableDefaultHeight)
   const [iframeUrl, setIframeUrl] = useState()
   const msgNum = messages.length
   const bodyRef = useRef(null)
@@ -95,13 +99,14 @@ function ChatBody({
   useEffect(() => {
     if (showMedia) {
       setIframeUrl(null)
+      setResizableHeight(VIDEO_DEFAULT_HEIGHT)
     }
   }, [showMedia])
   useEffect(() => {
     if (iframeUrl) {
       setShowMedia(false)
       pauseMedia()
-      setResizableHeight(270)
+      setResizableHeight(IFRAME_DEFAULT_HEIGHT)
     }
   }, [iframeUrl])
   useEffect(() => {

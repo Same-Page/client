@@ -1,5 +1,5 @@
 import { getDomain } from "utils/url"
-
+// this file deprecated and replaced by Room.js
 const usersInRooms = {}
 // const getCountArray = () => {
 // 	const res = []
@@ -15,11 +15,11 @@ const roomManager = {
 		Object.keys(usersInRooms).forEach(roomId => {
 			usersInRooms[roomId] = []
 		})
-		window.setUserCount(0)
+		window.setUsers([])
 	},
 	setUsersInRoom: (roomId, users) => {
 		usersInRooms[roomId] = users
-		if (roomId === getDomain()) window.setUserCount(users.length)
+		if (roomId === getDomain()) window.setUsers([...users])
 	},
 	addUserToRoom: (roomId, user) => {
 		if (!(roomId in usersInRooms)) {
@@ -32,8 +32,7 @@ const roomManager = {
 		})
 		usersInRooms[roomId].push(user)
 
-		if (roomId === getDomain())
-			window.setUserCount(usersInRooms[roomId].length)
+		if (roomId === getDomain()) window.setUsers([...usersInRooms[roomId]])
 	},
 	removeUserFromRoom: (roomId, user) => {
 		if (!(roomId in usersInRooms)) {
@@ -42,8 +41,7 @@ const roomManager = {
 		usersInRooms[roomId] = usersInRooms[roomId].filter(u => {
 			return u.id !== user.id
 		})
-		if (roomId === getDomain())
-			window.setUserCount(usersInRooms[roomId].length)
+		if (roomId === getDomain()) window.setUsers([...usersInRooms[roomId]])
 	}
 }
 export default roomManager
