@@ -82,34 +82,34 @@ const roomManager = {
 		// usersInRooms[roomId] = users
 		// ^^ can't simply set users because will lose the message info
 		const localUsersData = usersInRooms[roomId] || []
-		// users = users.map(u => {
-		// 	const localUser = localUsersData.find(lu => {
-		// 		return lu.id.toString() === u.id.toString()
-		// 	})
-		// 	if (localUser) {
-		// 		return localUser
-		// 	}
-		// 	return u
-		// })
-		// also preserve old order
-		let res = localUsersData.map(u => {
-			const user = users.find(lu => {
+		const res = users.map(u => {
+			const localUser = localUsersData.find(lu => {
 				return lu.id.toString() === u.id.toString()
 			})
-			if (user) {
-				user.found = true
-				return u
+			if (localUser) {
+				return localUser
 			}
-			return null
-		})
-		users.forEach(u => {
-			if (!u.found) {
-				res.push(u)
-			}
-		})
-		res = res.filter(u => {
 			return u
 		})
+		// also preserve old order
+		// let res = localUsersData.map(u => {
+		// 	const user = users.find(lu => {
+		// 		return lu.id.toString() === u.id.toString()
+		// 	})
+		// 	if (user) {
+		// 		user.found = true
+		// 		return u
+		// 	}
+		// 	return null
+		// })
+		// users.forEach(u => {
+		// 	if (!u.found) {
+		// 		res.push(u)
+		// 	}
+		// })
+		// res = res.filter(u => {
+		// 	return u
+		// })
 		usersInRooms[roomId] = res
 		if (roomId === getDomain()) window.setUsers(res)
 	},

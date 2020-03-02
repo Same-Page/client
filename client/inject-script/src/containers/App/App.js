@@ -120,4 +120,23 @@ function App(props) {
 	)
 }
 
+window.addEventListener(
+	"message",
+	e => {
+		if (!e || !e.data) return
+		if (e.data.type === "sp-change-bg") {
+			const imgUrl = `url("${e.data.data}")`
+			// console.log(imgUrl)
+			if (document.body.style.backgroundImage !== imgUrl) {
+				document.body.style.backgroundImage = imgUrl
+				document.body.style.backgroundSize = `cover`
+				document.body.style.backgroundRepeat = `no-repeat`
+			} else {
+				document.body.style.backgroundImage = ""
+			}
+		}
+	},
+	false
+)
+
 export default App

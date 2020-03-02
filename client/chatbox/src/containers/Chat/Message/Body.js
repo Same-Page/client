@@ -131,6 +131,23 @@ function MessageBody(props) {
           </Button>
         </div>
       )}
+      {contentType === "image" && (
+        <div>
+          <Button
+            onClick={() => {
+              window.parent.postMessage(
+                {
+                  type: "sp-change-bg",
+                  data: data.value
+                },
+                "*"
+              )
+            }}
+          >
+            <Icon type="pushpin" />
+          </Button>
+        </div>
+      )}
     </div>
   )
   const popoverPlacement = self ? "left" : "right"

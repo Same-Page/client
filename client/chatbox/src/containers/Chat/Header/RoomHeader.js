@@ -165,7 +165,9 @@ function RoomHeader({
               size="small"
               icon="team"
             >
-              <span style={{ marginLeft: 3 }}>{userNum}</span>
+              {/* fix width so buttons don't shift when user number 
+              is different in different room */}
+              <span style={{ marginLeft: 3, width: 20 }}>{userNum}</span>
             </Button>
             <Button
               style={

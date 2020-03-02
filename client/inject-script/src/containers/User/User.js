@@ -8,6 +8,7 @@ function User({ user }) {
 				<div className="sp-chat-bubble">{user.message}</div>
 			)}
 			<span
+				title={user.name}
 				draggable="false"
 				style={{ backgroundImage: `url('${user.avatarSrc}')` }}
 				className="sp-avatar"

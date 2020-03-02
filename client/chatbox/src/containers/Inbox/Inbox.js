@@ -102,6 +102,7 @@ function Inbox(props) {
       })
       storageManager.set(storageKey, conversations)
       const offset = getOffset(conversations)
+      console.log("inbox-offset " + offset)
       storageManager.set("inbox-offset", offset)
     })
   }
@@ -114,7 +115,7 @@ function Inbox(props) {
         offset = Math.max(offset, c.lastMsg.id)
       }
     })
-    // window.spDebug(offset)
+    window.spDebug(offset)
 
     return offset
   }

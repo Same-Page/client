@@ -24,6 +24,7 @@
 	border-bottom: none;
 	/* border-right: none; */
 	/* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.31); */
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 .sp-chatbox-drag-handle {
 	margin-top: -20px;

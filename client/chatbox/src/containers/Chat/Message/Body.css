@@ -35,10 +35,10 @@
 }
 
 .sp-message-body img {
-  max-width: 100px;
+  /* max-width: 100px; */
 }
 img.sp-message-image {
-  max-width: 80%;
+  max-width: 100%;
   max-height: 350px;
   cursor: pointer;
 }

@@ -283,12 +283,15 @@ export default socketManager
 window.addEventListener(
 	"message",
 	e => {
-		if (!e || !e.data || e.data.type !== "sp-socket") return
+		if (!e || !e.data) return
+
 		const data = e.data.data
-		if (data === "disconnect socket") {
-			return socketManager.disconnect()
+		if (e.data.type === "sp-socket") {
+			if (data === "disconnect socket") {
+				socketManager.disconnect()
+			}
+			socketManager.sendEvent(data)
 		}
-		socketManager.sendEvent(data)
 	},
 	false
 )

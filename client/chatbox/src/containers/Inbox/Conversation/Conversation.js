@@ -82,6 +82,7 @@ function Conversation(props) {
     lastMsg = msg
     return (
       <Message
+        showMenu={true}
         key={msg.id}
         data={msg}
         showUser={showUser}
