@@ -29,7 +29,28 @@ class VideoPlayer extends React.Component {
     // Now I am setting the text as you needed.
     myButtonDom.innerHTML = "X"
     myButtonDom.className = "vjs-play-control media-close-button"
-    myButtonDom.onclick = this.props.closePlayer
+    myButtonDom.onclick = () => {
+      if (
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement
+      ) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen()
+        } else if (document.mozCancelFullScreen) {
+          /* Firefox */
+          document.mozCancelFullScreen()
+        } else if (document.webkitExitFullscreen) {
+          /* Chrome, Safari and Opera */
+          document.webkitExitFullscreen()
+        } else if (document.msExitFullscreen) {
+          /* IE/Edge */
+          document.msExitFullscreen()
+        }
+      }
+
+      this.props.closePlayer()
+    }
 
     // window.player = this.player
     // window.playMedia = src => {
