@@ -57,6 +57,8 @@ function Inbox(props) {
         const newConversations = resp.data
         let hasNewMessage = false
         const newOffset = getOffset(newConversations)
+
+        storageManager.set("inbox-offset", Math.max(newOffset, offset))
         if (newOffset > offset) {
           mergeAndSaveNewConversations(newConversations)
           hasNewMessage = true
@@ -82,6 +84,7 @@ function Inbox(props) {
   }
   window.getMessagesFromServer = getMessagesFromServer
   function mergeAndSaveNewConversations(newConversations) {
+    // console.log("mergeAndSaveNewConversations")
     // merge and save new conversations into storage
     storageManager.get(storageKey, conversations => {
       conversations = conversations || {}
@@ -102,7 +105,6 @@ function Inbox(props) {
       })
       storageManager.set(storageKey, conversations)
       const offset = getOffset(conversations)
-      console.log("inbox-offset " + offset)
       storageManager.set("inbox-offset", offset)
     })
   }
@@ -115,7 +117,7 @@ function Inbox(props) {
         offset = Math.max(offset, c.lastMsg.id)
       }
     })
-    window.spDebug(offset)
+    // window.spDebug(offset)
 
     return offset
   }
