@@ -4,10 +4,12 @@ const defaultConfig = {
 	chatModes: ["site", "page", "room"],
 	defaultChatView: "site",
 	debug: true,
-	autoConnect: true,
 	socketUrl: "chat-v6.yiyechat.com/prod",
 	apiUrl: "https://api-v2.yiyechat.com",
-	chatboxSrc: "https://yiyechat.com/extension-v6/"
+	chatboxSrc: "https://yiyechat.com/extension-v6/",
+
+	autoConnect: true,
+	showAvatars: false
 }
 
 if (process.env.REACT_APP_SP_ENV === "dev") {

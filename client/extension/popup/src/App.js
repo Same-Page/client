@@ -12,6 +12,7 @@ let ENABLE_LIVE_CHAT_DANMU_STR = "Enable Live Chat Danmu"
 let ENABLE_VIDEO_DANMU_STR = "Enable Youtube Danmu"
 let OPEN_STR = "Open Chatbox"
 let CLOSE_STR = "Close Chatbox"
+let AVATAR_STR = "Show Online Avatars"
 let lng = window.navigator.userLanguage || window.navigator.language
 if (lng.indexOf("zh") > -1) {
 	AUTO_CONNECT = "自动连接"
@@ -21,6 +22,7 @@ if (lng.indexOf("zh") > -1) {
 	ENABLE_VIDEO_DANMU_STR = "显示Youtube弹幕"
 	OPEN_STR = "打开聊天盒"
 	CLOSE_STR = "关闭聊天盒"
+	AVATAR_STR = "显示在线头像"
 }
 
 class App extends React.Component {
@@ -32,6 +34,7 @@ class App extends React.Component {
 			showChatIcon: true,
 			realtimeDanmuEnabled: true,
 			videoDanmuEnabled: true,
+			showAvatars: false,
 
 			toggleChatboxStr: OPEN_STR,
 			chatboxState: false,
@@ -177,6 +180,15 @@ class App extends React.Component {
 							checked={this.state.realtimeDanmuEnabled}
 							onChange={e =>
 								this.onSwitchChange("realtimeDanmuEnabled", e)
+							}
+						/>
+					</div>
+					<div className="option-row">
+						<span className="option-title">{AVATAR_STR}</span>{" "}
+						<Switch
+							checked={this.state.showAvatars}
+							onChange={e =>
+								this.onSwitchChange("showAvatars", e)
 							}
 						/>
 					</div>
