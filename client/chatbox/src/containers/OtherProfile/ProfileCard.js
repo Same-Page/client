@@ -76,7 +76,7 @@ function ProfileCard(props) {
           <Button
             onClick={e => {
               e.stopPropagation()
-              msgOtherUser(user)
+              // msgOtherUser(user)
             }}
             icon="stop"
             type="danger"
@@ -90,7 +90,7 @@ function ProfileCard(props) {
           <Button
             onClick={e => {
               e.stopPropagation()
-              msgOtherUser(user)
+              // msgOtherUser(user)
             }}
             type="danger"
             icon="flag"

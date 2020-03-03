@@ -53,6 +53,9 @@
   "follow": "Follow",
   "unfollow": "Unfollow",
   "send.mail": "Mail",
+
+  "block": "Block",
+  "report": "Report",
   "mail": "Mail",
   "notification": "Notification",
   "empty": "Empty",
