@@ -1,6 +1,8 @@
+import "./ProfileCard.css"
+
 import React from "react"
 import { useIntl } from "react-intl"
-import { Button, Avatar, Card } from "antd"
+import { Button, Avatar, Card, Row, Col } from "antd"
 import { connect } from "react-redux"
 
 import { msgOtherUser } from "redux/actions"
@@ -24,44 +26,81 @@ function ProfileCard(props) {
     <div>
       {user.about && <div style={aboutStyle}>{user.about}</div>}
 
-      {following && (
-        <Button
-          icon="user-delete"
-          size="small"
-          onClick={e => {
-            e.stopPropagation()
+      <Row type="flex" justify="start">
+        <Col span={12}>
+          {following && (
+            <Button
+              icon="user-delete"
+              size="small"
+              onClick={e => {
+                e.stopPropagation()
 
-            followUser(false)
-          }}
-        >
-          {intl.formatMessage({ id: "unfollow" })}
-        </Button>
-      )}
-      {!following && (
-        <Button
-          icon="user-add"
-          type="primary"
-          size="small"
-          onClick={e => {
-            e.stopPropagation()
-            followUser(true)
-          }}
-        >
-          {intl.formatMessage({ id: "follow" })}
-        </Button>
-      )}
+                followUser(false)
+              }}
+            >
+              {intl.formatMessage({ id: "unfollow" })}
+            </Button>
+          )}
+          {!following && (
+            <Button
+              icon="user-add"
+              type="primary"
+              size="small"
+              onClick={e => {
+                e.stopPropagation()
+                followUser(true)
+              }}
+            >
+              {intl.formatMessage({ id: "follow" })}
+            </Button>
+          )}
+        </Col>
 
-      <Button
-        onClick={e => {
-          e.stopPropagation()
-          msgOtherUser(user)
-        }}
-        icon="mail"
-        style={{ marginLeft: 10 }}
-        size="small"
-      >
-        {intl.formatMessage({ id: "send.mail" })}
-      </Button>
+        <Col span={12}>
+          <Button
+            onClick={e => {
+              e.stopPropagation()
+              msgOtherUser(user)
+            }}
+            icon="mail"
+            // style={{ marginLeft: 10 }}
+            size="small"
+          >
+            {intl.formatMessage({ id: "send.mail" })}
+          </Button>
+        </Col>
+      </Row>
+
+      <Row style={{ marginTop: 10 }} type="flex" justify="start">
+        <Col span={12}>
+          <Button
+            onClick={e => {
+              e.stopPropagation()
+              msgOtherUser(user)
+            }}
+            icon="stop"
+            type="danger"
+            // style={{ marginLeft: 10 }}
+            size="small"
+          >
+            {intl.formatMessage({ id: "block" })}
+          </Button>
+        </Col>
+        <Col span={12}>
+          <Button
+            onClick={e => {
+              e.stopPropagation()
+              msgOtherUser(user)
+            }}
+            type="danger"
+            icon="flag"
+            // style={{ marginLeft: 10 }}
+            size="small"
+          >
+            {intl.formatMessage({ id: "report" })}
+          </Button>
+        </Col>
+      </Row>
     </div>
   )
 
@@ -78,9 +117,17 @@ function ProfileCard(props) {
         e.stopPropagation()
       }}
       size="small"
-      style={{ width: 270, overflow: "hidden" }}
+      style={{
+        width: 270,
+        // background: "#8acbff",
+        overflow: "hidden"
+      }}
     >
-      <Meta avatar={avatar} title={user.name} description={footer} />
+      <Meta
+        // avatar={avatar}
+        title={user.name}
+        description={footer}
+      />
     </Card>
   )
 }
@@ -89,7 +136,7 @@ function AvatarWithFollowerCount(props) {
   return (
     <span>
       <Avatar size={48} src={props.src} icon="user" />
-      {/* <div>关注者: {props.followerCount}</div> */}
+      <div>关注者: {props.followerCount}</div>
     </span>
   )
 }

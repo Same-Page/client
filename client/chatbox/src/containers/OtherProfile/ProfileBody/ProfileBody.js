@@ -8,9 +8,12 @@ import socketManager from "socket"
 // import { blockUser, unblockUser, thankUser } from "services/user"
 import { blockUser, unblockUser } from "services/user"
 const avatarStyle = {
-  margin: "auto",
-  marginTop: 20,
-  display: "block"
+  // margin: "auto",
+  // marginTop: 20,
+  display: "block",
+  width: "100%",
+  height: "auto",
+  borderRadius: 0
 }
 
 const aboutStyle = {
@@ -46,23 +49,30 @@ function ProfileBody(props) {
   // const self = account && account.id.toString() === user.id.toString()
   return (
     <div>
-      <Avatar style={avatarStyle} size={128} src={user.avatarSrc} icon="user" />
-      <center style={{ margin: 20, fontSize: "large", fontWeight: "bold" }}>
-        {user.name}
-        {loading && (
-          <Icon
-            style={{
-              display: "block",
-              marginTop: 10,
-              border: "none"
-            }}
-            type="loading"
-          />
-        )}
-      </center>
+      {loading && (
+        <Icon
+          style={{
+            display: "block",
+            position: "absolute",
+            right: 12,
+            top: 12,
+            // marginTop: 10,
+            border: "none"
+          }}
+          type="loading"
+        />
+      )}
+      <Avatar
+        shape="square"
+        style={avatarStyle}
+        // size={128}
+        src={user.avatarSrc}
+        icon="user"
+      />
+
       {loaded && !loading && (
         <span>
-          <div style={{ width: 200, margin: "auto" }}>
+          <div style={{ width: 200, margin: "auto", marginTop: 30 }}>
             <Row gutter={50} style={{ textAlign: "center" }}>
               <Col span={12}>
                 ID

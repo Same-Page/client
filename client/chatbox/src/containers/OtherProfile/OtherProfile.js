@@ -22,6 +22,7 @@ function OtherProfile({ otherUser, viewOtherUser }) {
         className="sp-back-btn"
         icon="arrow-left"
       />
+      <div className="sp-tab-header">{user.name}</div>
       <ProfileMeta user={user}>
         <PrfileBody />
       </ProfileMeta>

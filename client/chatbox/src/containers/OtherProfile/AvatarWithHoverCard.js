@@ -39,6 +39,7 @@ function AvatarWithHoverCard(props) {
           onClick={e => {
             e.stopPropagation()
             props.viewOtherUser(user)
+            hideCard()
           }}
           onMouseEnter={e => {
             // console.log("mouse enter avatar")

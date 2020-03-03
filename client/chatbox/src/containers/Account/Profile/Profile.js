@@ -8,9 +8,10 @@ import storageManager from "utils/storage"
 import { logout } from "services/account"
 
 const avatarStyle = {
-  margin: "auto",
-  marginTop: 20,
-  display: "block"
+  display: "block",
+  width: "100%",
+  height: "auto",
+  borderRadius: 0
 }
 const ProfileBodyStyle = {
   height: "calc(100% - 40px)",
@@ -19,8 +20,8 @@ const ProfileBodyStyle = {
   width: "100%",
   position: "fixed",
   // background: "rgb(249, 249, 249)",
-  padding: 50,
-  paddingTop: 10,
+  // padding: 50,
+  // paddingTop: 10,
   paddingBottom: 30
 }
 const aboutStyle = {
@@ -44,16 +45,19 @@ function Profile(props) {
 
   return (
     <div style={ProfileBodyStyle}>
+      <div className="sp-tab-header">{account.name}</div>
+
       <Avatar
         style={avatarStyle}
-        size={128}
+        // size={128}
+        shape="square"
         src={account.avatarSrc}
         icon="user"
       />
-      <center style={{ margin: 20, fontSize: "large", fontWeight: "bold" }}>
+      {/* <center style={{ margin: 20, fontSize: "large", fontWeight: "bold" }}>
         {account.name}
-      </center>
-      <div style={{ width: 200, margin: "auto" }}>
+      </center> */}
+      <div style={{ width: 200, margin: "auto", marginTop: 30 }}>
         <Row gutter={50} style={{ textAlign: "center" }}>
           <Col style={{ textAlign: "center" }} span={12}>
             ID <br />
