@@ -146,9 +146,11 @@ function ProfileCard({
       onClick={e => {
         e.stopPropagation()
       }}
-      // size="small"
+      size="small"
       style={{
-        width: 300,
+        width: 295,
+        paddingTop: 15,
+        paddingBottom: 15,
         // background: "#8acbff",
         overflow: "hidden"
       }}
