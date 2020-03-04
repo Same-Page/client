@@ -23,9 +23,11 @@ function OtherProfile({ otherUser, viewOtherUser }) {
         icon="arrow-left"
       />
       <div className="sp-tab-header">{user.name}</div>
-      <ProfileMeta user={user}>
-        <PrfileBody />
-      </ProfileMeta>
+      <div className="sp-tab-body">
+        <ProfileMeta user={user}>
+          <PrfileBody />
+        </ProfileMeta>
+      </div>
     </div>
   )
 }

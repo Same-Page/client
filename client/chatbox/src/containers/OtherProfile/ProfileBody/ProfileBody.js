@@ -87,9 +87,11 @@ function ProfileBody(props) {
           </div>
           <br />
           <center>
-            <div style={aboutStyle}>{user.about}</div>
-            <div style={{ marginTop: 30, marginBottom: 30 }}>
-              {/* {!self && (
+            <div style={aboutStyle}>{user.about}</div>{" "}
+          </center>
+
+          <div style={{ marginTop: 30, marginBottom: 30 }}>
+            {/* {!self && (
                 <Button
                   loading={thanking}
                   onClick={() => {
@@ -118,91 +120,126 @@ function ProfileBody(props) {
 
                 </Button>
               )} */}
-              {following && (
-                <Button
-                  icon="user-delete"
-                  style={{ margin: 10 }}
-                  size="large"
-                  onClick={() => {
-                    followUser(false)
-                  }}
-                >
-                  {intl.formatMessage({ id: "unfollow" })}
-                </Button>
-              )}
-              {!following && (
-                <Button
-                  type="primary"
-                  icon="user-add"
-                  style={{ margin: 10 }}
-                  size="large"
-                  onClick={() => {
-                    followUser(true)
-                  }}
-                >
-                  {intl.formatMessage({ id: "follow" })}
-                </Button>
-              )}
-
-              <Button
-                onClick={() => {
-                  msgOtherUser(user)
-                }}
-                icon="mail"
-                style={{ margin: 10 }}
-                size="large"
-              >
-                {intl.formatMessage({ id: "send.mail" })}
-              </Button>
-              {account && account.isMod && (
-                <div style={{ marginTop: 20 }}>
-                  {!user.isBanned && (
+            <div style={{ maxWidth: 250, margin: "auto", textAlign: "center" }}>
+              <Row type="flex" justify="center">
+                <Col span={12}>
+                  {following && (
                     <Button
-                      type="danger"
-                      loading={toggleBlocking}
+                      icon="user-delete"
+                      // style={{ margin: 10 }}
+                      size="large"
                       onClick={() => {
-                        socketManager.sendEvent("kick user", {
-                          userId: user.id
-                        })
-                        setToggleBlocking(true)
-                        blockUser(user.id)
-                          .then(() => {
-                            message.success("封禁成功!")
-                            props.refreshUserInfo()
-                          })
-                          .catch(() => {})
-                          .then(() => {
-                            setToggleBlocking(false)
-                          })
+                        followUser(false)
                       }}
                     >
-                      封禁三天
+                      {intl.formatMessage({ id: "unfollow" })}
                     </Button>
                   )}
-                  {user.isBanned && (
+                  {!following && (
                     <Button
-                      loading={toggleBlocking}
-                      // type="danger"
+                      type="primary"
+                      icon="user-add"
+                      // style={{ margin: 10 }}
+                      size="large"
                       onClick={() => {
-                        setToggleBlocking(true)
-                        unblockUser(user.id)
-                          .then(() => {
-                            message.success("解封成功!")
-                            props.refreshUserInfo()
-                          })
-                          .catch(() => {})
-                          .then(() => {
-                            setToggleBlocking(false)
-                          })
+                        followUser(true)
                       }}
                     >
-                      解封
+                      {intl.formatMessage({ id: "follow" })}
                     </Button>
                   )}
-                </div>
-              )}
+                </Col>
+                <Col span={12}>
+                  <Button
+                    onClick={() => {
+                      msgOtherUser(user)
+                    }}
+                    icon="mail"
+                    // style={{ margin: 10 }}
+                    size="large"
+                  >
+                    {intl.formatMessage({ id: "send.mail" })}
+                  </Button>
+                </Col>
+              </Row>
+              <br />
+              <Row type="flex" justify="center">
+                <Col span={12}>
+                  <Button
+                    onClick={() => {
+                      // msgOtherUser(user)
+                    }}
+                    type="danger"
+                    icon="stop"
+                    // style={{ margin: 10 }}
+                    size="large"
+                  >
+                    {intl.formatMessage({ id: "block" })}
+                  </Button>
+                </Col>
+                <Col span={12}>
+                  <Button
+                    onClick={() => {
+                      // msgOtherUser(user)
+                    }}
+                    type="danger"
+                    icon="flag"
+                    // style={{ margin: 10 }}
+                    size="large"
+                  >
+                    {intl.formatMessage({ id: "report" })}
+                  </Button>
+                </Col>
+              </Row>
             </div>
-          </center>
+            {account && account.isMod && (
+              <div style={{ marginTop: 20 }}>
+                {!user.isBanned && (
+                  <Button
+                    type="danger"
+                    loading={toggleBlocking}
+                    onClick={() => {
+                      socketManager.sendEvent("kick user", {
+                        userId: user.id
+                      })
+                      setToggleBlocking(true)
+                      blockUser(user.id)
+                        .then(() => {
+                          message.success("封禁成功!")
+                          props.refreshUserInfo()
+                        })
+                        .catch(() => {})
+                        .then(() => {
+                          setToggleBlocking(false)
+                        })
+                    }}
+                  >
+                    封禁三天
+                  </Button>
+                )}
+                {user.isBanned && (
+                  <Button
+                    loading={toggleBlocking}
+                    // type="danger"
+                    onClick={() => {
+                      setToggleBlocking(true)
+                      unblockUser(user.id)
+                        .then(() => {
+                          message.success("解封成功!")
+                          props.refreshUserInfo()
+                        })
+                        .catch(() => {})
+                        .then(() => {
+                          setToggleBlocking(false)
+                        })
+                    }}
+                  >
+                    解封
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
         </span>
       )}
     </div>

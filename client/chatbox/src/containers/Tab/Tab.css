@@ -182,3 +182,7 @@ textarea.ant-input {
   /* background: none; */
   border-radius: 0;
 }
+
+.ant-btn-danger {
+  background-color: white;
+}

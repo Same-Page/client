@@ -16,7 +16,8 @@ const aboutStyle = {
   overflow: "hidden",
   textOverflow: "ellipsis",
   textAlign: "left",
-  marginBottom: 5
+  marginBottom: 5,
+  minHeight: 30
 }
 
 function ProfileCard(props) {
@@ -24,9 +25,9 @@ function ProfileCard(props) {
   const intl = useIntl()
   const footer = (
     <div>
-      {user.about && <div style={aboutStyle}>{user.about}</div>}
+      <div style={aboutStyle}>{user.about}</div>
 
-      <Row type="flex" justify="start">
+      <Row type="flex" justify="center">
         <Col span={12}>
           {following && (
             <Button
@@ -71,7 +72,7 @@ function ProfileCard(props) {
         </Col>
       </Row>
 
-      <Row style={{ marginTop: 10 }} type="flex" justify="start">
+      <Row style={{ marginTop: 10 }} type="flex" justify="center">
         <Col span={12}>
           <Button
             onClick={e => {
@@ -116,18 +117,14 @@ function ProfileCard(props) {
       onClick={e => {
         e.stopPropagation()
       }}
-      size="small"
+      // size="small"
       style={{
-        width: 270,
+        width: 330,
         // background: "#8acbff",
         overflow: "hidden"
       }}
     >
-      <Meta
-        // avatar={avatar}
-        title={user.name}
-        description={footer}
-      />
+      <Meta avatar={avatar} title={user.name} description={footer} />
     </Card>
   )
 }
@@ -135,8 +132,8 @@ function ProfileCard(props) {
 function AvatarWithFollowerCount(props) {
   return (
     <span>
-      <Avatar size={48} src={props.src} icon="user" />
-      <div>关注者: {props.followerCount}</div>
+      <Avatar size={64} src={props.src} icon="user" />
+      <div style={{ marginTop: 30 }}>关注者: {props.followerCount}</div>
     </span>
   )
 }
