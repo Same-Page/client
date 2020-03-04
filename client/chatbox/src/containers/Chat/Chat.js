@@ -17,6 +17,7 @@ function syncRoomsPeriodically() {
   }, 10 * 1000)
 }
 function Chat({
+  blacklist,
   account,
   rooms,
   manMadeRoom,
@@ -107,6 +108,7 @@ function Chat({
 
         return (
           <View
+            blacklist={blacklist}
             account={account}
             chatView={mode}
             show={mode === activeView}
@@ -132,7 +134,8 @@ const stateToProps = state => {
     activeView: state.chatView,
     manMadeRoom: state.manMadeRoom,
     rooms: state.rooms,
-    account: state.account
+    account: state.account,
+    blacklist: state.blacklist
   }
 }
 

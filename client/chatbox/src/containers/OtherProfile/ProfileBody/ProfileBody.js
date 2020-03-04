@@ -5,6 +5,8 @@ import { connect } from "react-redux"
 
 import { msgOtherUser } from "redux/actions"
 import socketManager from "socket"
+import storageManager from "utils/storage"
+
 // import { blockUser, unblockUser, thankUser } from "services/user"
 import { blockUser, unblockUser } from "services/user"
 const avatarStyle = {
@@ -41,11 +43,16 @@ function ProfileBody(props) {
     user,
     following,
     followerCount,
-    followUser
+    followUser,
+    blacklist
   } = props
   const intl = useIntl()
   // const [thanking, setThanking] = useState(false)
   const [toggleBlocking, setToggleBlocking] = useState(false)
+  const blacklisted =
+    blacklist.filter(u => {
+      return u.id === user.id
+    }).length > 0
   // const self = account && account.id.toString() === user.id.toString()
   return (
     <div>
@@ -165,21 +172,40 @@ function ProfileBody(props) {
               <br />
               <Row type="flex" justify="center">
                 <Col span={12}>
-                  <Button
-                    onClick={() => {
-                      // msgOtherUser(user)
-                    }}
-                    type="danger"
-                    icon="stop"
-                    // style={{ margin: 10 }}
-                    size="large"
-                  >
-                    {intl.formatMessage({ id: "block" })}
-                  </Button>
+                  {!blacklisted && (
+                    <Button
+                      onClick={() => {
+                        storageManager.set("blacklist", [...blacklist, user])
+                      }}
+                      type="danger"
+                      icon="stop"
+                      size="large"
+                    >
+                      {intl.formatMessage({ id: "block" })}
+                    </Button>
+                  )}
+
+                  {blacklisted && (
+                    <Button
+                      onClick={e => {
+                        storageManager.set(
+                          "blacklist",
+                          blacklist.filter(u => {
+                            return u.id !== user.id
+                          })
+                        )
+                      }}
+                      icon="check"
+                      size="large"
+                    >
+                      {intl.formatMessage({ id: "unblock" })}
+                    </Button>
+                  )}
                 </Col>
                 <Col span={12}>
                   <Button
                     onClick={() => {
+                      message.success(intl.formatMessage({ id: "success" }))
                       // msgOtherUser(user)
                     }}
                     type="danger"
@@ -245,5 +271,10 @@ function ProfileBody(props) {
     </div>
   )
 }
+const stateToProps = state => {
+  return {
+    blacklist: state.blacklist
+  }
+}
 
-export default connect(null, { msgOtherUser })(ProfileBody)
+export default connect(stateToProps, { msgOtherUser })(ProfileBody)

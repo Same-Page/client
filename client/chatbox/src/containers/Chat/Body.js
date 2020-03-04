@@ -39,6 +39,7 @@ const IFRAME_DEFAULT_HEIGHT = 270
 // }
 
 function ChatBody({
+  blacklist,
   account,
   show,
   messages,
@@ -231,6 +232,14 @@ function ChatBody({
   let lastMsg = null
 
   messages.forEach(msg => {
+    const blacklisted =
+      blacklist.filter(u => {
+        return u.id === msg.user.id
+      }).length > 0
+    if (blacklisted) {
+      // spDebug(`[Body.js] blacklisted user ${data.user.name} talking`)
+      return
+    }
     // If same user is talking, no need to show user's avatar again
     let showUser = true
     // If it's been more than 5 mins since last msg

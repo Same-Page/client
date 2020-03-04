@@ -2,10 +2,11 @@ import "./ProfileCard.css"
 
 import React from "react"
 import { useIntl } from "react-intl"
-import { Button, Avatar, Card, Row, Col } from "antd"
+import { Button, Avatar, Card, Row, Col, message } from "antd"
 import { connect } from "react-redux"
 
 import { msgOtherUser } from "redux/actions"
+import storageManager from "utils/storage"
 
 const { Meta } = Card
 
@@ -20,9 +21,19 @@ const aboutStyle = {
   minHeight: 30
 }
 
-function ProfileCard(props) {
-  const { user, following, followerCount, followUser, msgOtherUser } = props
+function ProfileCard({
+  user,
+  following,
+  followerCount,
+  followUser,
+  msgOtherUser,
+  blacklist
+}) {
   const intl = useIntl()
+  const blacklisted =
+    blacklist.filter(u => {
+      return u.id === user.id
+    }).length > 0
   const footer = (
     <div>
       <div style={aboutStyle}>{user.about}</div>
@@ -74,28 +85,46 @@ function ProfileCard(props) {
 
       <Row style={{ marginTop: 10 }} type="flex" justify="center">
         <Col span={12}>
-          <Button
-            onClick={e => {
-              e.stopPropagation()
-              // msgOtherUser(user)
-            }}
-            icon="stop"
-            type="danger"
-            // style={{ marginLeft: 10 }}
-            size="small"
-          >
-            {intl.formatMessage({ id: "block" })}
-          </Button>
+          {!blacklisted && (
+            <Button
+              onClick={e => {
+                e.stopPropagation()
+                storageManager.set("blacklist", [...blacklist, user])
+              }}
+              icon="stop"
+              type="danger"
+              // style={{ marginLeft: 10 }}
+              size="small"
+            >
+              {intl.formatMessage({ id: "block" })}
+            </Button>
+          )}
+          {blacklisted && (
+            <Button
+              onClick={e => {
+                e.stopPropagation()
+                storageManager.set(
+                  "blacklist",
+                  blacklist.filter(u => {
+                    return u.id !== user.id
+                  })
+                )
+              }}
+              icon="check"
+              size="small"
+            >
+              {intl.formatMessage({ id: "unblock" })}
+            </Button>
+          )}
         </Col>
         <Col span={12}>
           <Button
             onClick={e => {
               e.stopPropagation()
-              // msgOtherUser(user)
+              message.success(intl.formatMessage({ id: "success" }))
             }}
             type="danger"
             icon="flag"
-            // style={{ marginLeft: 10 }}
             size="small"
           >
             {intl.formatMessage({ id: "report" })}
@@ -119,7 +148,7 @@ function ProfileCard(props) {
       }}
       // size="small"
       style={{
-        width: 330,
+        width: 300,
         // background: "#8acbff",
         overflow: "hidden"
       }}
@@ -138,4 +167,10 @@ function AvatarWithFollowerCount(props) {
   )
 }
 
-export default connect(null, { msgOtherUser })(ProfileCard)
+const stateToProps = state => {
+  return {
+    blacklist: state.blacklist
+  }
+}
+
+export default connect(stateToProps, { msgOtherUser })(ProfileCard)

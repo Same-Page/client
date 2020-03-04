@@ -7,7 +7,7 @@ import Footer from "./Footer"
 
 // import RoomsWrapper from "containers/Home/RoomsWrapper"
 
-function View({ chatView, show, room, account, changeTab }) {
+function View({ chatView, show, room, account, changeTab, blacklist }) {
   const [messages, setMessages] = useState([])
   const playerRef = useRef(null)
   const intl = useIntl()
@@ -44,6 +44,7 @@ function View({ chatView, show, room, account, changeTab }) {
       <Body
         account={account}
         show={show}
+        blacklist={blacklist}
         // chatView={chatView}
         messages={messages}
         setMessages={setMessages}

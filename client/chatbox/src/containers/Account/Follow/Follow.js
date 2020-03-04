@@ -2,18 +2,20 @@ import "./Follow.css"
 import axios from "axios"
 
 import React, { useEffect, useState, useRef } from "react"
+import { useIntl } from "react-intl"
 import { Avatar, Icon, Radio, Button } from "antd"
-import { connect } from "react-redux"
+// import { connect } from "react-redux"
 
 import urls from "config/urls"
 import followEventHandler from "./event"
-import { viewOtherUser } from "redux/actions"
+// import { viewOtherUser } from "redux/actions"
 
 function Follow(props) {
   const [showFollowers, setShowFollowers] = useState(props.showFollowers)
   const [loading, setLoading] = useState(true)
   const [loadingMore, setLoadingMore] = useState(false)
   const [users, setUsers] = useState([])
+  const intl = useIntl()
 
   const account = props.account
   const usersRef = useRef([])
@@ -118,10 +120,10 @@ function Follow(props) {
           }}
         >
           <Radio.Button value={false}>
-            关注了 {account.followingCount}
+            {intl.formatMessage({ id: "following" })} {account.followingCount}
           </Radio.Button>
           <Radio.Button value={true}>
-            被关注 {account.followerCount}
+            {intl.formatMessage({ id: "follower" })} {account.followerCount}
           </Radio.Button>
         </Radio.Group>
       </center>
@@ -159,7 +161,7 @@ function Follow(props) {
                 loadUsers(users.length)
               }}
             >
-              加载更多...
+              {intl.formatMessage({ id: "load.more" })}
             </Button>
           )}
         </center>
@@ -168,4 +170,5 @@ function Follow(props) {
   )
 }
 
-export default connect(null, { viewOtherUser })(Follow)
+// export default connect(null, { viewOtherUser })(Follow)
+export default Follow

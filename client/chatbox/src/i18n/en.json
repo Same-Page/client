@@ -53,8 +53,12 @@
   "follow": "Follow",
   "unfollow": "Unfollow",
   "send.mail": "Mail",
+  "load.more": "Load more",
+  "blacklist": "Blacklist",
 
   "block": "Block",
+  "unblock": "Unblock",
+
   "report": "Report",
   "mail": "Mail",
   "notification": "Notification",

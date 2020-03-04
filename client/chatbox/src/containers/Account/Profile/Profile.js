@@ -82,6 +82,19 @@ function Profile(props) {
             </span>
           </Col>
         </Row>
+        <Row gutter={50} style={{ marginTop: 10, textAlign: "center" }}>
+          <Col style={{ textAlign: "center" }} span={12}>
+            <span
+              className="sp-follow-stats"
+              onClick={() => {
+                props.showBlacklist()
+              }}
+            >
+              {intl.formatMessage({ id: "blacklist" })}
+              <br /> <b>{props.blacklist.length}</b>
+            </span>
+          </Col>
+        </Row>
       </div>
       <br />
       <center>

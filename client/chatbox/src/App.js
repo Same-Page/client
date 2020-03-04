@@ -18,7 +18,7 @@ import {
   setChatModes,
   joinManMadeRoom
 } from "redux/actions/chat"
-import { changeTab, setAccount } from "redux/actions"
+import { changeTab, setAccount, setBlacklist } from "redux/actions"
 import store from "redux/store"
 
 // import { setPageTitle, getPageTitle } from "utils/pageTitle"
@@ -158,7 +158,6 @@ class App extends React.Component {
         window.spDebug("found account in storage")
         // window.spDebug(account)
         this.props.setAccount(account)
-        // this.setState({ account: account })
       } else {
         this.setState({ autoLogin: true })
         window.spDebug("no account found in storage")
@@ -166,10 +165,17 @@ class App extends React.Component {
       this.setState({ loadingAccountFromStorage: false })
     })
     storageManager.addEventListener("account", account => {
-      // this.setState({ account: account })
       this.props.setAccount(account)
     })
-
+    storageManager.get("blacklist", blacklist => {
+      // simple implementation for blacklist, it's per browser device
+      // not per account...
+      blacklist = blacklist || []
+      this.props.setBlacklist(blacklist)
+    })
+    storageManager.addEventListener("blacklist", blacklist => {
+      this.props.setBlacklist(blacklist)
+    })
     window.addEventListener(
       "message",
       e => {
@@ -254,4 +260,8 @@ const stateToProps = state => {
     account: state.account
   }
 }
-export default connect(stateToProps, { setAccount, joinManMadeRoom })(App)
+export default connect(stateToProps, {
+  setAccount,
+  joinManMadeRoom,
+  setBlacklist
+})(App)

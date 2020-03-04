@@ -109,15 +109,19 @@ const store = (state = initState, action) => {
         manMadeRoom: manMadeRoom,
         chatView: "room"
       }
-    case "SET_DISCOVERY_ROOM":
-      const discoveryRoom = action.payload
-      rooms = rooms.filter(room => {
-        return room.type !== "discovery"
-      })
-      if (discoveryRoom) {
-        rooms.push(discoveryRoom)
-      }
-      return { ...state, rooms }
+    // case "SET_DISCOVERY_ROOM":
+    //   const discoveryRoom = action.payload
+    //   rooms = rooms.filter(room => {
+    //     return room.type !== "discovery"
+    //   })
+    //   if (discoveryRoom) {
+    //     rooms.push(discoveryRoom)
+    //   }
+    //   return { ...state, rooms:rooms }
+
+    case "SET_BLACKLIST":
+      const blacklist = action.payload
+      return { ...state, blacklist: blacklist }
     default:
       return state
   }

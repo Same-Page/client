@@ -10,19 +10,21 @@ import Login from "containers/Account/Login"
 import { getAccount } from "services/account"
 // import { setAccount } from "redux/actions"
 import storageManager from "utils/storage"
+import Blacklist from "./Blacklist"
+import { viewOtherUser } from "redux/actions"
 
 function setAccount(account) {
   storageManager.set("account", account)
 }
 
-function Account({ account }) {
+function Account({ account, blacklist, viewOtherUser }) {
   const [resettingPassword, setResetPasswordState] = useState(false)
   const [edittingProfile, setEdittingProfileState] = useState(false)
   // showingFollow is for toggling the Follow view
   // showFollowers is for toggling follower vs following
   const [showingFollow, setShowingFollowState] = useState(false)
   const [showFollowers, setShowFollowersState] = useState(false)
-
+  const [showBlacklist, setShowBlacklist] = useState(false)
   const [loadingAccount, setLoadingAccount] = useState(false)
   useEffect(() => {
     // load account for once if user is logged in or user
@@ -47,6 +49,7 @@ function Account({ account }) {
     setResetPasswordState(false)
     setEdittingProfileState(false)
     setShowingFollowState(false)
+    setShowBlacklist(false)
   }
 
   if (!account) {
@@ -64,6 +67,14 @@ function Account({ account }) {
           followingCount={account.followingCount}
           followerCount={account.followerCount}
           back={backToMainPage}
+          viewOtherUser={viewOtherUser}
+        />
+      )}
+      {showBlacklist && (
+        <Blacklist
+          blacklist={blacklist}
+          viewOtherUser={viewOtherUser}
+          back={backToMainPage}
         />
       )}
       {edittingProfile && (
@@ -75,6 +86,10 @@ function Account({ account }) {
       )}
       <Profile
         account={account}
+        blacklist={blacklist}
+        showBlacklist={() => {
+          setShowBlacklist(true)
+        }}
         showResetPassword={setResetPasswordState}
         showEditProfile={setEdittingProfileState}
         showFollowings={() => {
@@ -92,7 +107,8 @@ function Account({ account }) {
 }
 const stateToProps = state => {
   return {
-    account: state.account
+    account: state.account,
+    blacklist: state.blacklist
   }
 }
-export default connect(stateToProps)(Account)
+export default connect(stateToProps, { viewOtherUser })(Account)
