@@ -123,7 +123,6 @@ function App(props) {
 			}
 		})
 		storage.addEventListener("blacklist", blacklist => {
-			console.log("setbloacklist" + blacklist)
 			setBlacklist(blacklist)
 		})
 	}, [])

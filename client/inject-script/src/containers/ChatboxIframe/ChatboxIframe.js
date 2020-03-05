@@ -54,8 +54,6 @@ function ChatboxIframe({ blacklist }) {
 	const [createChatboxIframe, setCreateChatboxIframe] = useState(false)
 	const blacklistRef = useRef()
 	blacklistRef.current = blacklist
-	console.log("blacklistRef.current")
-	console.log(blacklist)
 	window.createChatboxIframe = createChatboxIframe
 	const [url, setUrl] = useState(defaultUrl)
 	const [display, setDisplay] = useState("block")
@@ -98,7 +96,6 @@ function ChatboxIframe({ blacklist }) {
 				}
 				if (data.action === "sp-parent-data") {
 					spDebug("post config & account to chatbox")
-					spDebug(blacklistRef.current)
 					postMsgToIframe("sp-parent-data", {
 						spConfig: spConfig,
 						// pass account to chatbox to get the latest token
