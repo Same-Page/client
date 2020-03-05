@@ -7,9 +7,10 @@ import User from "containers/User"
 import storageManager from "storage.js"
 import spConfig from "config"
 
-function Room(props) {
+function Room({ blacklist, isBlacklisted }) {
 	const [users, setUsers] = useState([])
 	const [showAvatars, setShowAvatars] = useState(spConfig.showAvatars)
+
 	useEffect(() => {
 		// not best practice, but much simpler than adding callbacks
 		// to socket, also socket gets re instantiate when reconnect
@@ -31,13 +32,16 @@ function Room(props) {
 			{showAvatars && (
 				<Draggable>
 					<span className="sp-users-wrapper">
-						{users.map(u => (
-							<User
-								// style={{ height: 50, width: 50 }}
-								key={u.id}
-								user={u}
-							/>
-						))}
+						{users.map(u => {
+							return (
+								<User
+									blacklist={blacklist}
+									blacklisted={isBlacklisted(u)}
+									key={u.id}
+									user={u}
+								/>
+							)
+						})}
 					</span>
 				</Draggable>
 			)}

@@ -1,6 +1,6 @@
 import spDebug from "config/logger"
 import spConfig from "config"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 // AnimationDanmu is a confusing name, it means realtime chat danmu
 // powered by css + js, different from video danmu that's powered by canvas
 import AnimationDanmu from "../ChatDanmu/AnimationDanmu"
@@ -29,6 +29,13 @@ function getMessageOffset(conversations) {
 spDebug("starting injection script...")
 
 function App(props) {
+	const [blacklist, setBlacklist] = useState([])
+	const isBlacklisted = u => {
+		const res = blacklist.find(b => {
+			return b.id.toString() === u.id.toString()
+		})
+		return !!res
+	}
 	useEffect(() => {
 		// Get account from storage
 		// get config from storage
@@ -109,13 +116,26 @@ function App(props) {
 				}
 			})
 		})
+
+		storage.get("blacklist", blacklist => {
+			if (blacklist !== null) {
+				setBlacklist(blacklist)
+			}
+		})
+		storage.addEventListener("blacklist", blacklist => {
+			console.log("setbloacklist" + blacklist)
+			setBlacklist(blacklist)
+		})
 	}, [])
 
 	return (
 		<span>
-			<Room />
-			<ChatboxIframe />
-			<AnimationDanmu />
+			<Room blacklist={blacklist} isBlacklisted={isBlacklisted} />
+			<ChatboxIframe blacklist={blacklist} />
+			<AnimationDanmu
+				blacklist={blacklist}
+				isBlacklisted={isBlacklisted}
+			/>
 		</span>
 	)
 }

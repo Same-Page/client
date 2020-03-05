@@ -161,10 +161,13 @@ function ProfileCard({
 }
 
 function AvatarWithFollowerCount(props) {
+  const intl = useIntl()
   return (
     <span>
       <Avatar size={64} src={props.src} icon="user" />
-      <div style={{ marginTop: 30 }}>关注者: {props.followerCount}</div>
+      <div style={{ marginTop: 30 }}>
+        {intl.formatMessage({ id: "follower" })}: {props.followerCount}
+      </div>
     </span>
   )
 }

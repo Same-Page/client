@@ -104,6 +104,11 @@ class AnimationDanmu extends Component {
 		// this function is called by other class
 		// bind this to current class
 		// console.log('realtime queue ' + msg.content);
+
+		if (this.props.isBlacklisted(msg.user)) {
+			return
+		}
+
 		this.danmuWaitList.push(this.createDanmuObj(msg))
 		this.checkDanmuWaitlist()
 	}

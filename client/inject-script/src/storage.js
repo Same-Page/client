@@ -3,45 +3,45 @@ const storage = {
 		if (window.chrome && window.chrome.storage) {
 			window.chrome.storage.local.get(key, item => {
 				if (key in item) {
-					callback(item[key]);
+					callback(item[key])
 				} else {
-					callback(null);
+					callback(null)
 				}
-			});
+			})
 		} else {
 			if (localStorage.hasOwnProperty(key)) {
-				callback(JSON.parse(localStorage.getItem(key)));
+				callback(JSON.parse(localStorage.getItem(key)))
 			} else {
-				callback(null);
+				callback(null)
 			}
 		}
 	},
 	set: (key, value) => {
 		if (window.chrome && window.chrome.storage) {
-			var item = {};
-			item[key] = value;
-			window.chrome.storage.local.set(item);
+			var item = {}
+			item[key] = value
+			window.chrome.storage.local.set(item)
 		} else {
-			const stringValue = JSON.stringify(value);
-			localStorage.setItem(key, stringValue);
+			const stringValue = JSON.stringify(value)
+			localStorage.setItem(key, stringValue)
 			// localstorage event isn't triggered on same tab
 			// manually create an event and dispatch it
-			const storageEvent = document.createEvent("HTMLEvents");
-			storageEvent.initEvent("storage", true, true);
-			storageEvent.eventName = "storage";
-			storageEvent.key = key;
-			storageEvent.newValue = stringValue;
-			window.dispatchEvent(storageEvent);
+			const storageEvent = document.createEvent("HTMLEvents")
+			storageEvent.initEvent("storage", true, true)
+			storageEvent.eventName = "storage"
+			storageEvent.key = key
+			storageEvent.newValue = stringValue
+			window.dispatchEvent(storageEvent)
 		}
 	},
 	addEventListener: (key, callback) => {
 		if (window.chrome && window.chrome.storage) {
 			window.chrome.storage.onChanged.addListener((changes, area) => {
 				if (key in changes) {
-					window.spDebug(changes[key]);
-					callback(changes[key]["newValue"]);
+					window.spDebug(changes[key])
+					callback(changes[key]["newValue"])
 				}
-			});
+			})
 		} else {
 			window.addEventListener("storage", storageEvent => {
 				// key;          // name of the property set, changed etc.
@@ -51,11 +51,11 @@ const storage = {
 				// storageArea;  // localStorage or sessionStorage,
 				// depending on where the change happened.
 				if (storageEvent.key === key) {
-					callback(JSON.parse(storageEvent.newValue));
+					callback(JSON.parse(storageEvent.newValue))
 				}
-			});
+			})
 		}
 	}
-};
+}
 
-export default storage;
+export default storage

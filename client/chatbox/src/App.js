@@ -179,9 +179,10 @@ class App extends React.Component {
     window.addEventListener(
       "message",
       e => {
-        if (e && e.data && e.data.type === "sp-parent-data") {
-          const data = e.data.data
-
+        if (!(e && e.data)) return
+        const data = e.data.data
+        const type = e.data.type
+        if (type === "sp-parent-data") {
           const spConfig = data.spConfig
           window.spConfig = spConfig
           urls.dbAPI = spConfig.apiUrl || urls.dbAPI
@@ -195,8 +196,13 @@ class App extends React.Component {
           if (data.account) {
             storageManager.set("account", data.account)
           }
-
+          if (data.blacklist) {
+            storageManager.set("blacklist", data.blacklist)
+          }
           this.setState({ waitingForConfigFromParent: false })
+        }
+        if (type === "sp-blacklist") {
+          storageManager.set("blacklist", data)
         }
       },
       false

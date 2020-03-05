@@ -50,8 +50,12 @@ function keepCheckingLocation() {
 	}, 10 * 1000)
 }
 
-function ChatboxIframe(props) {
+function ChatboxIframe({ blacklist }) {
 	const [createChatboxIframe, setCreateChatboxIframe] = useState(false)
+	const blacklistRef = useRef()
+	blacklistRef.current = blacklist
+	console.log("blacklistRef.current")
+	console.log(blacklist)
 	window.createChatboxIframe = createChatboxIframe
 	const [url, setUrl] = useState(defaultUrl)
 	const [display, setDisplay] = useState("block")
@@ -94,9 +98,12 @@ function ChatboxIframe(props) {
 				}
 				if (data.action === "sp-parent-data") {
 					spDebug("post config & account to chatbox")
+					spDebug(blacklistRef.current)
 					postMsgToIframe("sp-parent-data", {
 						spConfig: spConfig,
-						account: accountManager.getAccount()
+						// pass account to chatbox to get the latest token
+						account: accountManager.getAccount(),
+						blacklist: blacklistRef.current
 					})
 				}
 			},

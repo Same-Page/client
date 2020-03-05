@@ -36,6 +36,10 @@
 .sp-chatbox-drag-handle:hover center {
 	display: inline-block;
 }
+.sp-chatbox-drag-handle:hover {
+	background-color: yellow;
+}
+
 .sp-blue-button {
 	background-color: #2196f3 !important;
 }
