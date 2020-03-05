@@ -25,7 +25,7 @@ function User({ user, blacklist, blacklisted }) {
 
 	return (
 		<span>
-			{user.message && !blacklisted && (
+			{user.message && !blacklisted && !open && (
 				<div className="sp-chat-bubble">{user.message}</div>
 			)}
 			<span
@@ -35,7 +35,7 @@ function User({ user, blacklist, blacklisted }) {
 				onMouseLeave={e => {
 					setTimeout(() => {
 						setAnchorEl(null)
-					}, 300)
+					}, 100)
 				}}
 			>
 				{!blacklisted && (
