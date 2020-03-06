@@ -120,15 +120,24 @@ function ChatboxIframe({ blacklist }) {
 				setCreateChatboxIframe(autoOpenChatbox)
 			}
 		})
-		storage.get("iframeX", posX => {
-			if (posX) {
-				setX(posX)
+		storage.get("iframeSize", iframeSize => {
+			if (iframeSize) {
+				setSize(iframeSize)
 			}
 
-			storage.get("iframeSize", iframeSize => {
-				if (iframeSize) {
-					setSize(iframeSize)
+			storage.get("iframeX", posX => {
+				if (posX) {
+					posX = Math.max(posX, 0)
+					if (iframeSize) {
+						const iframeWidth = parseInt(iframeSize.width, 10)
+						posX = Math.min(
+							posX,
+							window.innerWidth - iframeWidth - 10
+						)
+					}
+					setX(posX)
 				}
+
 				setLoadingStorage(false)
 			})
 		})
@@ -218,7 +227,7 @@ function ChatboxIframe({ blacklist }) {
 							width: ref.style.width,
 							height: ref.style.height
 						})
-						console.log(ref.style.height)
+						// console.log(ref.style.height)
 					}}
 				>
 					<div className="sp-chatbox-drag-handle"></div>

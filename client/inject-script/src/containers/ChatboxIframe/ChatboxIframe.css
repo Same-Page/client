@@ -27,8 +27,13 @@
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 .sp-chatbox-drag-handle {
-	margin-top: -20px;
-	height: 20px;
+	margin-top: -40px;
+	height: 40px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
+	/* width: 50%; */
+	/* margin: auto; */
+	/* background-color: yellow; */
 }
 .sp-chatbox-drag-handle center {
 	display: none;
@@ -37,7 +42,7 @@
 	display: inline-block;
 }
 .sp-chatbox-drag-handle:hover {
-	background-color: yellow;
+	background-color: #ffff00bf;
 }
 
 .sp-blue-button {
