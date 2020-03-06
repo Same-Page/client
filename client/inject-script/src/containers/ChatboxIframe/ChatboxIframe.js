@@ -1,3 +1,5 @@
+import "./ChatboxIframe.css"
+
 import React, { useState, useEffect, useRef } from "react"
 import Button from "@material-ui/core/Button"
 import Input from "@material-ui/core/Input"
@@ -8,8 +10,8 @@ import { postMsgToIframe } from "utils/iframe"
 import storage from "storage.js"
 import spConfig from "config"
 import spDebug from "config/logger"
+import SwapHorizIcon from "@material-ui/icons/SwapHoriz"
 
-import "./ChatboxIframe.css"
 import {
 	createIframeByDefault,
 	showIframeControl,
@@ -230,7 +232,9 @@ function ChatboxIframe({ blacklist }) {
 						// console.log(ref.style.height)
 					}}
 				>
-					<div className="sp-chatbox-drag-handle"></div>
+					<div className="sp-chatbox-drag-handle">
+						<SwapHorizIcon />
+					</div>
 					<iframe
 						allow="autoplay"
 						allowFullScreen={true}

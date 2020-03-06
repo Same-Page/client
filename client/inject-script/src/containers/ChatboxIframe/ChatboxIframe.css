@@ -27,22 +27,23 @@
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 .sp-chatbox-drag-handle {
-	margin-top: -40px;
-	height: 40px;
-	border-top-left-radius: 15px;
-	border-top-right-radius: 15px;
+	margin-top: -30px;
+	height: 30px;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 	/* width: 50%; */
 	/* margin: auto; */
 	/* background-color: yellow; */
+	text-align: center;
 }
-.sp-chatbox-drag-handle center {
+.sp-chatbox-drag-handle svg {
 	display: none;
 }
-.sp-chatbox-drag-handle:hover center {
+.sp-chatbox-drag-handle:hover svg {
 	display: inline-block;
 }
 .sp-chatbox-drag-handle:hover {
-	background-color: #ffff00bf;
+	background-color: yellow;
 }
 
 .sp-blue-button {
