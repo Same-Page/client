@@ -31,7 +31,7 @@ const _disconnect = () => {
 	}
 }
 
-const _joinRoom = () => {
+const _joinRoom = triggeredByChatbox => {
 	// TODO: read modes from config
 	// also need to know which man-made room to join
 	storage.get("room", room => {
@@ -63,7 +63,8 @@ const _joinRoom = () => {
 					lang: lang,
 					version: _getClientVersion,
 					rooms: filteredRooms,
-					token: accountManager.getAccount().token
+					token: accountManager.getAccount().token,
+					getChatHistory: triggeredByChatbox
 				}
 			}
 			_sendEvent(payload)
@@ -85,14 +86,14 @@ const _sendEvent = msg => {
 		_socket.send(JSON.stringify(msg))
 	} else {
 		console.error("socket not connected")
-		_connect()
+		_connect(true)
 		// TODO: show message not sent
 		// User should know they are offline and UI
 		// should block them from doing anything if offline.
 	}
 }
 
-const _connect = () => {
+const _connect = triggeredByChatbox => {
 	// connect should be called when user is logged in
 	// after user data is properly set
 	// socket is initilized only once, callbacks are registered
@@ -103,7 +104,7 @@ const _connect = () => {
 	}
 	if (_isConnected()) {
 		window.spDebug("socket already connected, try joining room")
-		_joinRoom()
+		_joinRoom(triggeredByChatbox)
 		return
 	}
 	window.spDebug("create socket and connect!")
@@ -114,7 +115,7 @@ const _connect = () => {
 		window.spDebug("websocket connected")
 		// window.spDebug(e)
 		if (_isConnected()) {
-			_joinRoom()
+			_joinRoom(triggeredByChatbox)
 		} else {
 			window.spDebug("websocket not connected?")
 		}
@@ -173,83 +174,6 @@ const _connect = () => {
 	}
 
 	window.spSocket = _socket
-	// _socket.on("login", data => {
-	// 	window.spDebug(
-	// 		"connected, will login as " + accountManager.getAccount().id
-	// 	)
-	// 	_postSocketMsgToIframe("login", data)
-	// 	_socket.emit("login", {
-	// 		// TODO: shouldn't need to pass username, userId
-	// 		// any more, socket server always gets the user from token
-	// 		username: accountManager.getAccount().name,
-	// 		userId: accountManager.getAccount().id,
-	// 		isVisitor: accountManager.getAccount().isVisitor,
-	// 		roomId: _roomId,
-	// 		url: getUrl(), // maybe shouldn't send this
-	// 		version: _getClientVersion(),
-	// 		lang: lang,
-	// 		pageTitle: document.title, // maybe shouldn't send this
-	// 		token: accountManager.getAccount().token
-	// 	})
-	// })
-	// _socket.on("new message", data => {
-	// 	data.self =
-	// 		data.userId.toString() === accountManager.getAccount().id.toString()
-	// 	const user = getUserFromCache(data.userId)
-	// 	data.user = data.user || user
-
-	// 	_postSocketMsgToIframe("new message", data)
-	// 	window.queueAnimationDanmu(data)
-	// })
-	// _socket.on("private message", data => {
-	// 	_postSocketMsgToIframe("private message", data)
-	// })
-
-	// _socket.on("recent messages", data => {
-	// 	_postSocketMsgToIframe("recent messages", data)
-	// })
-	// _socket.on("users in room", data => {
-	// 	const users = data.users
-	// 	_postSocketMsgToIframe("users in room", users)
-	// 	// window.spDebug("user count")
-	// 	// window.spDebug(data)
-	// 	users.forEach(user => {
-	// 		addUserToCache(user)
-	// 	})
-	// 	roomManager.setUsersInRoom(users)
-	// })
-	// _socket.on("new user", data => {
-	// 	const user = data.user
-	// 	_postSocketMsgToIframe("new user", user)
-	// 	addUserToCache(user)
-	// 	roomManager.addUserToRoom(user)
-	// })
-	// _socket.on("user gone", data => {
-	// 	const user = data.user
-	// 	roomManager.removeUserFromRoom(user)
-	// 	_postSocketMsgToIframe("user gone", user)
-	// })
-	// _socket.on("disconnect", data => {
-	// 	roomManager.setUsersInRoom([])
-	// 	_postSocketMsgToIframe("disconnect", data)
-	// })
-	// _socket.on("alert", data => {
-	// 	window.spDebug(data)
-	// 	_postSocketMsgToIframe("alert", data)
-	// 	if (data.errorCode === 401) {
-	// 		accountManager.logout()
-	// 	}
-	// })
-	// _socket.on("*", data => {
-	// 	_postSocketMsgToIframe(data.eventName, data)
-	// 	if (data.eventName === "invitation") {
-	// 		const purposeStr =
-	// 			data.metadata.purpose === "chat" ? "聊天邀请" : "求助"
-	// 		const invitationStr = `向你发出${purposeStr}`
-	// 		data.content = invitationStr
-	// 		window.queueAnimationDanmu(data)
-	// 	}
-	// })
 }
 
 const _postSocketMsgToIframe = data => {
@@ -260,21 +184,21 @@ const socketManager = {
 	sendEvent: msg => {
 		_sendEvent(msg)
 	},
-	updatePageInfo: data => {
-		if (_socket && _socket.connected) _socket.emit("page update", data)
-		else {
-			console.error("socket not connected")
-		}
-	},
+	// updatePageInfo: data => {
+	// 	if (_socket && _socket.connected) _socket.emit("page update", data)
+	// 	else {
+	// 		console.error("socket not connected")
+	// 	}
+	// },
 	connect: _connect,
-	changeRoom: roomId => {
-		window.spDebug("TODO: change room")
-		// _roomId = roomId
-		// _disconnect()
-		// setTimeout(() => {
-		// 	_connect()
-		// }, 500)
-	},
+	// changeRoom: roomId => {
+	// 	window.spDebug("TODO: change room")
+	// 	// _roomId = roomId
+	// 	// _disconnect()
+	// 	// setTimeout(() => {
+	// 	// 	_connect()
+	// 	// }, 500)
+	// },
 	disconnect: _disconnect
 }
 

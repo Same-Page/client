@@ -56,7 +56,7 @@ function RoomsWrapper(props) {
         wrapClassName="sp-modal"
         bodyStyle={{
           paddingBottom: 0,
-          maxHeight: "calc(100% - 40px)",
+          maxHeight: "calc(100% - 35px)",
           overflowY: "auto"
         }}
         title={intl.formatMessage({ id: "create.room" })}

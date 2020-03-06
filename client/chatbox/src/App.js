@@ -21,7 +21,8 @@ import {
 import { changeTab, setAccount, setBlacklist } from "redux/actions"
 import store from "redux/store"
 
-// import { setPageTitle, getPageTitle } from "utils/pageTitle"
+import { setPageTitle } from "utils/pageTitle"
+import { setUrl } from "utils/url"
 
 require("moment/locale/zh-cn") //moment.js bug, has to manually include
 
@@ -203,6 +204,10 @@ class App extends React.Component {
         }
         if (type === "sp-blacklist") {
           storageManager.set("blacklist", data)
+        }
+        if (type === "sp-url-changed") {
+          setUrl(data.url)
+          setPageTitle(data.title)
         }
       },
       false

@@ -14,7 +14,7 @@ const avatarStyle = {
   borderRadius: 0
 }
 const ProfileBodyStyle = {
-  height: "calc(100% - 40px)",
+  height: "calc(100% - 35px)",
   overflowY: "auto",
   overflowX: "hidden",
   width: "100%",

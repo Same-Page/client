@@ -1,7 +1,7 @@
 // import Rooms from "../containers/Home/Rooms"
 // import storageManager from "utils/storage"
 import store from "redux/store"
-
+import storageManager from "utils/storage"
 const _socketEventHanders = {}
 
 const _sendEvent = data => {
@@ -47,6 +47,32 @@ const socketManager = {
         rooms: roomIds // when receive empty list, backend will return all rooms connected
       }
     })
+  },
+  autoJoinRooms: rooms => {
+    // only called once when chatbox open
+    // join site, page and fixed rooms if not in the noJoin list
+    const state = store.getState()
+    if (state.account) {
+      const token = state.account.token
+      // noJoin should be in the state
+      storageManager.get("noJoin", noJoin => {
+        if (noJoin) {
+          rooms = rooms.filter(r => {
+            return !noJoin.includes(r.id)
+          })
+        }
+        const payload = {
+          action: "join",
+          data: {
+            rooms: rooms,
+            token: token,
+            getChatHistory: true
+          }
+        }
+
+        _sendEvent(payload)
+      })
+    }
   },
   sendMessage: data => {
     const payload = {

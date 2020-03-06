@@ -31,13 +31,20 @@ function Chat({
   // const [mediaDisplay, setMediaDisplay] = useState("none")
   // const [mediaNum, setMediaNum] = useState(0)
   const [showRoomList, setShowRoomList] = useState(false)
-
   useEffect(() => {
     // console.log(rooms)
     // const roomIds = rooms.map(r => {
     //   return r.id
     // })
-    socketManager.getRoomInfo()
+    // setTimeout(() => {
+    //   // wait a few secs only because if user make chatbox iframe
+    //   // display by default, there is race condition that before
+    //   // parent finish joining rooms, chatbox is already trying to get
+    //   // room chat history, thus get no chat history
+    //   socketManager.getRoomInfo()
+    // }, 500)
+
+    socketManager.autoJoinRooms(rooms)
     syncRoomsPeriodically()
     // socketManager.addHandler("login success", "query_room_info", users => {
     //   // socketManager.sendEvent("get room info")
@@ -117,7 +124,6 @@ function Chat({
             showRoomList={showRoomList}
             setShowRoomList={setShowRoomList}
             changeTab={changeTab}
-
             // displayMusicTab={() => {
             //   setMediaDisplay("block")
             // }}

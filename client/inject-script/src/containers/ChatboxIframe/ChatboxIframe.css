@@ -27,8 +27,8 @@
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 }
 .sp-chatbox-drag-handle {
-	margin-top: -30px;
-	height: 30px;
+	margin-top: -35px;
+	height: 35px;
 	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 	/* width: 50%; */
@@ -38,6 +38,8 @@
 }
 .sp-chatbox-drag-handle svg {
 	display: none;
+	font-size: 35px;
+	color: gray;
 }
 .sp-chatbox-drag-handle:hover svg {
 	display: inline-block;

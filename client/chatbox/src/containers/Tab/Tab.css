@@ -34,20 +34,20 @@ body ::-webkit-scrollbar-thumb:window-inactive {
 }
 
 .ant-tabs-nav-container {
-  font-size: 20px;
+  font-size: 18px;
 }
 .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
-  line-height: 41px;
+  line-height: 37px;
 }
 .ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-nav-container {
-  height: 40px;
+  height: 35px;
 }
 
 .card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
   border-color: transparent;
   border-radius: 0;
   background: transparent;
-  height: 40px;
+  height: 35px;
 }
 .ant-tabs-bar {
   border-bottom: none;
@@ -108,9 +108,9 @@ textarea.ant-input {
   background-size: cover;
   z-index: 10;
   position: fixed;
-  top: 40px;
+  top: 35px;
   width: 100%;
-  height: calc(100% - 40px);
+  height: calc(100% - 35px);
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
@@ -122,7 +122,7 @@ textarea.ant-input {
   position: fixed;
   /* top: 80px; */
   width: 100%;
-  height: calc(100% - 80px);
+  height: calc(100% - 75px);
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;

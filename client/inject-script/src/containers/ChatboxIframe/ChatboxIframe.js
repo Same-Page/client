@@ -37,15 +37,11 @@ function keepCheckingLocation() {
 	} else {
 		window.spDebug("url changed")
 		curUrl = window.location.href
-		const msg = {
-			locationUpdate: true,
+
+		postMsgToIframe("sp-url-changed", {
 			title: document.title,
 			url: window.location.href
-		}
-		// if (this.iframeRef.current) {
-		//   this.iframeRef.current.contentWindow.postMessage(msg, "*")
-		// }
-		socketManager.updatePageInfo(msg)
+		})
 	}
 	setTimeout(() => {
 		keepCheckingLocation()
@@ -159,7 +155,7 @@ function ChatboxIframe({ blacklist }) {
 	useEffect(() => {
 		if (window.location.href !== url && showIframeControl) {
 			mockUrl(url)
-			socketManager.changeRoom(getDomain())
+			// socketManager.changeRoom(getDomain())
 		}
 	}, [url])
 
