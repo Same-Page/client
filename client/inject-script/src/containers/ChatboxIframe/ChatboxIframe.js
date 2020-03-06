@@ -13,7 +13,7 @@ import "./ChatboxIframe.css"
 import {
 	createIframeByDefault,
 	showIframeControl,
-	iframeSize,
+	defaultIframeSize,
 	iframeSrc
 } from "config/iframe"
 import ImageModal from "../ImageModal"
@@ -52,6 +52,10 @@ function keepCheckingLocation() {
 
 function ChatboxIframe({ blacklist }) {
 	const [createChatboxIframe, setCreateChatboxIframe] = useState(false)
+	// Need to get stored size and position before rendering chatbox iframe
+	const [loadingStorage, setLoadingStorage] = useState(true)
+	const [x, setX] = useState(5)
+	const [size, setSize] = useState(defaultIframeSize)
 	const blacklistRef = useRef()
 	blacklistRef.current = blacklist
 	window.createChatboxIframe = createChatboxIframe
@@ -116,6 +120,18 @@ function ChatboxIframe({ blacklist }) {
 				setCreateChatboxIframe(autoOpenChatbox)
 			}
 		})
+		storage.get("iframeX", posX => {
+			if (posX) {
+				setX(posX)
+			}
+
+			storage.get("iframeSize", iframeSize => {
+				if (iframeSize) {
+					setSize(iframeSize)
+				}
+				setLoadingStorage(false)
+			})
+		})
 	}, [])
 
 	// Commented out because this happen too fast, chatbox
@@ -173,7 +189,7 @@ function ChatboxIframe({ blacklist }) {
 		)
 	}
 	let chatboxIframe = ""
-	if (createChatboxIframe) {
+	if (createChatboxIframe && !loadingStorage) {
 		chatboxIframe = (
 			<div>
 				<ImageModal />
@@ -183,15 +199,27 @@ function ChatboxIframe({ blacklist }) {
 					resizeHandleStyles={{
 						right: { right: -10 }
 					}}
+					// position={{ x: x, y: 0 }}
 					default={{
-						x: 0,
+						x: x,
 						y: 0, // y value is overridden in css
-						width: iframeSize.width,
-						height: iframeSize.height
+						width: size.width,
+						height: size.height
 					}}
-					minWidth={iframeSize.minWidth}
-					minHeight={iframeSize.minHeight}
+					minWidth={defaultIframeSize.minWidth}
+					minHeight={defaultIframeSize.minHeight}
+					maxHeight={window.innerHeight}
 					dragAxis="x"
+					onDragStop={(e, d) => {
+						storage.set("iframeX", d.x)
+					}}
+					onResizeStop={(e, direction, ref, delta, position) => {
+						storage.set("iframeSize", {
+							width: ref.style.width,
+							height: ref.style.height
+						})
+						console.log(ref.style.height)
+					}}
 				>
 					<div className="sp-chatbox-drag-handle"></div>
 					<iframe

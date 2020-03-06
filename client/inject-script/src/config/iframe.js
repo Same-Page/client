@@ -10,7 +10,7 @@ export { iframeSrc }
 export const showIframeControl =
 	window.location.href.indexOf("localhost:3210") > -1
 
-export const iframeSize = {
+export const defaultIframeSize = {
 	width: 350,
 	height: 500,
 	minWidth: 275,

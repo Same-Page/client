@@ -54,6 +54,7 @@
 	margin-bottom: 35px;
 	color: rgb(255, 19, 19);
 	cursor: pointer;
+	z-index: 2147483647;
 }
 .sp-user-popover .blocked {
 	color: greenyellow;
