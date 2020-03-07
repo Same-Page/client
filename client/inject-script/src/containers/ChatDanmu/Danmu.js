@@ -1,21 +1,21 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 
 class Danmu extends Component {
-	state = {};
+	state = {}
 	constructor(props) {
-		super(props);
-		this.danmuRef = React.createRef();
+		super(props)
+		this.danmuRef = React.createRef()
 	}
 
 	componentDidMount() {
-		let startX = window.innerWidth;
-		let duration = (startX + 1000) / 100;
+		let startX = window.innerWidth
+		let duration = (startX + 1000) / 100
 
 		//.animate isn't supported by safari
 		// TODO: maybe use animation.js lib?
 		if (!this.danmuRef.current.animate) {
-			this.props.deleteSelf(this.props.danmu.id);
-			return;
+			this.props.deleteSelf(this.props.danmu.id)
+			return
 		}
 		let danmuAnimation = this.danmuRef.current.animate(
 			[
@@ -28,38 +28,40 @@ class Danmu extends Component {
 				duration: duration * 1000
 				// easing: 'ease-in-out'
 			}
-		);
+		)
 		danmuAnimation.onfinish = () => {
-			this.props.deleteSelf(this.props.danmu.id);
-		};
+			this.props.deleteSelf(this.props.danmu.id)
+		}
 		this.danmuRef.current.onmouseover = () => {
-			danmuAnimation.pause();
-		};
+			danmuAnimation.pause()
+		}
 		this.danmuRef.current.onmouseout = () => {
-			danmuAnimation.play();
-		};
+			danmuAnimation.play()
+		}
 		this.danmuRef.current.onmousedown = () => {
-			window.toggleChatbox();
-		};
+			window.toggleChatbox()
+		}
 	}
 	render() {
-		const user = this.props.danmu.user;
-		let avatar = "";
+		const user = this.props.danmu.user
+		let avatar = ""
 		if (user.avatarSrc) {
-			avatar = <img alt="" className="sp-danmu-avatar" src={user.avatarSrc} />;
+			avatar = (
+				<img alt="" className="sp-danmu-avatar" src={user.avatarSrc} />
+			)
 		}
-		let textContentClass = "sp-danmu-content-text";
+		let textContentClass = "sp-danmu-content-text"
 		if (this.props.danmu.self) {
-			textContentClass += " self";
-			console.log(this.props.danmu);
+			textContentClass += " self"
+			// console.log(this.props.danmu);
 		}
-		textContentClass += " " + this.props.danmu.type;
+		textContentClass += " " + this.props.danmu.type
 		let content = (
 			<span
 				className={textContentClass}
 				dangerouslySetInnerHTML={{ __html: this.props.danmu.content }}
 			/>
-		);
+		)
 		if (this.props.danmu.img) {
 			content = (
 				<img
@@ -67,7 +69,7 @@ class Danmu extends Component {
 					className="sp-danmu-content-img"
 					src={this.props.danmu.imgSrc}
 				/>
-			);
+			)
 		}
 		return (
 			<div
@@ -78,8 +80,8 @@ class Danmu extends Component {
 				{avatar}
 				{content}
 			</div>
-		);
+		)
 	}
 }
 
-export default Danmu;
+export default Danmu

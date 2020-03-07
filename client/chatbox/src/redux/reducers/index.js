@@ -78,7 +78,7 @@ const store = (state = initState, action) => {
       rooms = rooms.map(r => {
         const room = { ...r }
         if (r.id === action.payload.roomId) {
-          console.log(r.id + " " + action.payload.status)
+          // console.log(r.id + " " + action.payload.status)
           room.connectionStatus = action.payload.status
         }
         return room
