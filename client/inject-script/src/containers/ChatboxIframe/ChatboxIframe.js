@@ -121,18 +121,16 @@ function ChatboxIframe({ blacklist }) {
 		storage.get("iframeSize", iframeSize => {
 			if (iframeSize) {
 				setSize(iframeSize)
+			} else {
+				iframeSize = defaultIframeSize
 			}
 
 			storage.get("iframeX", posX => {
 				if (posX) {
 					posX = Math.max(posX, 0)
-					if (iframeSize) {
-						const iframeWidth = parseInt(iframeSize.width, 10)
-						posX = Math.min(
-							posX,
-							window.innerWidth - iframeWidth - 10
-						)
-					}
+					const iframeWidth = parseInt(iframeSize.width, 10)
+					posX = Math.min(posX, window.innerWidth - iframeWidth - 10)
+
 					setX(posX)
 				}
 

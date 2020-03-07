@@ -98,7 +98,7 @@ const accountManager = {
 				window.spDebug("[Inject account.js] logged in")
 				// axios.defaults.headers.common["token"] = this.state.account.token
 				if (window.autoConnect || window.createChatboxIframe) {
-					socketManager.connect()
+					socketManager.connect(true)
 				}
 			} else if (logout) {
 				window.spDebug("[Inject account.js] logged out")
@@ -111,7 +111,7 @@ const accountManager = {
 						"changed account without logging out, impossible"
 					)
 					socketManager.disconnect()
-					socketManager.connect()
+					socketManager.connect(true)
 				}
 			}
 		})
