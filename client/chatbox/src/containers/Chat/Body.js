@@ -73,7 +73,7 @@ function ChatBody({
   const showResizable = show && (showMedia || iframeUrl)
   const bodyStyle = { ...chatBodyStyle }
   const maskStyle = { ...bodyMaskStyle }
-  if (!room.connected) {
+  if (room.connectionStatus !== "CONNECTED") {
     maskStyle.opacity = 0.5
   }
 
@@ -305,7 +305,9 @@ function ChatBody({
         ref={bodyRef}
         style={{ ...bodyStyle, display: show ? "block" : "none" }}
       >
-        {!room.connected && <div style={maskStyle}>Offline</div>}
+        {room.connectionStatus !== "CONNECTED" && (
+          <div style={maskStyle}>Offline</div>
+        )}
         {res}
       </div>
       {/* )} */}

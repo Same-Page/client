@@ -5,7 +5,11 @@ import { Icon } from "antd"
 import { connect } from "react-redux"
 
 import { getPopularRooms } from "services/room"
-import { setDiscoveryRoom, joinManMadeRoom } from "redux/actions/chat"
+import {
+  setDiscoveryRoom,
+  joinManMadeRoom,
+  setRoomConnectionStatus
+} from "redux/actions/chat"
 // import VideoRoom from "./VideoRoom"
 import socketManager from "socket"
 function getRandomRolor() {
@@ -16,7 +20,13 @@ function getRandomRolor() {
   }
   return color
 }
-function Discover({ account, setDiscoveryRoom, room, joinManMadeRoom }) {
+function Discover({
+  account,
+  setDiscoveryRoom,
+  room,
+  joinManMadeRoom,
+  setRoomConnectionStatus
+}) {
   // room joined isn't put to redux state, any problem?
   const intl = useIntl()
   const [loadingRooms, setLoadingRooms] = useState(true)
@@ -86,6 +96,8 @@ function Discover({ account, setDiscoveryRoom, room, joinManMadeRoom }) {
                   joinManMadeRoom(r)
                   // setDiscoveryRoom(r)
                   socketManager.joinRoom(r)
+
+                  setRoomConnectionStatus(r.id, "JOINING")
                 }}
                 className="sp-discover-entry"
                 style={style}
@@ -145,6 +157,8 @@ const stateToProps = state => {
   }
 }
 
-export default connect(stateToProps, { setDiscoveryRoom, joinManMadeRoom })(
-  Discover
-)
+export default connect(stateToProps, {
+  setDiscoveryRoom,
+  joinManMadeRoom,
+  setRoomConnectionStatus
+})(Discover)

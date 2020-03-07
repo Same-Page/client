@@ -156,7 +156,7 @@ function VideoRoom({
         <Footer
           account={account}
           room={room}
-          connected={room.connected}
+          // connected={room.connected}
           chatView="video_room"
           setMessages={setMessages}
         />

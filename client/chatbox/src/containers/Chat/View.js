@@ -14,6 +14,7 @@ function View({
   account,
   changeTab,
   blacklist,
+  setRoomConnectionStatus,
   noJoinList
 }) {
   const [messages, setMessages] = useState([])
@@ -71,10 +72,11 @@ function View({
         <Footer
           account={account}
           room={room}
-          connected={room.connected}
+          // connected={room.connected}
           chatView={chatView}
           setMessages={setMessages}
-          noJoinList={noJoinList}
+          setRoomConnectionStatus={setRoomConnectionStatus}
+          // noJoinList={noJoinList}
         />
       )}
       {show && !room && (

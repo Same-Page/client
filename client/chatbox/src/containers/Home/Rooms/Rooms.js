@@ -4,7 +4,7 @@ import React from "react"
 import { Icon } from "antd"
 import { connect } from "react-redux"
 
-import { joinManMadeRoom } from "redux/actions/chat"
+import { joinManMadeRoom, setRoomConnectionStatus } from "redux/actions/chat"
 import socketManager from "socket"
 
 function Rooms({
@@ -40,6 +40,7 @@ function Rooms({
             socketManager.leaveRoom(manMadeRoom)
           }
           socketManager.joinRoom(room)
+          setRoomConnectionStatus(room.id, "JOINING")
         }}
       >
         <span style={{ marginRight: 15, display: "inline-block", width: 25 }}>

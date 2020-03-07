@@ -17,25 +17,25 @@ function Footer({
   setMessages,
   chatView,
   room,
-  connected,
-  noJoinList
+  setRoomConnectionStatus
+  // connected,
+  // isJoining
 }) {
   const roomId = room.id
   const intl = useIntl()
-  const [joining, setJoining] = useState(!noJoinList.includes(roomId))
-  const [showInvitationModal, setShowInvitationModal] = useState(false)
-  useEffect(() => {
-    if (connected) {
-      setJoining(false)
-    }
-  }, [connected])
 
-  useEffect(() => {
-    setJoining(true)
-  }, [roomId])
+  // const [joining, setJoining] = useState(isJoining)
+  const [showInvitationModal, setShowInvitationModal] = useState(false)
+
+  // useEffect(() => {
+  //   if (connected) {
+  //     setJoining(false)
+  //   }
+  // }, [connected])
+
   // const roomId = room.id
   // const connected = room.connected
-  window.spDebug("[Footer.js] connected " + connected)
+  // window.spDebug("[Footer.js] connected " + connected)
   // const [invitationType, setInvitationType] = useState("room")
   // const [invitationPurpose, setInvitationPurpose] = useState("chat")
 
@@ -157,7 +157,7 @@ function Footer({
     />
   )
 
-  if (!connected) {
+  if (room.connectionStatus !== "CONNECTED") {
     content = (
       <center
         style={{
@@ -170,9 +170,10 @@ function Footer({
           style={{ width: "100%" }}
           onClick={() => {
             socketManager.joinRoom(room)
-            setJoining(true)
+            setRoomConnectionStatus(room.id, "JOINING")
+            // setJoining(true)
           }}
-          loading={joining}
+          loading={room.connectionStatus === "JOINING"}
           type="primary"
           size="large"
         >

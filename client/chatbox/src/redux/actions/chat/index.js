@@ -14,10 +14,17 @@ export const setDiscoveryRoom = room => ({
   type: "SET_DISCOVERY_ROOM",
   payload: room
 })
-export const setRoomConnectionStatus = (roomId, connected) => ({
+export const setRoomConnectionStatus = (roomId, status) => ({
   type: "SET_ROOM_STATUS",
   payload: {
     roomId: roomId,
-    connected: connected
+    status: status
   }
 })
+// export const setRoomJoining = (roomId, joining) => ({
+//   type: "SET_ROOM_JOINING",
+//   payload: {
+//     roomId: roomId,
+//     joining: joining
+//   }
+// })

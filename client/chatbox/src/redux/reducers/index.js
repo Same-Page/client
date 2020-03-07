@@ -31,7 +31,7 @@ function getRooms(modes, manMadeRoom) {
   })
 
   rooms = rooms.filter(r => {
-    return r
+    return r && r.id
   })
   return rooms
 }
@@ -75,14 +75,19 @@ const store = (state = initState, action) => {
         account: account
       }
     case "SET_ROOM_STATUS":
-      // console.log("SET_ROOM_STATUS")
-      // console.log(action.payload.roomId)
-      // console.log(action.payload.connected)
-      rooms.forEach(r => {
+      rooms = rooms.map(r => {
+        const room = { ...r }
         if (r.id === action.payload.roomId) {
-          r.connected = action.payload.connected
+          console.log(r.id + " " + action.payload.status)
+          room.connectionStatus = action.payload.status
         }
+        return room
       })
+      // rooms.forEach(r => {
+      //   if (r.id === action.payload.roomId) {
+      //     r.connected = action.payload.connected
+      //   }
+      // })
       return { ...state, rooms: rooms }
     case "VIEW_OTHER_USER":
       // TODO: compare user id with current user
@@ -99,7 +104,7 @@ const store = (state = initState, action) => {
       })
       rooms.push(manMadeRoom)
       // do not save connected status
-      delete manMadeRoom["connected"]
+      delete manMadeRoom["connectionStatus"]
       storageManager.set("room", manMadeRoom)
 
       return {

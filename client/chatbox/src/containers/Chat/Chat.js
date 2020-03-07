@@ -36,13 +36,17 @@ function Chat({
   const [ready, setReady] = useState(false)
   useEffect(() => {
     storageManager.get("noJoin", noJoin => {
+      let autoJoinRooms = rooms
       if (noJoin) {
         setNoJoinList(noJoin)
+        autoJoinRooms = rooms.filter(r => {
+          return !noJoin.includes(r.id)
+        })
       }
-      const autoJoinRooms = rooms.filter(r => {
-        return !noJoin.includes(r.id)
-      })
       socketManager.autoJoinRooms(autoJoinRooms)
+      autoJoinRooms.forEach(r => {
+        setRoomConnectionStatus(r.id, "JOINING")
+      })
       setReady(true)
     })
     // setTimeout(() => {
@@ -107,6 +111,7 @@ function Chat({
             setShowRoomList={setShowRoomList}
             changeTab={changeTab}
             noJoinList={noJoinList}
+            setRoomConnectionStatus={setRoomConnectionStatus}
             // displayMusicTab={() => {
             //   setMediaDisplay("block")
             // }}

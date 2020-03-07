@@ -79,6 +79,7 @@ const socketManager = {
   },
   leaveRoom: _leaveRoom,
   syncRooms: () => {
+    return
     // join action is actually a set room operation
     // will join rooms included and leave rooms not in
     window.spDebug("sync rooms")
@@ -89,7 +90,10 @@ const socketManager = {
         action: "join",
         data: {
           rooms: state.rooms.filter(r => {
-            return r.connected
+            return (
+              r.connectionStatus === "CONNECTED" ||
+              r.connectionStatus === "JOINING"
+            )
           }),
           token: token
         }

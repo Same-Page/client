@@ -18,7 +18,7 @@ function RoomHeader({
   showUsers,
   setShowRoomList
 }) {
-  const connected = room.connected
+  const connected = room.connectionStatus === "CONNECTED"
   const [users, setUsers] = useState([])
   const intl = useIntl()
 
@@ -77,7 +77,7 @@ function RoomHeader({
               return u.id === account.id
             })
             if (userInRoom.length > 0) {
-              setRoomConnectionStatus(roomId, true)
+              setRoomConnectionStatus(roomId, "CONNECTED")
               // message.success(
               //   intl.formatMessage({ id: room.type }) +
               //     " " +
@@ -86,7 +86,7 @@ function RoomHeader({
               // )
               // console.log("setRoomConnectionStatus " + roomId)
             } else {
-              setRoomConnectionStatus(roomId, false)
+              setRoomConnectionStatus(roomId, "DISCONNECTED")
               console.error("User not added to room properly! ")
             }
           }
@@ -181,7 +181,7 @@ function RoomHeader({
               }
               onClick={() => {
                 window.spDebug("leave" + room.id)
-                setRoomConnectionStatus(room.id, false)
+                setRoomConnectionStatus(room.id, "DISCONNECTED")
                 socketManager.leaveRoom(room)
                 setUsers([])
               }}
