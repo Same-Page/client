@@ -7,7 +7,15 @@ import Footer from "./Footer"
 
 // import RoomsWrapper from "containers/Home/RoomsWrapper"
 
-function View({ chatView, show, room, account, changeTab, blacklist }) {
+function View({
+  chatView,
+  show,
+  room,
+  account,
+  changeTab,
+  blacklist,
+  noJoinList
+}) {
   const [messages, setMessages] = useState([])
   const playerRef = useRef(null)
   const intl = useIntl()
@@ -66,6 +74,7 @@ function View({ chatView, show, room, account, changeTab, blacklist }) {
           connected={room.connected}
           chatView={chatView}
           setMessages={setMessages}
+          noJoinList={noJoinList}
         />
       )}
       {show && !room && (

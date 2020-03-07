@@ -9,6 +9,7 @@ import View from "./View"
 import socketManager from "socket"
 import { changeChatView, setRoomConnectionStatus } from "redux/actions/chat"
 import { viewOtherUser, changeTab } from "redux/actions"
+import storageManager from "utils/storage"
 
 function syncRoomsPeriodically() {
   setTimeout(() => {
@@ -31,11 +32,19 @@ function Chat({
   // const [mediaDisplay, setMediaDisplay] = useState("none")
   // const [mediaNum, setMediaNum] = useState(0)
   const [showRoomList, setShowRoomList] = useState(false)
+  const [noJoinList, setNoJoinList] = useState([])
+  const [ready, setReady] = useState(false)
   useEffect(() => {
-    // console.log(rooms)
-    // const roomIds = rooms.map(r => {
-    //   return r.id
-    // })
+    storageManager.get("noJoin", noJoin => {
+      if (noJoin) {
+        setNoJoinList(noJoin)
+      }
+      const autoJoinRooms = rooms.filter(r => {
+        return !noJoin.includes(r.id)
+      })
+      socketManager.autoJoinRooms(autoJoinRooms)
+      setReady(true)
+    })
     // setTimeout(() => {
     //   // wait a few secs only because if user make chatbox iframe
     //   // display by default, there is race condition that before
@@ -44,36 +53,9 @@ function Chat({
     //   socketManager.getRoomInfo()
     // }, 500)
 
-    socketManager.autoJoinRooms(rooms)
     syncRoomsPeriodically()
-    // socketManager.addHandler("login success", "query_room_info", users => {
-    //   // socketManager.sendEvent("get room info")
-    // })
-    // socketManager.addHandler("private message", "pm_notification", data => {
-    //   // console.log(data)
-    //   const sender = data.user
-    //   const msg = `收到来自${sender.name}的私信`
-    //   message.info(msg)
-    //   storageManager.set("unread", true)
-    // })
-    // socketManager.addHandler(
-    //   "invitation sent",
-    //   "invitation_sent_notification",
-    //   data => {
-    //     const msg = `邀请成功发送给${data.receiverCount}人`
-    //     message.success(msg)
-    //   }
-    // )
-    // return () => {
-    //   socketManager.removeHandler("login success", "query_room_info")
-    //   socketManager.removeHandler("private message", "pm_notification")
-    //   socketManager.removeHandler(
-    //     "invitation sent",
-    //     "invitation_sent_notification"
-    //   )
-    // }
   }, [])
-
+  if (!ready) return <span />
   return (
     <div>
       {/* <span style={{ display: mediaDisplay }}>
@@ -124,6 +106,7 @@ function Chat({
             showRoomList={showRoomList}
             setShowRoomList={setShowRoomList}
             changeTab={changeTab}
+            noJoinList={noJoinList}
             // displayMusicTab={() => {
             //   setMediaDisplay("block")
             // }}

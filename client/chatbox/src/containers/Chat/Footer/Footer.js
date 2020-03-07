@@ -12,16 +12,27 @@ import { getUrl } from "utils/url"
 
 const MESSAGE_TIME_GAP = 2 * 1000
 let lastMsgTime = 0
-function Footer({ account, setMessages, chatView, room, connected }) {
+function Footer({
+  account,
+  setMessages,
+  chatView,
+  room,
+  connected,
+  noJoinList
+}) {
   const roomId = room.id
   const intl = useIntl()
-  const [joining, setJoining] = useState(false)
+  const [joining, setJoining] = useState(!noJoinList.includes(roomId))
   const [showInvitationModal, setShowInvitationModal] = useState(false)
   useEffect(() => {
     if (connected) {
       setJoining(false)
     }
   }, [connected])
+
+  useEffect(() => {
+    setJoining(true)
+  }, [roomId])
   // const roomId = room.id
   // const connected = room.connected
   window.spDebug("[Footer.js] connected " + connected)

@@ -54,24 +54,15 @@ const socketManager = {
     const state = store.getState()
     if (state.account) {
       const token = state.account.token
-      // noJoin should be in the state
-      storageManager.get("noJoin", noJoin => {
-        if (noJoin) {
-          rooms = rooms.filter(r => {
-            return !noJoin.includes(r.id)
-          })
+      const payload = {
+        action: "join",
+        data: {
+          rooms: rooms,
+          token: token,
+          getChatHistory: true
         }
-        const payload = {
-          action: "join",
-          data: {
-            rooms: rooms,
-            token: token,
-            getChatHistory: true
-          }
-        }
-
-        _sendEvent(payload)
-      })
+      }
+      _sendEvent(payload)
     }
   },
   sendMessage: data => {
