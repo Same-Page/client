@@ -44,98 +44,101 @@ function Profile(props) {
   const intl = useIntl()
 
   return (
-    <div style={ProfileBodyStyle}>
+    <div
+    // style={ProfileBodyStyle}
+    >
       <div className="sp-tab-header">{account.name}</div>
-
-      <Avatar
-        style={avatarStyle}
-        // size={128}
-        shape="square"
-        src={account.avatarSrc}
-        icon="user"
-      />
-      {/* <center style={{ margin: 20, fontSize: "large", fontWeight: "bold" }}>
+      <div className="sp-tab-body">
+        <Avatar
+          style={avatarStyle}
+          // size={128}
+          shape="square"
+          src={account.avatarSrc}
+          icon="user"
+        />
+        {/* <center style={{ margin: 20, fontSize: "large", fontWeight: "bold" }}>
         {account.name}
       </center> */}
-      <div style={{ width: 200, margin: "auto", marginTop: 30 }}>
-        <Row gutter={50} style={{ textAlign: "center" }}>
-          <Col style={{ textAlign: "center" }} span={12}>
-            ID <br />
-            <b>{account.numId}</b>
-          </Col>
-          <Col style={{ textAlign: "center" }} span={12}>
-            {intl.formatMessage({ id: "credit" })} <br />
-            <b>{account.credit}</b>
-          </Col>
-        </Row>
-        <Row gutter={50} style={{ marginTop: 10, textAlign: "center" }}>
-          <Col style={{ textAlign: "center" }} span={12}>
-            <span className="sp-follow-stats" onClick={props.showFollowings}>
-              {intl.formatMessage({ id: "following" })}
-              <br /> <b>{account.followingCount}</b>
-            </span>
-          </Col>
-          <Col style={{ textAlign: "center" }} span={12}>
-            <span className="sp-follow-stats" onClick={props.showFollowers}>
-              {intl.formatMessage({ id: "follower" })}
-              <br /> <b>{account.followerCount}</b>
-            </span>
-          </Col>
-        </Row>
-        <Row gutter={50} style={{ marginTop: 10, textAlign: "center" }}>
-          <Col style={{ textAlign: "center" }} span={12}>
-            <span
-              className="sp-follow-stats"
-              onClick={() => {
-                props.showBlacklist()
-              }}
-            >
-              {intl.formatMessage({ id: "blacklist" })}
-              <br /> <b>{props.blacklist.length}</b>
-            </span>
-          </Col>
-        </Row>
-      </div>
-      <br />
-      <center>
-        <div style={aboutStyle}>{account.about}</div>
-        <div style={{ marginTop: 30 }}>
-          <Button
-            type="primary"
-            icon="edit"
-            style={{ margin: 10 }}
-            // size="large"
-            onClick={props.showEditProfile}
-          >
-            {intl.formatMessage({ id: "update.profile" })}
-          </Button>
+        <div style={{ width: 200, margin: "auto", marginTop: 30 }}>
+          <Row gutter={50} style={{ textAlign: "center" }}>
+            <Col style={{ textAlign: "center" }} span={12}>
+              ID <br />
+              <b>{account.numId}</b>
+            </Col>
+            <Col style={{ textAlign: "center" }} span={12}>
+              {intl.formatMessage({ id: "credit" })} <br />
+              <b>{account.credit}</b>
+            </Col>
+          </Row>
+          <Row gutter={50} style={{ marginTop: 10, textAlign: "center" }}>
+            <Col style={{ textAlign: "center" }} span={12}>
+              <span className="sp-follow-stats" onClick={props.showFollowings}>
+                {intl.formatMessage({ id: "following" })}
+                <br /> <b>{account.followingCount}</b>
+              </span>
+            </Col>
+            <Col style={{ textAlign: "center" }} span={12}>
+              <span className="sp-follow-stats" onClick={props.showFollowers}>
+                {intl.formatMessage({ id: "follower" })}
+                <br /> <b>{account.followerCount}</b>
+              </span>
+            </Col>
+          </Row>
+          <Row gutter={50} style={{ marginTop: 10, textAlign: "center" }}>
+            <Col style={{ textAlign: "center" }} span={12}>
+              <span
+                className="sp-follow-stats"
+                onClick={() => {
+                  props.showBlacklist()
+                }}
+              >
+                {intl.formatMessage({ id: "blacklist" })}
+                <br /> <b>{props.blacklist.length}</b>
+              </span>
+            </Col>
+          </Row>
         </div>
-        <Button onClick={props.showResetPassword} style={{ margin: 10 }}>
-          {intl.formatMessage({ id: "change.password" })}
-        </Button>
-        <Button
-          onClick={() => {
-            setLoggingOut(true)
+        <br />
+        <center>
+          <div style={aboutStyle}>{account.about}</div>
+          <div style={{ marginTop: 30 }}>
+            <Button
+              type="primary"
+              icon="edit"
+              style={{ margin: 10 }}
+              // size="large"
+              onClick={props.showEditProfile}
+            >
+              {intl.formatMessage({ id: "update.profile" })}
+            </Button>
+          </div>
+          <Button onClick={props.showResetPassword} style={{ margin: 10 }}>
+            {intl.formatMessage({ id: "change.password" })}
+          </Button>
+          <Button
+            onClick={() => {
+              setLoggingOut(true)
 
-            logout()
-              .then(res => {
-                window.spDebug("logout success")
-              })
-              .catch(err => {
-                console.error(err)
-              })
-              .then(() => {
-                setLoggingOut(false)
-                storageManager.set("account", null)
-              })
-          }}
-          loading={loggingOut}
-          type="danger"
-          style={{ margin: 10 }}
-        >
-          {intl.formatMessage({ id: "logout" })}
-        </Button>
-      </center>
+              logout()
+                .then(res => {
+                  window.spDebug("logout success")
+                })
+                .catch(err => {
+                  console.error(err)
+                })
+                .then(() => {
+                  setLoggingOut(false)
+                  storageManager.set("account", null)
+                })
+            }}
+            loading={loggingOut}
+            type="danger"
+            style={{ margin: 10 }}
+          >
+            {intl.formatMessage({ id: "logout" })}
+          </Button>
+        </center>
+      </div>
     </div>
   )
 }
