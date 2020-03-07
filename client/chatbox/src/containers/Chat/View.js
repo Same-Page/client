@@ -14,12 +14,12 @@ function View({
   account,
   changeTab,
   blacklist,
-  setRoomConnectionStatus,
-  noJoinList
+  setRoomConnectionStatus
 }) {
   const [messages, setMessages] = useState([])
   const playerRef = useRef(null)
   const intl = useIntl()
+  const mediaSrc = room && room.src
 
   const playMedia = src => {
     setShowMedia(true)
@@ -34,19 +34,19 @@ function View({
   const pauseMedia = () => {
     playerRef.current.pause()
   }
-  const showMediaInit = room && room.src
+  const showMediaInit = !!mediaSrc
   const [showMedia, setShowMedia] = useState(showMediaInit)
 
   window.spDebug("[View.js] " + chatView)
 
   useEffect(() => {
-    if (room && room.src) {
-      setPlaylist([room.src])
+    if (mediaSrc) {
+      setPlaylist([mediaSrc])
       setShowMedia(true)
     } else {
       setShowMedia(false)
     }
-  }, [room])
+  }, [mediaSrc])
   // Body component is always mounted because of the socket handlers
   return (
     <span>
@@ -54,7 +54,6 @@ function View({
         account={account}
         show={show}
         blacklist={blacklist}
-        // chatView={chatView}
         messages={messages}
         setMessages={setMessages}
         room={room}
@@ -63,20 +62,15 @@ function View({
         pauseMedia={pauseMedia}
         showMedia={showMedia}
         setShowMedia={setShowMedia}
-        // mediaSources={[mediaSrc]}
       />
-      {/* {show && chatView === "room" && (showRoomList || !room) && (
-        <RoomsWrapper setShowRoomList={setShowRoomList} />
-      )} */}
+
       {show && room && (
         <Footer
           account={account}
           room={room}
-          // connected={room.connected}
           chatView={chatView}
           setMessages={setMessages}
           setRoomConnectionStatus={setRoomConnectionStatus}
-          // noJoinList={noJoinList}
         />
       )}
       {show && !room && (

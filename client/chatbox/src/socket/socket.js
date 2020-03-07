@@ -79,7 +79,7 @@ const socketManager = {
   },
   leaveRoom: _leaveRoom,
   syncRooms: () => {
-    return
+    // return
     // join action is actually a set room operation
     // will join rooms included and leave rooms not in
     window.spDebug("sync rooms")

@@ -117,6 +117,8 @@ function ChatBody({
 
     // clear room message when room change (only for man made rooms)
     setMessages([])
+    // console.log("roomId")
+    // console.log(roomId)
   }, [roomId])
   useEffect(() => {
     // TODO: seems no need to remove socket handler when account state change
