@@ -84,24 +84,26 @@ function Account({ account, blacklist, viewOtherUser }) {
           back={backToMainPage}
         />
       )}
-      <Profile
-        account={account}
-        blacklist={blacklist}
-        showBlacklist={() => {
-          setShowBlacklist(true)
-        }}
-        showResetPassword={setResetPasswordState}
-        showEditProfile={setEdittingProfileState}
-        showFollowings={() => {
-          setShowingFollowState(true)
-          setShowFollowersState(false)
-        }}
-        showFollowers={() => {
-          setShowingFollowState(true)
-          setShowFollowersState(true)
-        }}
-        setAccount={setAccount}
-      />
+      {!showBlacklist && !showingFollow && (
+        <Profile
+          account={account}
+          blacklist={blacklist}
+          showBlacklist={() => {
+            setShowBlacklist(true)
+          }}
+          showResetPassword={setResetPasswordState}
+          showEditProfile={setEdittingProfileState}
+          showFollowings={() => {
+            setShowingFollowState(true)
+            setShowFollowersState(false)
+          }}
+          showFollowers={() => {
+            setShowingFollowState(true)
+            setShowFollowersState(true)
+          }}
+          setAccount={setAccount}
+        />
+      )}
     </div>
   )
 }
