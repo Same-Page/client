@@ -11,8 +11,8 @@
 .sp-discover-entry {
   width: 50%;
   height: 40%;
-  max-width: 200px;
-  max-height: 200px;
+  /* max-width: 200px; */
+  /* max-height: 200px; */
   /* padding: 10px; */
   position: relative;
   /* margin: 12px; */

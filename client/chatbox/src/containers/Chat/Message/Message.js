@@ -79,6 +79,7 @@ function ChatMessage(props) {
         showMenu={props.showMenu}
         playMedia={props.playMedia}
         setIframeUrl={props.setIframeUrl}
+        setMessageDetail={props.setMessageDetail}
       />
     </div>
   )

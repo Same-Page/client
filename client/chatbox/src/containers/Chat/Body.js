@@ -65,12 +65,13 @@ function ChatBody({
     : IFRAME_DEFAULT_HEIGHT
   const [resizableHeight, setResizableHeight] = useState(resizableDefaultHeight)
   const [iframeUrl, setIframeUrl] = useState()
+  const [messageDetail, setMessageDetail] = useState()
   const msgNum = messages.length
   const bodyRef = useRef(null)
   const suffixCb = name => {
     return name + "_" + roomId
   }
-  const showResizable = show && (showMedia || iframeUrl)
+  const showResizable = show && (showMedia || iframeUrl || messageDetail)
   const bodyStyle = { ...chatBodyStyle }
   const maskStyle = { ...bodyMaskStyle }
   if (room.connectionStatus !== "CONNECTED") {
@@ -100,21 +101,31 @@ function ChatBody({
   useEffect(() => {
     if (showMedia) {
       setIframeUrl(null)
+      setMessageDetail(null)
       setResizableHeight(VIDEO_DEFAULT_HEIGHT)
     }
   }, [showMedia])
   useEffect(() => {
     if (iframeUrl) {
       setShowMedia(false)
+      setMessageDetail(null)
       pauseMedia()
       setResizableHeight(IFRAME_DEFAULT_HEIGHT)
     }
   }, [iframeUrl])
   useEffect(() => {
+    if (messageDetail) {
+      setShowMedia(false)
+      setIframeUrl(null)
+      pauseMedia()
+      setResizableHeight(IFRAME_DEFAULT_HEIGHT)
+    }
+  }, [messageDetail])
+  useEffect(() => {
     setShowMedia(false)
     pauseMedia()
     setIframeUrl(null)
-
+    setMessageDetail(null)
     // clear room message when room change (only for man made rooms)
     setMessages([])
     // console.log("roomId")
@@ -282,6 +293,7 @@ function ChatBody({
           setShowMedia(true)
         }}
         setIframeUrl={setIframeUrl}
+        setMessageDetail={setMessageDetail}
       />
     )
     lastMsg = msg
@@ -300,6 +312,8 @@ function ChatBody({
         mediaSources={mediaSources}
         iframeUrl={iframeUrl}
         setIframeUrl={setIframeUrl}
+        messageDetail={messageDetail}
+        setMessageDetail={setMessageDetail}
       />
 
       {/* {show && ( */}

@@ -95,6 +95,10 @@ function MessageBody(props) {
 
         <a
           onClick={() => {
+            if (data.htmlContent) {
+              props.setMessageDetail(data.htmlContent)
+              return
+            }
             props.setIframeUrl(data.iframe_url || data.url)
           }}
         >

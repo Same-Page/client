@@ -15,14 +15,31 @@ function ResizableMedia({
   playerRef,
   mediaSources,
   iframeUrl,
-  setIframeUrl
+  setIframeUrl,
+  messageDetail,
+  setMessageDetail
 }) {
   const resizableStyle = {}
   if (!show) {
     resizableStyle.display = "none"
   }
+  const resizableRef = useRef()
+  useEffect(() => {
+    if (resizableRef && resizableRef.current) {
+      window.foo = resizableRef.current
+      resizableRef.current.addEventListener("click", e => {
+        console.log(e)
+        if (e && e.target && e.target.tagName.toUpperCase() === "IMG") {
+          e.preventDefault()
+          window.parent.postMessage({ imgSrc: e.target.src }, "*")
+        }
+        return false
+      })
+    }
+  }, [])
   return (
     <Resizable
+      handleClasses={{ bottom: "sp-resizable-bottom-handle" }}
       style={resizableStyle}
       size={{
         width: "100%",
@@ -48,39 +65,50 @@ function ResizableMedia({
         setResizableHeight(elm.clientHeight)
       }}
     >
-      <span style={{ display: showMedia ? "unset" : "none" }}>
-        <MusicPlayer
-          // show={showMedia}
-          closePlayer={() => {
-            pauseMedia()
-            setShowMedia(false)
-          }}
-          playerRef={playerRef}
-          sources={mediaSources}
-        />
-      </span>
-      {iframeUrl && (
-        <span>
-          <iframe
-            style={{
-              background: "#d9d9d9",
-              height: "100%",
-              width: "100%",
-              border: "none",
-              borderBottom: "1px solid lightgray"
+      <span ref={resizableRef}>
+        <span style={{ display: showMedia ? "unset" : "none" }}>
+          <MusicPlayer
+            // show={showMedia}
+            closePlayer={() => {
+              pauseMedia()
+              setShowMedia(false)
             }}
-            src={iframeUrl}
+            playerRef={playerRef}
+            sources={mediaSources}
           />
-          <span
-            className="resizable-close"
-            onClick={() => {
-              setIframeUrl(null)
-            }}
-          >
-            <Button>X</Button>
-          </span>
         </span>
-      )}
+        {(iframeUrl || messageDetail) && (
+          <span>
+            <span
+              className="resizable-close"
+              onClick={() => {
+                setIframeUrl(null)
+                setMessageDetail(null)
+              }}
+            >
+              <Button>X</Button>
+            </span>
+            {iframeUrl && (
+              <iframe
+                style={{
+                  background: "#d9d9d9",
+                  height: "100%",
+                  width: "100%",
+                  border: "none",
+                  borderBottom: "1px solid lightgray"
+                }}
+                src={iframeUrl}
+              />
+            )}
+            {messageDetail && (
+              <div
+                className="sp-message-detail-html"
+                dangerouslySetInnerHTML={{ __html: messageDetail }}
+              ></div>
+            )}
+          </span>
+        )}
+      </span>
     </Resizable>
   )
 }
