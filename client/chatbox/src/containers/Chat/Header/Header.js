@@ -97,46 +97,48 @@ function ChatHeader({
         >
           <span style={{ marginLeft: 5 }}>{props.mediaNum}</span>
         </Button> */}
-        <Radio.Group
-          className="sp-toggle-page-site-chat"
-          size="small"
-          value={activeView}
-          // buttonStyle="solid"
-          onChange={e => {
-            const chatView = e.target.value
-            changeChatView(chatView)
-          }}
-        >
-          {chatModes.map(mode => {
-            const room = getRoom(mode)
-            let roomTitle = ""
-            let unreadCount = unreads[mode] || 0
-            if (room) {
-              if (mode === "room") {
-                roomTitle = room.name
-              } else {
-                roomTitle = room.id
+        <span style={{ float: "left", marginLeft: 10 }}>
+          <Radio.Group
+            className="sp-toggle-page-site-chat"
+            size="small"
+            value={activeView}
+            // buttonStyle="solid"
+            onChange={e => {
+              const chatView = e.target.value
+              changeChatView(chatView)
+            }}
+          >
+            {chatModes.map(mode => {
+              const room = getRoom(mode)
+              let roomTitle = ""
+              let unreadCount = unreads[mode] || 0
+              if (room) {
+                if (mode === "room") {
+                  roomTitle = room.name
+                } else {
+                  roomTitle = room.id
+                }
               }
-            }
-            return (
-              <Tooltip key={mode} placement="bottom" title={roomTitle}>
-                <Radio.Button value={mode}>
-                  {intl.formatMessage({ id: mode })}
-                  <Badge offset={[3, -3]} count={unreadCount}></Badge>
-                </Radio.Button>
-              </Tooltip>
-            )
-          })}
-        </Radio.Group>
-        <Button
-          style={{ border: "none", boxShadow: "none" }}
-          onClick={() => setShowHelp(true)}
-          size="small"
-          // icon="info-circle"
-        >
-          {/* <Icon type="info-circle" theme="twoTone" /> */}
-          <Icon type="setting" />
-        </Button>
+              return (
+                <Tooltip key={mode} placement="bottom" title={roomTitle}>
+                  <Radio.Button value={mode}>
+                    {intl.formatMessage({ id: mode })}
+                    <Badge offset={[3, -3]} count={unreadCount}></Badge>
+                  </Radio.Button>
+                </Tooltip>
+              )
+            })}
+          </Radio.Group>
+          <Button
+            style={{ border: "none", boxShadow: "none" }}
+            onClick={() => setShowHelp(true)}
+            size="small"
+            // icon="info-circle"
+          >
+            {/* <Icon type="info-circle" theme="twoTone" /> */}
+            <Icon type="setting" />
+          </Button>
+        </span>
         {/* <Col style={{ textAlign: "right" }} span={8}> */}
         {chatModes.map((mode, i) => {
           const room = getRoom(mode)

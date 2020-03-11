@@ -13,9 +13,9 @@ import storageManager from "utils/storage"
 
 function syncRoomsPeriodically() {
   setTimeout(() => {
-    socketManager.syncRooms()
+    // socketManager.syncRooms()
     syncRoomsPeriodically()
-  }, 10 * 1000)
+  }, 20 * 1000)
 }
 function Chat({
   blacklist,

@@ -54,6 +54,8 @@
   "unfollow": "Unfollow",
   "send.mail": "Mail",
   "load.more": "Load more",
+  "loading": "Loading...",
+  "load.failed": "Failed to load",
   "blacklist": "Blacklist",
   "blocked": "Blocked",
 

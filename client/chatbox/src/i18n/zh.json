@@ -61,6 +61,8 @@
   "notification": "提醒",
   "empty": "无",
   "load.more": "显示更多",
+  "loading": "载入中。。。",
+  "load.failed": "载入失败",
   "blacklist": "黑名单",
   "blocked": "已屏蔽",
 

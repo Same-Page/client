@@ -2,9 +2,11 @@ import "./Body.css"
 
 import React, { useState } from "react"
 import { Popover, Button, Icon } from "antd"
+import { useIntl } from "react-intl"
 
 import socketManager from "socket"
 // import Iframe from "components/Iframe"
+import { getData } from "services"
 
 function isPureEmoji(string) {
   if (!string) return false
@@ -18,6 +20,7 @@ function MessageBody(props) {
   const self = props.data.self
   let content = data.value
   let contentType = data.type
+  const intl = useIntl()
 
   if (isPureEmoji(content)) {
     // This should be done in backend
@@ -95,10 +98,28 @@ function MessageBody(props) {
 
         <a
           onClick={() => {
-            if (data.htmlContent) {
-              props.setMessageDetail(data.htmlContent)
+            // if (data.htmlContent) {
+            //   props.setMessageDetail(data.htmlContent)
+            //   return
+            // }
+            if (data.dataSrc) {
+              props.setMessageDetail(intl.formatMessage({ id: "loading" }))
+
+              getData(data.dataSrc)
+                .then(resp => {
+                  window.foo = resp
+                  console.log(resp)
+                  props.setMessageDetail(resp.data)
+                })
+                .catch(err => {
+                  props.setMessageDetail(
+                    intl.formatMessage({ id: "load.failed" })
+                  )
+                })
+                .then(() => {})
               return
             }
+
             props.setIframeUrl(data.iframe_url || data.url)
           }}
         >
