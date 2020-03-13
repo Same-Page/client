@@ -3,7 +3,7 @@ const defaultConfig = {
 	defaultTab: "chat",
 	chatModes: ["site", "page", "room"],
 	defaultChatView: "site",
-	debug: false,
+	debug: true,
 	socketUrl: "chat-v6.yiyechat.com/prod",
 	apiUrl: "https://api-v2.yiyechat.com",
 	chatboxSrc: "https://yiyechat.com/extension-v6/",
@@ -12,10 +12,13 @@ const defaultConfig = {
 	showAvatars: false
 }
 
-if (process.env.REACT_APP_SP_ENV === "dev") {
+if (process.env.REACT_APP_LOCAL_CHATBOX) {
 	// defaultConfig.socketUrl = "http://localhost:8081"
 	// defaultConfig.apiUrl = 'localhost:3000'
 	defaultConfig.chatboxSrc = "https://localhost:3000"
+}
+if (process.env.REACT_APP_LOCAL_SOCKET) {
+	defaultConfig.socketUrl = "localhost:8765"
 }
 
 // TODO: only override attributes, don't replace entire object

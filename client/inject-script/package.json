@@ -66,10 +66,13 @@
 	},
 	"scripts": {
 		"start": "node scripts/start.js",
-		"start:dev": "REACT_APP_SP_ENV=dev npm start",
-		"buildit": "node scripts/build.js && rm -r ../extension/build/content-static ; cp -r build/content-static ../extension/build/content-static",
-		"build": "REACT_APP_SP_ENV=prod  npm run buildit",
-		"build:dev": "REACT_APP_SP_ENV=dev  npm run buildit",
+		"start:local_chatbox": "REACT_APP_LOCAL_CHATBOX=1 npm start",
+		"start:local_socket": "REACT_APP_LOCAL_SOCKET=1 npm start",
+		"start:local_cs": "REACT_APP_LOCAL_SOCKET=1 REACT_APP_LOCAL_CHATBOX=1 npm start",
+		"build": "node scripts/build.js && rm -r ../extension/build/content-static ; cp -r build/content-static ../extension/build/content-static",
+		"build:local_chatbox": "REACT_APP_LOCAL_CHATBOX=1 npm run build",
+		"build:local_socket": "REACT_APP_LOCAL_SOCKET=1 npm run build",
+		"build:local_cs": "REACT_APP_LOCAL_SOCKET=1 REACT_APP_LOCAL_CHATBOX=1 npm run build",
 		"test": "node scripts/test.js",
 		"storybook": "start-storybook -p 6006",
 		"build-storybook": "build-storybook"
