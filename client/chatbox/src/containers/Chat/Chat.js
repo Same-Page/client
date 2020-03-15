@@ -15,7 +15,7 @@ function syncRoomsPeriodically() {
   setTimeout(() => {
     // socketManager.syncRooms()
     syncRoomsPeriodically()
-  }, 20 * 1000)
+  }, 10 * 1000)
 }
 function Chat({
   blacklist,

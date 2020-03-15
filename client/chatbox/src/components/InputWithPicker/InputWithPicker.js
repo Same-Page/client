@@ -7,6 +7,7 @@ import { Button, Input, Icon, Upload } from "antd"
 import urls from "config/urls"
 import Emoji from "../Emoji"
 import axios from "axios"
+import Snapshot from "components/Snapshot"
 
 const uploadUrl = `${urls.dbAPI}/api/v1/chat_upload`
 
@@ -117,6 +118,7 @@ function InputWithPicker(props) {
       <Upload {...uploadProps} disabled={uploading}>
         <Button icon="upload" loading={uploading} />
       </Upload>
+      <Snapshot />
     </span>
   )
 

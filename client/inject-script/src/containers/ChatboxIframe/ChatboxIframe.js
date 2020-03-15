@@ -11,6 +11,7 @@ import storage from "storage.js"
 import spConfig from "config"
 import spDebug from "config/logger"
 import SwapHorizIcon from "@material-ui/icons/SwapHoriz"
+import Snapshot from "containers/Snapshot"
 
 import {
 	createIframeByDefault,

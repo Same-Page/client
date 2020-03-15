@@ -13,6 +13,7 @@ import storage from "storage.js"
 import socketManager from "services/socket"
 import accountManager from "services/account"
 import { apiUrl } from "../../config/urls"
+import Snapshot from "containers/Snapshot"
 
 const unreadKey = "unread"
 const inboxOffsetKey = "inbox-offset"
@@ -129,6 +130,8 @@ function App(props) {
 
 	return (
 		<span>
+			<Snapshot />
+
 			<Room blacklist={blacklist} isBlacklisted={isBlacklisted} />
 			<ChatboxIframe blacklist={blacklist} />
 			<AnimationDanmu

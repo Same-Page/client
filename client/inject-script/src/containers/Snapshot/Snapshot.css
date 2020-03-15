@@ -1,0 +1,69 @@
+.crosshairs {
+  position: absolute;
+  width: 100%;
+  z-index: 2147483645;
+}
+
+.crosshairs.hidden {
+  display: none;
+}
+
+.crosshairs::before,
+.crosshairs::after {
+  content: "";
+  position: absolute;
+}
+
+.crosshairs::before {
+  height: 24px;
+  width: 2px;
+  background: #000;
+  top: -11px;
+}
+
+.crosshairs::after {
+  width: 24px;
+  height: 2px;
+  background: #000;
+  left: -11px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.overlay.highlighting {
+  background: none;
+  border-color: rgba(0, 0, 0, 0.5);
+  border-style: solid;
+}
+
+.modal__header {
+  display: flex;
+}
+
+.modal__header button {
+  margin-left: auto;
+  font-size: 30px;
+  border: none;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.modal__body {
+  padding: 20px;
+}
+
+.modal__footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.image__container {
+  overflow: auto;
+}
