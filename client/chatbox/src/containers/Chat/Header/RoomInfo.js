@@ -98,7 +98,6 @@ function RoomInfo({
       }}
       wrapClassName="sp-modal"
       footer={null}
-      bodyStyle={{ maxHeight: "calc(100% - 55px)", overflowY: "auto" }}
     >
       <h4>
         {intl.formatMessage({ id: "auto.join" })}

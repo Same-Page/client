@@ -64,7 +64,7 @@ class CreateRoomForm extends React.Component {
         {...formItemLayout}
         onSubmit={this.handleSubmit}
       >
-        <Form.Item label={<span>房间名</span>}>
+        <Form.Item label={<span>房间名 (必填)</span>}>
           {getFieldDecorator("name", {
             rules: [
               {
@@ -87,7 +87,16 @@ class CreateRoomForm extends React.Component {
         <Form.Item label={<span>房间介绍</span>}>
           {getFieldDecorator("about", {
             // initialValue: account.about
-          })(<Input.TextArea placeholder="该房间特定的话题与聊天规则。。。" />)}
+          })(<Input.TextArea placeholder="房间话题与聊天规则" />)}
+        </Form.Item>
+        <Form.Item label={<span>背景图片地址</span>}>
+          {getFieldDecorator("background")(<Input />)}
+        </Form.Item>
+        <Form.Item label={<span>封面图片地址</span>}>
+          {getFieldDecorator("cover")(<Input />)}
+        </Form.Item>
+        <Form.Item label={<span>资源列表 (一行一条)</span>}>
+          {getFieldDecorator("media")(<Input.TextArea placeholder="" />)}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button

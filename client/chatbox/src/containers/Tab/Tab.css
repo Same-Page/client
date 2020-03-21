@@ -186,3 +186,12 @@ textarea.ant-input {
 .ant-btn-danger {
   background-color: white;
 }
+
+.sp-modal .ant-modal-body {
+  max-height: calc(100% - 55px);
+  overflow-y: auto;
+}
+
+.sp-modal textarea.ant-input {
+  min-height: 75px;
+}

@@ -1,9 +1,11 @@
 import "./Home.css"
 import { useIntl } from "react-intl"
 import React, { useState, useEffect } from "react"
-import { Icon } from "antd"
-import { connect } from "react-redux"
 
+import { Icon, Modal, Button } from "antd"
+
+import { connect } from "react-redux"
+import CreateRoomForm from "./CreateRoom"
 import { getPopularRooms } from "services/room"
 import {
   setDiscoveryRoom,
@@ -20,6 +22,11 @@ function getRandomRolor() {
   }
   return color
 }
+const title = (
+  <span>
+    创建房间<span style={{ color: "gray" }}>（需10积分）</span>
+  </span>
+)
 function Discover({
   account,
   setDiscoveryRoom,
@@ -33,6 +40,7 @@ function Discover({
   // rooms here mean room list returned from backend
   // do not confuse with state.rooms
   const [rooms, setRooms] = useState([])
+  const [showCreateRoomModal, setShowCreateRoomModal] = useState(false)
 
   const loadRooms = () => {
     getPopularRooms("room")
@@ -63,7 +71,19 @@ function Discover({
           >
             {loadingRooms && <Icon type="loading" />}
           </span>
-          {intl.formatMessage({ id: "fixed.rooms" })}
+          <span>{intl.formatMessage({ id: "roomlist" })}</span>
+          <span style={{ position: "absolute", right: 10 }}>
+            <Button
+              type="primary"
+              icon="plus"
+              size="small"
+              onClick={() => {
+                setShowCreateRoomModal(true)
+              }}
+            >
+              创建房间
+            </Button>
+          </span>
         </div>
         <div
           style={{
@@ -139,6 +159,22 @@ function Discover({
           }}
         />
       )} */}
+      <Modal
+        title={title}
+        visible={showCreateRoomModal}
+        onCancel={() => {
+          setShowCreateRoomModal(false)
+        }}
+        footer={null}
+        wrapClassName="sp-modal"
+      >
+        <CreateRoomForm
+          back={() => {
+            setShowCreateRoomModal(false)
+          }}
+          loadRooms={loadRooms}
+        />
+      </Modal>
     </span>
   )
 }

@@ -15,8 +15,8 @@ export const getPopularRooms = type => {
 
 export const createRoom = payload => {
   const formData = new FormData()
-  formData.append("name", payload.name)
-  formData.append("about", payload.about)
-
+  Object.keys(payload).forEach(key => {
+    formData.append(key, payload[key])
+  })
   return axios.post(urls.dbAPI + "/api/v1/create_room", formData)
 }
