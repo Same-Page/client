@@ -19,20 +19,37 @@ function View({
   const [messages, setMessages] = useState([])
   const playerRef = useRef(null)
   const intl = useIntl()
-  const mediaSrc = room && room.src
-
+  const mediaSrc = room && room.media
+  if (mediaSrc) {
+    window.playMediaFromRoomMediaList = index => {
+      playerRef.current.playlist(mediaSrc)
+      playerRef.current.playlist.currentItem(index)
+      playerRef.current.playlist.autoadvance(0)
+      playerRef.current.play()
+    }
+  }
   const playMedia = src => {
+    // This function is called when click
+    // on chat message that's media
     setShowMedia(true)
     playerRef.current.src(src)
     playerRef.current.play()
   }
-  const setPlaylist = src => {
+  const setPlaylist = mediaList => {
     // setShowMedia(true)
-    playerRef.current.src(src)
+    // playerRef.current.src(src)
+    // playerRef.current.play()
+    console.log(mediaList)
+
+    playerRef.current.playlist(mediaList)
+    playerRef.current.playlist.currentItem(0)
+    playerRef.current.playlist.autoadvance(0)
     // playerRef.current.play()
   }
   const pauseMedia = () => {
-    playerRef.current.pause()
+    if (playerRef && playerRef.current) {
+      playerRef.current.pause()
+    }
   }
   const showMediaInit = !!mediaSrc
   const [showMedia, setShowMedia] = useState(showMediaInit)
@@ -41,7 +58,7 @@ function View({
 
   useEffect(() => {
     if (mediaSrc) {
-      setPlaylist([mediaSrc])
+      setPlaylist(mediaSrc)
       setShowMedia(true)
     } else {
       setShowMedia(false)

@@ -56,19 +56,6 @@ function ProfileBody(props) {
   // const self = account && account.id.toString() === user.id.toString()
   return (
     <div>
-      {loading && (
-        <Icon
-          style={{
-            display: "block",
-            position: "absolute",
-            right: 12,
-            top: 12,
-            // marginTop: 10,
-            border: "none"
-          }}
-          type="loading"
-        />
-      )}
       <Avatar
         shape="square"
         style={avatarStyle}
@@ -76,7 +63,20 @@ function ProfileBody(props) {
         src={user.avatarSrc}
         icon="user"
       />
-
+      {loading && (
+        <Icon
+          style={{
+            margin: "auto",
+            display: "block",
+            // position: "absolute",
+            // right: 12,
+            // top: 12,
+            marginTop: 30,
+            border: "none"
+          }}
+          type="loading"
+        />
+      )}
       {loaded && !loading && (
         <span>
           <div style={{ width: 200, margin: "auto", marginTop: 30 }}>

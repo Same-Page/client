@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react"
-import { Modal, Switch } from "antd"
+import { Modal, Switch, Avatar } from "antd"
 import { useIntl } from "react-intl"
 import { connect } from "react-redux"
 
 import storageManager from "utils/storage"
 // import socketManager from "socket"
 import { setRoomConnectionStatus } from "redux/actions/chat"
+import { viewOtherUser } from "redux/actions"
 function RoomInfo({
   account,
   rooms,
   room,
   setShowHelp,
-  setRoomConnectionStatus
+  setRoomConnectionStatus,
+  viewOtherUser
 }) {
   const [join, setJoin] = useState(true)
   const intl = useIntl()
@@ -38,17 +40,17 @@ function RoomInfo({
           <div>
             <h4>{intl.formatMessage({ id: "room.owner" })}</h4>
             <div>
-              {/* <Avatar
-              // icon={icon}
-              // className={props.className}
-              src={room.owner.avatarSrc}
-              size="large"
-              style={{ cursor: "pointer", marginRight: 10 }}
-              onClick={() => {
-                setShowHelp(false)
-                props.viewOtherUser(room.owner)
-              }}
-            /> */}
+              <Avatar
+                // icon={icon}
+                // className={props.className}
+                src={room.owner.avatarSrc}
+                size="large"
+                style={{ cursor: "pointer", marginRight: 10 }}
+                onClick={() => {
+                  setShowHelp(false)
+                  viewOtherUser(room.owner)
+                }}
+              />
               {room.owner.name}
             </div>
           </div>
@@ -125,16 +127,41 @@ function RoomInfo({
 
       <br />
       {helpContent}
-      <a
+      <br />
+      {room.media && (
+        <span>
+          <h4>播放列表</h4>
+          <ul>
+            {room.media.map((m, index) => {
+              const url = m["sources"][0]["src"]
+              return (
+                <li key={url}>
+                  <a
+                    onClick={() => {
+                      window.playMediaFromRoomMediaList(index)
+                      setShowHelp(false)
+                    }}
+                  >
+                    {url}
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </span>
+      )}
+      {/* <a
         className="yiyelink"
         target="_blank"
         rel="noopener noreferrer"
         href="https://yiyechat.com"
       >
         {intl.formatMessage({ id: "sp" })}
-      </a>
+      </a> */}
     </Modal>
   )
 }
 
-export default connect(null, { setRoomConnectionStatus })(RoomInfo)
+export default connect(null, { setRoomConnectionStatus, viewOtherUser })(
+  RoomInfo
+)

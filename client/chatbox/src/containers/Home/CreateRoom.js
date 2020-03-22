@@ -84,19 +84,25 @@ class CreateRoomForm extends React.Component {
           })(<Input />)}
         </Form.Item>
 
-        <Form.Item label={<span>房间介绍</span>}>
+        <Form.Item label={<span>房间介绍 (必填)</span>}>
           {getFieldDecorator("about", {
             // initialValue: account.about
           })(<Input.TextArea placeholder="房间话题与聊天规则" />)}
         </Form.Item>
         <Form.Item label={<span>背景图片地址</span>}>
-          {getFieldDecorator("background")(<Input />)}
+          {getFieldDecorator("background", {
+            initialValue: null
+          })(<Input />)}
         </Form.Item>
         <Form.Item label={<span>封面图片地址</span>}>
-          {getFieldDecorator("cover")(<Input />)}
+          {getFieldDecorator("cover", {
+            initialValue: null
+          })(<Input />)}
         </Form.Item>
         <Form.Item label={<span>资源列表 (一行一条)</span>}>
-          {getFieldDecorator("media")(<Input.TextArea placeholder="" />)}
+          {getFieldDecorator("media", {
+            initialValue: null
+          })(<Input.TextArea placeholder="" />)}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button
