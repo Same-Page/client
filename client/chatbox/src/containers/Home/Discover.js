@@ -6,7 +6,7 @@ import { Icon, Modal, Button } from "antd"
 
 import { connect } from "react-redux"
 import CreateRoomForm from "./CreateRoom"
-import { getPopularRooms } from "services/room"
+import { getRooms } from "services/room"
 import {
   setDiscoveryRoom,
   joinManMadeRoom,
@@ -28,11 +28,11 @@ const title = (
   </span>
 )
 function Discover({
-  account,
-  setDiscoveryRoom,
-  room,
   joinManMadeRoom,
-  setRoomConnectionStatus
+  setRoomConnectionStatus,
+  back,
+  showCreateRoomBtn,
+  user
 }) {
   // room joined isn't put to redux state, any problem?
   const intl = useIntl()
@@ -41,9 +41,19 @@ function Discover({
   // do not confuse with state.rooms
   const [rooms, setRooms] = useState([])
   const [showCreateRoomModal, setShowCreateRoomModal] = useState(false)
-
+  let headerTitle = intl.formatMessage({ id: "roomlist" })
+  // if (user) {
+  //   headerTitle =
+  //     user.name +
+  //     intl.formatMessage({ id: "possessive" }) +
+  //     intl.formatMessage({ id: "roomlist" })
+  // }
   const loadRooms = () => {
-    getPopularRooms("room")
+    const params = {}
+    if (user) {
+      params["userId"] = user.numId
+    }
+    getRooms(params)
       .then(resp => {
         resp.data.sort((a, b) => {
           return b.userCount - a.userCount
@@ -57,33 +67,30 @@ function Discover({
   }
   useEffect(() => {
     loadRooms()
-  }, [])
+  }, [user])
 
   return (
     <span>
       <div>
+        {back && (
+          <Button onClick={back} className="sp-back-btn" icon="arrow-left" />
+        )}
         <div className="sp-tab-header">
-          <span
-            style={{
-              position: "absolute",
-              left: 20
-            }}
-          >
-            {loadingRooms && <Icon type="loading" />}
-          </span>
-          <span>{intl.formatMessage({ id: "roomlist" })}</span>
-          <span style={{ position: "absolute", right: 10 }}>
-            <Button
-              type="primary"
-              icon="plus"
-              size="small"
-              onClick={() => {
-                setShowCreateRoomModal(true)
-              }}
-            >
-              创建房间
-            </Button>
-          </span>
+          <span>{headerTitle}</span>
+          {showCreateRoomBtn && (
+            <span style={{ position: "absolute", right: 10 }}>
+              <Button
+                type="primary"
+                icon="plus"
+                size="small"
+                onClick={() => {
+                  setShowCreateRoomModal(true)
+                }}
+              >
+                创建房间
+              </Button>
+            </span>
+          )}
         </div>
         <div
           style={{
@@ -95,6 +102,25 @@ function Discover({
           }}
           className="sp-tab-body discovery"
         >
+          {loadingRooms && (
+            <Icon
+              style={{
+                margin: "auto",
+                marginTop: 30,
+                display: "block"
+
+                // position: "absolute",
+                // left: 20
+              }}
+              type="loading"
+            />
+          )}
+          {!loadingRooms && rooms.length === 0 && (
+            <center style={{ margin: 20 }}>
+              {intl.formatMessage({ id: "empty" })}
+            </center>
+          )}
+
           {rooms.map(r => {
             const style = {
               backgroundColor: getRandomRolor()
@@ -130,7 +156,7 @@ function Discover({
                   <br />
                   <br />
                   <b>
-                    {r.src && (
+                    {r.media && (
                       <Icon
                         type="play-circle"
                         theme="filled"

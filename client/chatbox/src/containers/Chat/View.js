@@ -22,6 +22,8 @@ function View({
   const mediaSrc = room && room.media
   if (mediaSrc) {
     window.playMediaFromRoomMediaList = index => {
+      setShowMedia(true)
+
       playerRef.current.playlist(mediaSrc)
       playerRef.current.playlist.currentItem(index)
       playerRef.current.playlist.autoadvance(0)

@@ -49,6 +49,7 @@ function ProfileBody(props) {
   const intl = useIntl()
   // const [thanking, setThanking] = useState(false)
   const [toggleBlocking, setToggleBlocking] = useState(false)
+
   const blacklisted =
     blacklist.filter(u => {
       return u.id === user.id
@@ -86,9 +87,26 @@ function ProfileBody(props) {
                 <br />
                 <b>{user.numId}</b>
               </Col>
+              <Col style={{ textAlign: "center" }} span={12}>
+                {intl.formatMessage({ id: "credit" })} <br />
+                <b>{user.credit}</b>
+              </Col>
+            </Row>
+            <Row gutter={50} style={{ marginTop: 10, textAlign: "center" }}>
               <Col span={12}>
                 {intl.formatMessage({ id: "follower" })}
-                <br /> <b>{followerCount}</b>
+                <br /> <b>{user.followerCount}</b>
+              </Col>
+              <Col span={12}>
+                <span
+                  className="sp-follow-stats"
+                  onClick={() => {
+                    props.showRooms()
+                  }}
+                >
+                  {intl.formatMessage({ id: "room" })}
+                  <br /> <b>{user.rooms.length}</b>
+                </span>
               </Col>
             </Row>
           </div>

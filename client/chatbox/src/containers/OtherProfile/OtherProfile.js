@@ -1,34 +1,55 @@
-import React from "react"
+import React, { useState } from "react"
 import { Button } from "antd"
 // import { connect } from "react-redux"
 
 import ProfileMeta from "./ProfileMeta"
 import PrfileBody from "./ProfileBody"
 // import { viewOtherUser } from "redux/actions"
+import Discover from "containers/Home/Discover"
 
 function OtherProfile({ otherUser, viewOtherUser }) {
   if (!otherUser) return <span />
 
-  const user = {
+  const [showRooms, setShowRooms] = useState(false)
+  const [user, setUser] = useState({
     avatarSrc: otherUser.avatarSrc,
     name: otherUser.name,
     id: otherUser.userId || otherUser.id // TODO
-  }
+  })
 
   return (
-    <div className="sp-special-tab">
-      <Button
-        onClick={() => viewOtherUser(null)}
-        className="sp-back-btn"
-        icon="arrow-left"
-      />
-      <div className="sp-tab-header">{user.name}</div>
-      <div className="sp-tab-body">
-        <ProfileMeta user={user}>
-          <PrfileBody />
-        </ProfileMeta>
+    <span>
+      <div className="sp-special-tab">
+        {showRooms && (
+          <Discover
+            user={user}
+            showCreateRoomBtn={false}
+            back={() => {
+              setShowRooms(false)
+            }}
+          />
+        )}
+        {!showRooms && (
+          <div>
+            <Button
+              onClick={() => viewOtherUser(null)}
+              className="sp-back-btn"
+              icon="arrow-left"
+            />
+            <div className="sp-tab-header">{user.name}</div>
+            <div className="sp-tab-body">
+              <ProfileMeta user={user} setUser={setUser}>
+                <PrfileBody
+                  showRooms={() => {
+                    setShowRooms(true)
+                  }}
+                />
+              </ProfileMeta>
+            </div>
+          </div>
+        )}
       </div>
-    </div>
+    </span>
   )
 }
 

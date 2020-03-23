@@ -70,7 +70,10 @@ function Tab({ account, otherUser, activeTab, changeTab, viewOtherUser }) {
               }
               key="discover"
             >
-              <Discover account={account} viewOtherUser={viewOtherUser} />
+              <Discover
+                showCreateRoomBtn={true}
+                viewOtherUser={viewOtherUser}
+              />
             </TabPane>
           )}
           {tabList.includes("chat") && (

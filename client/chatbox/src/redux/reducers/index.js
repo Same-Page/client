@@ -110,6 +110,7 @@ const store = (state = initState, action) => {
       return {
         ...state,
         tab: "chat",
+        otherUser: null,
         rooms: rooms,
         manMadeRoom: manMadeRoom,
         chatView: "room"

@@ -12,6 +12,7 @@ import { getAccount } from "services/account"
 import storageManager from "utils/storage"
 import Blacklist from "./Blacklist"
 import { viewOtherUser } from "redux/actions"
+import Discover from "containers/Home/Discover"
 
 function setAccount(account) {
   storageManager.set("account", account)
@@ -25,6 +26,7 @@ function Account({ account, blacklist, viewOtherUser }) {
   const [showingFollow, setShowingFollowState] = useState(false)
   const [showFollowers, setShowFollowersState] = useState(false)
   const [showBlacklist, setShowBlacklist] = useState(false)
+  const [showRooms, setShowRooms] = useState(false)
   const [loadingAccount, setLoadingAccount] = useState(false)
   useEffect(() => {
     // load account for once if user is logged in or user
@@ -50,6 +52,7 @@ function Account({ account, blacklist, viewOtherUser }) {
     setEdittingProfileState(false)
     setShowingFollowState(false)
     setShowBlacklist(false)
+    setShowRooms(false)
   }
 
   if (!account) {
@@ -60,6 +63,13 @@ function Account({ account, blacklist, viewOtherUser }) {
     <div>
       {loadingAccount && <Button icon="loading" className="sp-back-btn" />}
       {resettingPassword && <ResetPassword back={backToMainPage} />}
+      {showRooms && (
+        <Discover
+          user={account}
+          showCreateRoomBtn={true}
+          back={backToMainPage}
+        />
+      )}
       {showingFollow && (
         <Follow
           account={account}
@@ -84,7 +94,7 @@ function Account({ account, blacklist, viewOtherUser }) {
           back={backToMainPage}
         />
       )}
-      {!showBlacklist && !showingFollow && (
+      {!showBlacklist && !showingFollow && !showRooms && (
         <Profile
           account={account}
           blacklist={blacklist}
@@ -100,6 +110,9 @@ function Account({ account, blacklist, viewOtherUser }) {
           showFollowers={() => {
             setShowingFollowState(true)
             setShowFollowersState(true)
+          }}
+          showRooms={() => {
+            setShowRooms(true)
           }}
           setAccount={setAccount}
         />

@@ -10,7 +10,12 @@ function ProfileMeta(props) {
   // it's a wrapper that handles state and api calls
   // but doesn't contain html layout
   const { account, setAccount } = props
-  const [user, setUser] = useState(props.user)
+  let [user, setUser] = useState(props.user)
+
+  if (props.setUser) {
+    user = props.user
+    setUser = props.setUser
+  }
   const [followerCount, setFollowerCount] = useState("")
   const [following, setFollowing] = useState(false)
   const [loading, setLoading] = useState(false)

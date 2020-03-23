@@ -70,6 +70,7 @@ function Profile(props) {
               <b>{account.credit}</b>
             </Col>
           </Row>
+
           <Row gutter={50} style={{ marginTop: 10, textAlign: "center" }}>
             <Col style={{ textAlign: "center" }} span={12}>
               <span className="sp-follow-stats" onClick={props.showFollowings}>
@@ -85,6 +86,17 @@ function Profile(props) {
             </Col>
           </Row>
           <Row gutter={50} style={{ marginTop: 10, textAlign: "center" }}>
+            <Col style={{ textAlign: "center" }} span={12}>
+              <span
+                className="sp-follow-stats"
+                onClick={() => {
+                  props.showRooms()
+                }}
+              >
+                {intl.formatMessage({ id: "room" })}
+                <br /> <b>{account.rooms && account.rooms.length}</b>
+              </span>
+            </Col>
             <Col style={{ textAlign: "center" }} span={12}>
               <span
                 className="sp-follow-stats"
