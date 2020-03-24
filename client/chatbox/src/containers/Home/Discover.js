@@ -14,12 +14,17 @@ import {
 } from "redux/actions/chat"
 // import VideoRoom from "./VideoRoom"
 import socketManager from "socket"
-function getRandomRolor() {
+const roomColorCache = {}
+function getRandomRolor(roomId) {
+  if (roomId in roomColorCache) {
+    return roomColorCache[roomId]
+  }
   var letters = "0123456789".split("")
   var color = "#"
   for (var i = 0; i < 6; i++) {
     color += letters[Math.round(Math.random() * 10)]
   }
+  roomColorCache[roomId] = color
   return color
 }
 const title = (
@@ -32,11 +37,12 @@ function Discover({
   setRoomConnectionStatus,
   back,
   showCreateRoomBtn,
-  user
+  user,
+  activeTab
 }) {
   // room joined isn't put to redux state, any problem?
   const intl = useIntl()
-  const [loadingRooms, setLoadingRooms] = useState(true)
+  const [loadingRooms, setLoadingRooms] = useState(false)
   // rooms here mean room list returned from backend
   // do not confuse with state.rooms
   const [rooms, setRooms] = useState([])
@@ -49,6 +55,8 @@ function Discover({
   //     intl.formatMessage({ id: "roomlist" })
   // }
   const loadRooms = () => {
+    setLoadingRooms(true)
+    // setRooms([])
     const params = {}
     if (user) {
       params["userId"] = user.numId
@@ -65,15 +73,25 @@ function Discover({
         setLoadingRooms(false)
       })
   }
+
   useEffect(() => {
-    loadRooms()
-  }, [user])
+    console.log(activeTab)
+    if (activeTab === "discover" || user) {
+      loadRooms()
+    }
+  }, [user, activeTab])
 
   return (
     <span>
       <div>
         {back && (
           <Button onClick={back} className="sp-back-btn" icon="arrow-left" />
+        )}
+        {!back && loadingRooms && (
+          <Button className="sp-back-btn" icon="loading" />
+        )}
+        {!back && !loadingRooms && (
+          <Button icon="reload" onClick={loadRooms} className="sp-back-btn" />
         )}
         <div className="sp-tab-header">
           <span>{headerTitle}</span>
@@ -102,11 +120,12 @@ function Discover({
           }}
           className="sp-tab-body discovery"
         >
-          {loadingRooms && (
+          {back && loadingRooms && (
             <Icon
               style={{
                 margin: "auto",
                 marginTop: 30,
+                marginBottom: 30,
                 display: "block"
 
                 // position: "absolute",
@@ -122,8 +141,13 @@ function Discover({
           )}
 
           {rooms.map(r => {
+            let color = r.color
+            if (!color) {
+              color = getRandomRolor(r.id)
+              r.color = color
+            }
             const style = {
-              backgroundColor: getRandomRolor()
+              backgroundColor: color
               // "#" + Math.floor(Math.random() * 3777215).toString(16)
             }
             if (r.cover) {
@@ -208,20 +232,21 @@ function Discover({
 
 // export default Discover
 const stateToProps = state => {
-  const rooms = state.rooms.filter(r => {
-    return r.type === "discovery"
-  })
-  let room = null
-  if (rooms.length === 1) {
-    room = { ...rooms[0] }
-  }
+  // const rooms = state.rooms.filter(r => {
+  //   return r.type === "discovery"
+  // })
+  // let room = null
+  // if (rooms.length === 1) {
+  //   room = { ...rooms[0] }
+  // }
   return {
-    room: room
+    // room: room,
+    activeTab: state.tab
   }
 }
 
 export default connect(stateToProps, {
-  setDiscoveryRoom,
+  // setDiscoveryRoom,
   joinManMadeRoom,
   setRoomConnectionStatus
 })(Discover)
