@@ -20,6 +20,7 @@ function MusicTab(props) {
           border: "none",
           fontSize: "large"
         }}
+        size="small"
         icon="arrow-left"
       />
 

@@ -133,13 +133,15 @@ textarea.ant-input {
 }
 
 .sp-back-btn {
-  position: fixed;
-  margin-top: 5px;
-  margin-left: 10px;
+  position: absolute;
+  left: 10px;
+  margin-top: 7px;
+  /* margin-left: 10px; */
   background: none;
   border: none;
   font-size: large;
   box-shadow: none;
+  color: gray;
 }
 .sp-back-btn:hover {
   background: none;

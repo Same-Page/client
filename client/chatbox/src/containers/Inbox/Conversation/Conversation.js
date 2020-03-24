@@ -140,23 +140,27 @@ function Conversation(props) {
 
   return (
     <div className="sp-inbox-conversation">
-      <Button onClick={props.back} className="sp-back-btn" icon="arrow-left" />
       <div className="sp-tab-header">
-        <center>
-          {/* <Button icon="refresh" size="small">
+        <Button
+          size="small"
+          onClick={props.back}
+          className="sp-back-btn"
+          icon="arrow-left"
+        />
+
+        {/* <Button icon="refresh" size="small">
             刷新
           </Button> */}
-          <span>
-            与
-            <span
-              className="sp-conversation-username"
-              onClick={() => props.viewOtherUser(other)}
-            >
-              {other.name}
-            </span>
-            的对话
+        <span>
+          与
+          <span
+            className="sp-conversation-username"
+            onClick={() => props.viewOtherUser(other)}
+          >
+            {other.name}
           </span>
-        </center>
+          的对话
+        </span>
       </div>
       <div ref={bodyRef} style={conversationBodyStyle}>
         {body}

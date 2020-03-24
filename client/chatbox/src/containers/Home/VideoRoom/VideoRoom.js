@@ -46,6 +46,7 @@ function VideoRoom({
           fontSize: "large"
         }}
         icon="arrow-left"
+        size="small"
       />
 
       <div className="sp-tab-header">

@@ -96,20 +96,20 @@ function Follow(props) {
 
   return (
     <div className="sp-follow-tab">
-      <Button
-        onClick={props.back}
-        className="sp-back-btn"
-        // style={{
-        //   position: "fixed",
-        //   marginTop: 1,
-        //   marginLeft: 5,
-        //   border: "none",
-        //   fontSize: "large"
-        // }}
-        icon="arrow-left"
-      />
-
       <center className="sp-tab-header">
+        <Button
+          onClick={props.back}
+          className="sp-back-btn"
+          // style={{
+          //   position: "fixed",
+          //   marginTop: 1,
+          //   marginLeft: 5,
+          //   border: "none",
+          //   fontSize: "large"
+          // }}
+          size="small"
+          icon="arrow-left"
+        />
         <Radio.Group
           className="sp-toggle-page-site-chat"
           size="small"

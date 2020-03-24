@@ -12,6 +12,7 @@ function Blacklist({ blacklist, viewOtherUser, back }) {
         }}
         className="sp-back-btn"
         icon="arrow-left"
+        size="small"
       />
 
       <div className="sp-tab-header">

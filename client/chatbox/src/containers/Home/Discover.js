@@ -84,16 +84,26 @@ function Discover({
   return (
     <span>
       <div>
-        {back && (
-          <Button onClick={back} className="sp-back-btn" icon="arrow-left" />
-        )}
-        {!back && loadingRooms && (
-          <Button className="sp-back-btn" icon="loading" />
-        )}
-        {!back && !loadingRooms && (
-          <Button icon="reload" onClick={loadRooms} className="sp-back-btn" />
-        )}
         <div className="sp-tab-header">
+          {back && (
+            <Button
+              onClick={back}
+              size="small"
+              className="sp-back-btn"
+              icon="arrow-left"
+            />
+          )}
+          {!back && loadingRooms && (
+            <Button size="small" className="sp-back-btn" icon="loading" />
+          )}
+          {!back && !loadingRooms && (
+            <Button
+              size="small"
+              icon="reload"
+              onClick={loadRooms}
+              className="sp-back-btn"
+            />
+          )}
           <span>{headerTitle}</span>
           {showCreateRoomBtn && (
             <span style={{ position: "absolute", right: 10 }}>

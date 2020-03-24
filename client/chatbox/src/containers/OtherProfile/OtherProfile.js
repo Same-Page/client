@@ -36,12 +36,15 @@ function OtherProfile({ otherUser, viewOtherUser }) {
         )}
         {/* {!showRooms && ( */}
         <div>
-          <Button
-            onClick={() => viewOtherUser(null)}
-            className="sp-back-btn"
-            icon="arrow-left"
-          />
-          <div className="sp-tab-header">{user.name}</div>
+          <div className="sp-tab-header">
+            <Button
+              onClick={() => viewOtherUser(null)}
+              className="sp-back-btn"
+              icon="arrow-left"
+              size="small"
+            />
+            {user.name}
+          </div>
           <div className="sp-tab-body">
             <ProfileMeta user={user} setUser={setUser}>
               <PrfileBody

@@ -75,6 +75,7 @@ class EditProfileForm extends React.Component {
           // 	fontSize: "large"
           // }}
           icon="arrow-left"
+          size="small"
         />
         <center>
           <h3 style={{ marginTop: 50, marginBottom: 30 }}>

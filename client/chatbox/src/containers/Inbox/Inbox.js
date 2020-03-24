@@ -306,24 +306,20 @@ function Inbox(props) {
       {!selectedConversation && (
         <div>
           <center className="sp-tab-header">
-            <span
-              style={{
-                position: "absolute",
-                left: 20
-              }}
-            >
-              {loading && <Icon type="loading" />}
-              {!loading && (
-                <Button
-                  onClick={() => {
-                    getMessagesFromServer()
-                  }}
-                  style={{ border: "none", padding: 0 }}
-                  size="small"
-                  icon="reload"
-                />
-              )}
-            </span>
+            {loading && (
+              <Button size="small" className="sp-back-btn" icon="loading" />
+            )}
+            {!loading && (
+              <Button
+                onClick={() => {
+                  getMessagesFromServer()
+                }}
+                className="sp-back-btn"
+                // style={{ border: "none", padding: 0 }}
+                size="small"
+                icon="reload"
+              />
+            )}
             <Radio.Group
               size="small"
               defaultValue={showNotifications}

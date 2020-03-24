@@ -61,7 +61,9 @@ function Account({ account, blacklist, viewOtherUser }) {
 
   return (
     <div>
-      {loadingAccount && <Button icon="loading" className="sp-back-btn" />}
+      {loadingAccount && (
+        <Button size="small" icon="loading" className="sp-back-btn" />
+      )}
       {resettingPassword && <ResetPassword back={backToMainPage} />}
       {showRooms && (
         <Discover
