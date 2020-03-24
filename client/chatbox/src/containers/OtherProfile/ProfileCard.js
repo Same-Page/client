@@ -148,9 +148,10 @@ function ProfileCard({
       }}
       size="small"
       style={{
-        width: 295,
+        width: 310,
         paddingTop: 15,
         paddingBottom: 15,
+        paddingRight: 0,
         // background: "#8acbff",
         overflow: "hidden"
       }}

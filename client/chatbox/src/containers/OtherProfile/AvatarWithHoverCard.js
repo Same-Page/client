@@ -38,8 +38,12 @@ function AvatarWithHoverCard(props) {
           size={props.size}
           onClick={e => {
             e.stopPropagation()
-            props.viewOtherUser(user)
+
+            if (props.extraClickCb) {
+              props.extraClickCb()
+            }
             hideCard()
+            props.viewOtherUser(user)
           }}
           onMouseEnter={e => {
             // console.log("mouse enter avatar")

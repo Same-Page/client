@@ -52,14 +52,11 @@ function RoomInfo({
           <div>
             <h4>{intl.formatMessage({ id: "room.owner" })}</h4>
             <div>
-              <span
-                style={{ cursor: "pointer", marginRight: 10 }}
-                onClick={() => {
-                  setShowHelp(false)
-                  viewOtherUser(room.owner)
-                }}
-              >
+              <span style={{ cursor: "pointer", marginRight: 10 }}>
                 <AvatarWithHoverCard
+                  extraClickCb={() => {
+                    setShowHelp(false)
+                  }}
                   // className="sp-chat-message-avatar"
                   size="large"
                   user={room.owner}

@@ -16,9 +16,22 @@ function Inbox(props) {
   const intl = useIntl()
   const account = props.account
 
+  if (!account) {
+    return (
+      <div className="sp-inbox-tab">
+        <center className="sp-tab-header">
+          {intl.formatMessage({ id: "not.login" })}
+        </center>
+      </div>
+    )
+  }
+
   const activeTab = props.tab
-  let storageKey = "inbox"
-  // if (account) storageKey += account.id
+  const storageKey = "inbox-" + account.id
+  // can't use "inbox-id-offset" yet because injection
+  // script is still reading inbox-offset
+  // const storageOffsetKey = storageKey + "-offset"
+  const storageOffsetKey = "inbox-offset"
   const prevAccountRef = useRef()
   const activeTabRef = useRef()
   const conversationsRef = useRef()
@@ -58,7 +71,7 @@ function Inbox(props) {
         let hasNewMessage = false
         const newOffset = getOffset(newConversations)
 
-        storageManager.set("inbox-offset", Math.max(newOffset, offset))
+        storageManager.set(storageOffsetKey, Math.max(newOffset, offset))
         if (newOffset > offset) {
           mergeAndSaveNewConversations(newConversations)
           hasNewMessage = true
@@ -105,7 +118,7 @@ function Inbox(props) {
       })
       storageManager.set(storageKey, conversations)
       const offset = getOffset(conversations)
-      storageManager.set("inbox-offset", offset)
+      storageManager.set(storageOffsetKey, offset)
     })
   }
   function getOffset(conversations) {
@@ -277,15 +290,6 @@ function Inbox(props) {
     )
   }
 
-  if (!account) {
-    return (
-      <div className="sp-inbox-tab">
-        <center className="sp-tab-header">
-          {intl.formatMessage({ id: "not.login" })}
-        </center>
-      </div>
-    )
-  }
   return (
     <div className="sp-inbox-tab">
       {selectedConversation && !showNotifications && (
