@@ -8,9 +8,9 @@ import urls from "config/urls"
 import Emoji from "../Emoji"
 import axios from "axios"
 
-const uploadUrl = `${urls.dbAPI}/api/v1/chat_upload`
-
 function InputWithPicker(props) {
+  const uploadUrl = `${urls.dbAPI}/api/v1/chat_upload`
+
   const [input, setInput] = useState("")
   const [uploading, setUploading] = useState(false)
   const intl = useIntl()
