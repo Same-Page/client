@@ -38,6 +38,7 @@ function Home(props) {
   return (
     <div>
       <Modal
+        transitionName="none"
         title={title}
         visible={showCreateRoomModal}
         onCancel={() => {

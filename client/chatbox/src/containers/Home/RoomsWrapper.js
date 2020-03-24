@@ -53,6 +53,7 @@ function RoomsWrapper(props) {
       </div>
 
       <Modal
+        transitionName="none"
         wrapClassName="sp-modal"
         bodyStyle={{
           paddingBottom: 0,

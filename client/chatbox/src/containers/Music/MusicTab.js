@@ -44,6 +44,7 @@ function MusicTab(props) {
           icon="question"
         />
         <Modal
+          transitionName="none"
           title="播放器使用指南(Beta)"
           visible={showHelp}
           onCancel={() => {

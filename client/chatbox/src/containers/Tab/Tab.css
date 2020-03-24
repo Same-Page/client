@@ -89,8 +89,9 @@ textarea.ant-input {
 .ant-divider-horizontal.ant-divider-with-text::after {
   border-top: 1px solid lightgray;
 }
-.sp-modal * {
-  animation-duration: 0s !important;
+
+.sp-modal *:not(.ant-btn) {
+  /* animation-duration: 0s !important; */
 }
 .sp-modal .ant-modal-content {
   /* used by help modal in player tab */
@@ -100,6 +101,9 @@ textarea.ant-input {
   top: 10% !important;
   left: 10%;
   right: 10%;
+}
+.sp-modal .ant-modal-title {
+  margin-right: 20px;
 }
 
 .sp-special-tab {
@@ -194,4 +198,8 @@ textarea.ant-input {
 
 .sp-modal textarea.ant-input {
   min-height: 75px;
+}
+
+.sp-modal ul {
+  padding-inline-start: 20px;
 }

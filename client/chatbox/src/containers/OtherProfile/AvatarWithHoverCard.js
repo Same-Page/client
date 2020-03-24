@@ -49,6 +49,7 @@ function AvatarWithHoverCard(props) {
           showingCard={showingCard}
         />
         <MyPoper
+          zIndex={props.zIndex}
           showCard={showCard}
           hideCard={hideCard}
           showingCard={showingCard}
@@ -85,9 +86,10 @@ function MyPoper(props) {
   if (props.loaded) {
     visibility = "visible"
   }
+  console.log("zIndex " + props.zIndex)
   return (
     <Popper
-      style={{ zIndex: 10, visibility: visibility }}
+      style={{ zIndex: props.zIndex || 10, visibility: visibility }}
       onMouseEnter={e => {
         props.showCard()
       }}

@@ -30,6 +30,7 @@ function ChatHeader({
   const [showUsers, toggleUsers] = useState(false)
 
   useEffect(() => {
+    setShowHelp(false)
     setUnreads(unreads => {
       const res = { ...unreads }
       res[activeView] = 0

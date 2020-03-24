@@ -7,22 +7,26 @@ class CreateRoomForm extends React.Component {
   state = {
     submitting: false
   }
+  room = this.props.room
   handleSubmit = e => {
     e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        window.spDebug("Received values of form: ", values)
+        window.spDebug("Received values of form: " + values)
+
         if (!(values.name && values.about)) {
           message.error("必须填写房间名与介绍")
           return
         }
         this.setState({ submitting: true })
-
+        if (this.room) {
+          values["roomId"] = this.room.id
+        }
         createRoom(values)
           .then(resp => {
-            message.success("创建成功！")
+            message.success("成功！")
             this.props.back()
-            this.props.loadRooms()
+            this.props.afterUpdateCb(resp.data)
             // reload all rooms
           })
           .catch(err => {})
@@ -79,29 +83,29 @@ class CreateRoomForm extends React.Component {
                 min: 1,
                 message: "房间名最少1个字符"
               }
-            ]
-            // initialValue: account.name
+            ],
+            initialValue: this.room && this.room.name
           })(<Input />)}
         </Form.Item>
 
         <Form.Item label={<span>房间介绍 (必填)</span>}>
           {getFieldDecorator("about", {
-            // initialValue: account.about
+            initialValue: this.room && this.room.about
           })(<Input.TextArea placeholder="房间话题与聊天规则" />)}
         </Form.Item>
         <Form.Item label={<span>背景图片地址</span>}>
           {getFieldDecorator("background", {
-            initialValue: null
+            initialValue: this.room && this.room.background
           })(<Input />)}
         </Form.Item>
         <Form.Item label={<span>封面图片地址</span>}>
           {getFieldDecorator("cover", {
-            initialValue: null
+            initialValue: this.room && this.room.cover
           })(<Input />)}
         </Form.Item>
         <Form.Item label={<span>资源列表 (一行一条)</span>}>
           {getFieldDecorator("media", {
-            initialValue: null
+            initialValue: this.room && this.room.mediaRaw
           })(<Input.TextArea placeholder="" />)}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>

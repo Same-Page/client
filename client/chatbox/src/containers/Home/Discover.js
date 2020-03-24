@@ -186,6 +186,7 @@ function Discover({
         />
       )} */}
       <Modal
+        transitionName="none"
         title={title}
         visible={showCreateRoomModal}
         onCancel={() => {
@@ -198,7 +199,7 @@ function Discover({
           back={() => {
             setShowCreateRoomModal(false)
           }}
-          loadRooms={loadRooms}
+          afterUpdateCb={loadRooms}
         />
       </Modal>
     </span>

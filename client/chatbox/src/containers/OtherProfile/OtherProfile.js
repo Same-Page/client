@@ -21,33 +21,39 @@ function OtherProfile({ otherUser, viewOtherUser }) {
     <span>
       <div className="sp-special-tab">
         {showRooms && (
-          <Discover
-            user={user}
-            showCreateRoomBtn={false}
-            back={() => {
-              setShowRooms(false)
-            }}
-          />
-        )}
-        {!showRooms && (
-          <div>
-            <Button
-              onClick={() => viewOtherUser(null)}
-              className="sp-back-btn"
-              icon="arrow-left"
+          // special tab inside special tab
+          // it ensure the rooms tab is in the fornt
+          <div className="sp-special-tab">
+            <Discover
+              zIndex={10}
+              user={user}
+              showCreateRoomBtn={false}
+              back={() => {
+                setShowRooms(false)
+              }}
             />
-            <div className="sp-tab-header">{user.name}</div>
-            <div className="sp-tab-body">
-              <ProfileMeta user={user} setUser={setUser}>
-                <PrfileBody
-                  showRooms={() => {
-                    setShowRooms(true)
-                  }}
-                />
-              </ProfileMeta>
-            </div>
           </div>
         )}
+        {/* {!showRooms && ( */}
+        <div>
+          <Button
+            onClick={() => viewOtherUser(null)}
+            className="sp-back-btn"
+            icon="arrow-left"
+          />
+          <div className="sp-tab-header">{user.name}</div>
+          <div className="sp-tab-body">
+            <ProfileMeta user={user} setUser={setUser}>
+              <PrfileBody
+                // show={!showRooms}
+                showRooms={() => {
+                  setShowRooms(true)
+                }}
+              />
+            </ProfileMeta>
+          </div>
+        </div>
+        {/* )} */}
       </div>
     </span>
   )

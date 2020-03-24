@@ -6,6 +6,7 @@ import { Modal } from "antd"
 function Iframe({ title, url, show, setShow }) {
   return (
     <Modal
+      transitionName="none"
       closable={false}
       wrapClassName="sp-iframe-modal"
       bodyStyle={{
