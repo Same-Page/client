@@ -44,5 +44,16 @@
   text-overflow: ellipsis;
 }
 .sp-discover-entry:hover {
-  background: #008fff !important;
+  /* background: white !important; */
+  /* color: black; */
+  /* font-size: x-large; */
+  /* zoom: 1.2; */
+  /* background-color: black; */
+  /* background-blend-mode: darken; */
+
+  /* background-size: cover; */
+  /* background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)); */
+
+  /* background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)); */
+  /* background: #008fff !important; */
 }

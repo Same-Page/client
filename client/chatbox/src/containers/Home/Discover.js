@@ -182,12 +182,11 @@ function Discover({
                 className="sp-discover-entry"
                 style={style}
               >
-                <div>
-                  {r.name}&nbsp;
+                <div className="sp-room-wrapper">
+                  <b>{r.name}</b>
                   <br />
                   <Icon style={{ marginRight: 3 }} type="team" />
                   {r.userCount}
-                  <br />
                   <br />
                   <b>
                     {r.media && (
