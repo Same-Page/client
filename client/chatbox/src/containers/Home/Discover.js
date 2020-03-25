@@ -183,21 +183,23 @@ function Discover({
                 style={style}
               >
                 <div className="sp-room-wrapper">
-                  <b>{r.name}</b>
-                  <br />
-                  <Icon style={{ marginRight: 3 }} type="team" />
-                  {r.userCount}
-                  <br />
-                  <b>
-                    {r.media && (
-                      <Icon
-                        type="play-circle"
-                        theme="filled"
-                        style={{ marginRight: 3 }}
-                      />
-                    )}
-                    {r.title}
-                  </b>
+                  <div>
+                    <b>{r.name}</b>
+                    <br />
+                    <Icon style={{ marginRight: 3 }} type="team" />
+                    {r.userCount}
+                    <br />
+                    <b>
+                      {r.media && (
+                        <Icon
+                          type="play-circle"
+                          theme="filled"
+                          style={{ marginRight: 3 }}
+                        />
+                      )}
+                      {r.title}
+                    </b>
+                  </div>
                 </div>
               </div>
             )

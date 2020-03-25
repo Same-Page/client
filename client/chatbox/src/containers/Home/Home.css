@@ -20,14 +20,24 @@
   /* text-align: center; */
   display: inline-block;
   cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
   background-color: gray;
   background-size: cover;
   vertical-align: middle;
   /* border-bottom: 1px solid white; */
+  padding: 0px;
 }
+
+.sp-room-wrapper {
+  background: rgba(0, 0, 0, 0.502);
+  height: 100%;
+  width: 100%;
+  /* white-space: nowrap; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* padding: 30px; */
+}
+
 .sp-discover-entry:nth-child(odd) {
   /* border-right: 1px solid white; */
 }
@@ -40,8 +50,9 @@
   transform: translate(-50%, -50%);
 
   overflow: hidden;
-  max-width: 90%;
+  /* max-width: 90%; */
   text-overflow: ellipsis;
+  /* padding: 30px; */
 }
 .sp-discover-entry:hover {
   /* background: white !important; */
