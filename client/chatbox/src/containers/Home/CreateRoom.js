@@ -106,7 +106,13 @@ class CreateRoomForm extends React.Component {
         <Form.Item label={<span>资源列表 (一行一条)</span>}>
           {getFieldDecorator("media", {
             initialValue: this.room && this.room.mediaRaw
-          })(<Input.TextArea placeholder="" />)}
+          })(
+            <Input.TextArea
+              placeholder="请使用markdown格式, 例:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                         
+            [双节棍](http://123.com/shuangjiegun.mp3)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                                      
+            [菊花台](http://456.com/juhuatai.mp3)"
+            />
+          )}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button

@@ -158,16 +158,16 @@ function RoomInfo({
               <h4>播放列表</h4>
               <ul>
                 {room.media.map((m, index) => {
-                  const url = m["sources"][0]["src"]
+                  const mediaName = m["name"]
                   return (
-                    <li key={url}>
+                    <li key={mediaName}>
                       <a
                         onClick={() => {
                           window.playMediaFromRoomMediaList(index)
                           setShowHelp(false)
                         }}
                       >
-                        {url}
+                        {mediaName}
                       </a>
                     </li>
                   )

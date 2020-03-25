@@ -97,6 +97,7 @@ textarea.ant-input {
   /* used by help modal in player tab */
   position: fixed;
   height: 75%;
+  /* max-height: 450px; */
   /* width: 80%; */
   top: 10% !important;
   left: 10%;
@@ -139,7 +140,7 @@ textarea.ant-input {
   /* margin-left: 10px; */
   background: none;
   border: none;
-  font-size: large;
+  /* font-size: large; */
   box-shadow: none;
   color: gray;
 }
