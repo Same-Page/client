@@ -3,9 +3,7 @@ import axios from "axios"
 import urls from "config/urls"
 
 export const getRooms = params => {
-  // return axios.get(`${urls.socketAPI}/api/popular_rooms`)
-  return axios.get(`${urls.dbAPI}/api/v1/rooms`, {
-    // return axios.get("https://api-v3.yiyechat.com/api/room", {
+  return axios.get("https://api-v3.yiyechat.com/api/room", {
     params: params
   })
 }
