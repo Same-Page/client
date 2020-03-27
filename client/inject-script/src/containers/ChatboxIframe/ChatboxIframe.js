@@ -194,13 +194,27 @@ function ChatboxIframe({ blacklist }) {
 		)
 	}
 	let chatboxIframe = ""
+	const iframeOnly = (
+		<iframe
+			allow="autoplay"
+			allowFullScreen={true}
+			webkitallowfullscreen="true"
+			mozallowfullscreen="true"
+			title="same page chat box"
+			ref={iframeRef}
+			className="sp-chatbox-iframe"
+			src={iframeSrc + "?" + url}
+		/>
+	)
 	if (createChatboxIframe && !loadingStorage) {
+		let iframeWrapperClassName = "sp-chatbox-iframe-wrapper"
+
 		chatboxIframe = (
 			<div>
 				<ImageModal />
 				<Rnd
 					style={{ display: display }}
-					className="sp-chatbox-iframe-wrapper"
+					className={iframeWrapperClassName}
 					resizeHandleStyles={{
 						right: { right: -10 }
 					}}
@@ -229,21 +243,17 @@ function ChatboxIframe({ blacklist }) {
 					<div className="sp-chatbox-drag-handle">
 						<SwapHorizIcon />
 					</div>
-					<iframe
-						allow="autoplay"
-						allowFullScreen={true}
-						webkitallowfullscreen="true"
-						mozallowfullscreen="true"
-						title="same page chat box"
-						ref={iframeRef}
-						className="sp-chatbox-iframe"
-						src={iframeSrc + "?" + url}
-					/>
+					{iframeOnly}
 				</Rnd>
 			</div>
 		)
 	}
-
+	if (spConfig.isWebVersion) {
+		iframeControl = <span />
+		chatboxIframe = (
+			<div className="sp-chatbox-iframe-wrapper-web">{iframeOnly}</div>
+		)
+	}
 	return (
 		<div className="sp-iframe-div">
 			{iframeControl}

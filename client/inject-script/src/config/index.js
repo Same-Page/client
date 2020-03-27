@@ -10,7 +10,9 @@ const defaultConfig = {
 	chatboxSrc: "https://yiyechat.com/extension-v6/",
 
 	autoConnect: true,
-	showAvatars: false
+	showAvatars: false,
+
+	isWebVersion: false
 }
 
 if (process.env.REACT_APP_LOCAL_CHATBOX) {
@@ -20,6 +22,10 @@ if (process.env.REACT_APP_LOCAL_CHATBOX) {
 }
 if (process.env.REACT_APP_LOCAL_SOCKET) {
 	defaultConfig.socketUrl = "localhost:8765"
+}
+
+if (true) {
+	defaultConfig.isWebVersion = true
 }
 
 // TODO: only override attributes, don't replace entire object

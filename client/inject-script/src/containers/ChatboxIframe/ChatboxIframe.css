@@ -12,6 +12,26 @@
   */
 	margin-bottom: 0px;
 }
+.sp-chatbox-iframe-wrapper-web {
+	height: 100% !important;
+	width: 400px;
+	position: absolute;
+	margin: 0px;
+	display: inline-block;
+	/* right: 0px !important; */
+	/* position: fixed !important; */
+	/* left: 0; */
+	/* bottom: 0; */
+	/* top: unset !important; */
+	/* z-index: 2147483646; */
+	/* one less than image modal */
+	/* display: none; */
+	/* border: 1px solid lightgray; */
+	border-bottom: none;
+	/* border-right: none; */
+	/* box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.31); */
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
 .sp-chatbox-iframe-wrapper {
 	position: fixed !important;
 	/* left: 0; */
