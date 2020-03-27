@@ -75,7 +75,7 @@ function Discover({
   }
 
   useEffect(() => {
-    console.log(activeTab)
+    // console.log(activeTab)
     if (activeTab === "discover" || user) {
       loadRooms()
     }

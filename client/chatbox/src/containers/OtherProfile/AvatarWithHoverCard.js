@@ -90,7 +90,7 @@ function MyPoper(props) {
   if (props.loaded) {
     visibility = "visible"
   }
-  console.log("zIndex " + props.zIndex)
+  // console.log("zIndex " + props.zIndex)
   return (
     <Popper
       style={{ zIndex: props.zIndex || 10, visibility: visibility }}

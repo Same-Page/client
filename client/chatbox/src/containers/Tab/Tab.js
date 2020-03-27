@@ -135,6 +135,9 @@ function Tab({ account, otherUser, activeTab, changeTab, viewOtherUser }) {
                 </Tooltip>
               }
               key="profile"
+              // mount account container so we always validate user's
+              // token when chatbox open
+              forceRender={true}
             >
               <Account />
             </TabPane>

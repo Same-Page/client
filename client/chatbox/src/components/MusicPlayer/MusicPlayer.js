@@ -12,7 +12,7 @@ class VideoPlayer extends React.Component {
     this.player = videojs(this.videoNode, this.props, function onPlayerReady() {
       // console.log("onPlayerReady", this)
     })
-    console.log("create player")
+    // console.log("create player")
     window.player = this.player
     // this.props.setPlayer(this.player)
     this.props.playerRef.current = this.player

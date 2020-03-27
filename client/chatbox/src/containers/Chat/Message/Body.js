@@ -107,8 +107,8 @@ function MessageBody(props) {
 
               getData(data.dataSrc)
                 .then(resp => {
-                  window.foo = resp
-                  console.log(resp)
+                  // window.foo = resp
+                  // console.log(resp)
                   props.setMessageDetail(resp.data)
                 })
                 .catch(err => {
