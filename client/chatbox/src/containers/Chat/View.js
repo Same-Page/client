@@ -41,7 +41,7 @@ function View({
     // setShowMedia(true)
     // playerRef.current.src(src)
     // playerRef.current.play()
-    console.log(mediaList)
+    // console.log(mediaList)
 
     playerRef.current.playlist(mediaList)
     playerRef.current.playlist.currentItem(0)
