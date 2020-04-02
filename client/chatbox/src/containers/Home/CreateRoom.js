@@ -103,11 +103,10 @@ class CreateRoomForm extends React.Component {
             initialValue: this.room && this.room.cover
           })(<Input />)}
         </Form.Item>
-        <Form.Item label={<span>资源列表 (一行一条)</span>}>
-          {getFieldDecorator("media", {
-            initialValue: this.room && this.room.mediaRaw
-          })(
-            <div>
+        <Form.Item
+          label={
+            <span>
+              资源列表 (一行一条)
               <div style={{ color: "gray", lineHeight: "20px" }}>
                 <div style={{ marginBottom: 10 }}>
                   请使用markdown格式, 如下:
@@ -116,12 +115,12 @@ class CreateRoomForm extends React.Component {
                 <div> [菊花台](http://56.com/78.mp3)</div>
                 <br />
               </div>
-              <Input.TextArea
-              // autoSize
-              // placeholder=""
-              />
-            </div>
-          )}
+            </span>
+          }
+        >
+          {getFieldDecorator("media", {
+            initialValue: this.room && this.room.mediaRaw
+          })(<Input.TextArea />)}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           <Button
