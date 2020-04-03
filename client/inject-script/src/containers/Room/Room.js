@@ -20,7 +20,9 @@ function Room({ blacklist, isBlacklisted }) {
 	const getRoom = roomType => {
 		return rooms[roomType]
 	}
-
+	const getRoomFromId = id => {
+		// TODO
+	}
 	const removeUserMessage = (user, type) => {
 		const usersInRoom = getRoom(type)
 		const users = usersInRoom.map(u => {
@@ -63,6 +65,15 @@ function Room({ blacklist, isBlacklisted }) {
 			})
 			setRooms({ ...rooms, [type]: users })
 		}
+		window.leftRoom = roomId => {
+			if (!roomId) {
+				setRooms({})
+			} else {
+				// TODO
+				// backend should return room type etc..
+				// setRooms({ ...rooms, [type]: [] })
+			}
+		}
 		window.setUsersInRoom = data => {
 			const res = {}
 			Object.keys(data).forEach(roomId => {
@@ -72,7 +83,7 @@ function Room({ blacklist, isBlacklisted }) {
 				}
 			})
 
-			setRooms(res)
+			setRooms({ ...rooms, ...res })
 		}
 		window.addUserToRoom = (type, user) => {
 			const room = getRoom(type)
@@ -116,9 +127,18 @@ function Room({ blacklist, isBlacklisted }) {
 		storageManager.addEventListener("showAvatars", showAvatars => {
 			setShowAvatars(showAvatars)
 		})
-		storageManager.addEventListener("chatView", chatView => {
-			setRoomType(chatView)
-		})
+
+		window.addEventListener(
+			"message",
+			e => {
+				if (!e || !e.data) return
+				if (e.data.type === "sp-change-chat-view") {
+					const chatView = e.data.data
+					setRoomType(chatView)
+				}
+			},
+			false
+		)
 	}, [])
 
 	return (

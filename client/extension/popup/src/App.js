@@ -34,7 +34,7 @@ class App extends React.Component {
 			showChatIcon: true,
 			realtimeDanmuEnabled: true,
 			videoDanmuEnabled: true,
-			showAvatars: false,
+			showAvatars: true,
 
 			toggleChatboxStr: OPEN_STR,
 			chatboxState: false,

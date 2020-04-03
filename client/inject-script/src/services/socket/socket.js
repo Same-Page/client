@@ -25,7 +25,7 @@ const _disconnect = () => {
 	if (_isConnected()) {
 		window.spDebug("disconnect socket")
 		_socket.close()
-		// roomManager.clear()
+		window.leftRoom()
 	} else {
 		console.warn("socket not connected, no need to disconnect")
 	}
@@ -135,20 +135,15 @@ const _connect = triggeredByChatbox => {
 		}
 
 		const data = msg.data
+		if (msg.name === "left room") {
+			window.leftRoom(data.roomId)
+		}
 		if (msg.name === "other join") {
-			// const roomId = data.roomId
 			const user = data.user
-			// window.spDebug("other join")
-			// window.spDebug(data)
-			// addUserToCache(user)
 			window.addUserToRoom(data.roomType, user)
 		}
 		if (msg.name === "other left") {
-			// const roomId = data.roomId
 			const user = data.user
-			// window.spDebug("other join")
-			// window.spDebug(data)
-			// addUserToCache(user)
 			window.removeUserFromRoom(data.roomType, user)
 		}
 		if (msg.name === "room info") {
