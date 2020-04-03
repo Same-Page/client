@@ -26,7 +26,6 @@ function getMessageOffset(conversations) {
 	})
 	return offset
 }
-spDebug("starting injection script...")
 
 function App(props) {
 	const [blacklist, setBlacklist] = useState([])
@@ -41,7 +40,7 @@ function App(props) {
 		// get config from storage
 		storage.get("autoConnect", autoConnect => {
 			if (autoConnect == null) {
-				// autoConnect is true by default  in the menu
+				// autoConnect is false by default  in the menu
 				autoConnect = spConfig.autoConnect
 			}
 			window.autoConnect = autoConnect

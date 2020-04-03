@@ -7,7 +7,7 @@ import { apiUrl } from "config/urls"
 let _account = null
 let _initialized = false
 
-const loginUser = values => {
+const loginUser = (values, cb) => {
 	const payload = {
 		userId: values.userId,
 		password: values.password
@@ -31,7 +31,9 @@ const loginUser = values => {
 			},
 			response => {
 				if (response.ok) {
-					storage.set("account", response.data)
+					const account = response.data
+					storage.set("account", account)
+					cb(account)
 				} else {
 					console.error(response)
 				}
@@ -43,6 +45,7 @@ const loginUser = values => {
 			.then(res => {
 				const account = res.data
 				storage.set("account", account)
+				cb(account)
 			})
 			.catch(err => {
 				console.error(err)
@@ -69,7 +72,7 @@ const accountManager = {
 					if (values) {
 						window.spDebug("found login in storage")
 						window.spDebug("auto login")
-						loginUser(values)
+						loginUser(values, cb)
 					}
 					// else {
 					// 	window.spDebug(

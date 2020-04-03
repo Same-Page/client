@@ -48,6 +48,8 @@ const store = (state = initState, action) => {
         rooms: getRooms(modes, { ...state.manMadeRoom })
       }
     case "CHANGE_CHAT_VIEW":
+      storageManager.set("chatView", action.payload)
+
       return { ...state, chatView: action.payload }
     case "CHANGE_TAB":
       return { ...state, tab: action.payload }

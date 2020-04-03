@@ -29,7 +29,7 @@ class App extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			autoConnect: true,
+			autoConnect: false,
 			autoOpenChatbox: false,
 			showChatIcon: true,
 			realtimeDanmuEnabled: true,

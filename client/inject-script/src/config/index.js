@@ -9,8 +9,8 @@ const defaultConfig = {
 	// apiUrl: "http://localhost:8080",
 	chatboxSrc: "https://yiyechat.com/extension-v6/",
 
-	autoConnect: true,
-	showAvatars: false
+	autoConnect: false,
+	showAvatars: true
 }
 
 if (process.env.REACT_APP_LOCAL_CHATBOX) {

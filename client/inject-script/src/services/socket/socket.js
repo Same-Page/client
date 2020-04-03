@@ -2,7 +2,7 @@ import { socketUrl } from "config/urls"
 import { getDomain, getUrl } from "utils/url"
 import { postMsgToIframe } from "utils/iframe"
 import accountManager from "services/account"
-import roomManager from "services/room"
+// import roomManager from "services/room"
 import storage from "storage.js"
 
 let _socket = null
@@ -25,7 +25,7 @@ const _disconnect = () => {
 	if (_isConnected()) {
 		window.spDebug("disconnect socket")
 		_socket.close()
-		roomManager.clear()
+		// roomManager.clear()
 	} else {
 		console.warn("socket not connected, no need to disconnect")
 	}
@@ -123,40 +123,43 @@ const _connect = triggeredByChatbox => {
 
 	_socket.onmessage = e => {
 		// window.spDebug("received msg")
-		// console.log(e.data)
+
 		const msg = JSON.parse(e.data)
 		if (!msg) return
+
 		_postSocketMsgToIframe(msg)
+
+		if (msg === "not logged in!") {
+			window.spDebug("[socket] not logged in, removing local account")
+			storage.set("account", null)
+		}
+
 		const data = msg.data
 		if (msg.name === "other join") {
-			const roomId = data.roomId
+			// const roomId = data.roomId
 			const user = data.user
 			// window.spDebug("other join")
 			// window.spDebug(data)
 			// addUserToCache(user)
-			roomManager.addUserToRoom(roomId, user)
+			window.addUserToRoom(data.roomType, user)
 		}
 		if (msg.name === "other left") {
-			const roomId = data.roomId
+			// const roomId = data.roomId
 			const user = data.user
 			// window.spDebug("other join")
 			// window.spDebug(data)
 			// addUserToCache(user)
-			roomManager.removeUserFromRoom(roomId, user)
+			window.removeUserFromRoom(data.roomType, user)
 		}
 		if (msg.name === "room info") {
-			Object.keys(data).forEach(roomId => {
-				const room = data[roomId]
-				if (room.users) {
-					roomManager.setUsersInRoom(roomId, room.users)
-				}
-			})
+			window.setUsersInRoom(data)
 		}
 		if (msg.name === "chat message") {
 			data.self =
 				data.user.id.toString() ===
 				accountManager.getAccount().id.toString()
-			roomManager.setUserMessage(data.user, data.roomId, data.content)
+
+			window.setUserMessage(data.user, data.roomType, data.content)
 			window.queueAnimationDanmu(msg.data)
 		}
 	}
