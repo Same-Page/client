@@ -76,6 +76,7 @@ function ChatMessage(props) {
         imageLoadedCb={props.imageLoadedCb}
         displayMusicTab={props.displayMusicTab}
         data={data}
+        room={props.room}
         showMenu={props.showMenu}
         playMedia={props.playMedia}
         setIframeUrl={props.setIframeUrl}

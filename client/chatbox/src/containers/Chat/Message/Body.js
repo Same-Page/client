@@ -3,6 +3,7 @@ import "./Body.css"
 import React, { useState } from "react"
 import { Popover, Button, Icon } from "antd"
 import { useIntl } from "react-intl"
+import { connect } from "react-redux"
 
 import socketManager from "socket"
 // import Iframe from "components/Iframe"
@@ -135,7 +136,15 @@ function MessageBody(props) {
     <div>
       <Button
         onClick={() => {
-          socketManager.sendEvent("delete message", { messageId: data.id })
+          const payload = {
+            action: "delete_message",
+            data: {
+              messageId: props.data.id,
+              roomId: props.room.id,
+              token: props.account.token
+            }
+          }
+          socketManager.sendEvent(payload)
         }}
       >
         {/* <a */}
@@ -218,4 +227,11 @@ function MessageBody(props) {
   )
 }
 
-export default MessageBody
+// export default MessageBody
+const stateToProps = state => {
+  return {
+    account: state.account
+  }
+}
+
+export default connect(stateToProps)(MessageBody)

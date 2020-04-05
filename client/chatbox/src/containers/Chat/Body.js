@@ -173,6 +173,21 @@ function ChatBody({
       }
     )
     socketManager.addHandler(
+      "delete message",
+      suffixCb("delete_message"),
+      data => {
+        if (data.roomId !== roomId) return
+
+        spDebug("[chatbox] delete message")
+        setMessages(prevMessages => {
+          return prevMessages.filter(m => {
+            return m.id !== data.messageId
+          })
+        })
+      }
+    )
+
+    socketManager.addHandler(
       "room info",
       suffixCb("display_recent_messages"),
       roomDict => {
@@ -284,6 +299,7 @@ function ChatBody({
         withHoverCard={true}
         key={msg.id}
         data={msg}
+        room={room}
         showUser={showUser}
         timeDisplay={timeDisplay}
         // displayMusicTab={props.displayMusicTab}
