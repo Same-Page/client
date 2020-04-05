@@ -207,6 +207,7 @@ class App extends React.Component {
         }
         if (type === "sp-url-changed") {
           setUrl(data.url)
+          console.log("url changed to " + data.url)
           setPageTitle(data.title)
         }
       },
