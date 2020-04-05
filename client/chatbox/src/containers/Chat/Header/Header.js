@@ -10,6 +10,8 @@ import socketManager from "socket/socket"
 import RoomHeader from "./RoomHeader"
 import RoomInfo from "./RoomInfo"
 import { setRoomConnectionStatus } from "redux/actions/chat"
+import { getUrl } from "utils/url"
+
 function ChatHeader({
   chatModes,
   activeView,
@@ -121,12 +123,15 @@ function ChatHeader({
                 }
               }
               return (
-                <Tooltip key={mode} placement="bottom" title={roomTitle}>
-                  <Radio.Button value={mode}>
+                //<Tooltip key={mode} placement="bottom" title={roomTitle}>
+                <Radio.Button key={mode} value={mode}>
+                  <span title={roomTitle}>
                     {intl.formatMessage({ id: mode })}
-                    <Badge offset={[3, -3]} count={unreadCount}></Badge>
-                  </Radio.Button>
-                </Tooltip>
+                  </span>
+                  <Badge offset={[3, -3]} count={unreadCount}></Badge>
+                </Radio.Button>
+
+                //</Tooltip>
               )
             })}
           </Radio.Group>
@@ -139,6 +144,22 @@ function ChatHeader({
             {/* <Icon type="info-circle" theme="twoTone" /> */}
             <Icon type="setting" />
           </Button>
+          {activeView === "room" &&
+            room &&
+            !getUrl().includes("yiyechat.com/room/") && (
+              <Button
+                style={{ border: "none", boxShadow: "none" }}
+                onClick={() => {
+                  window.open(
+                    `https://yiyechat.com/room/?id=${room.id}`,
+                    "_blank"
+                  )
+                }}
+                size="small"
+              >
+                <Icon type="fullscreen" />
+              </Button>
+            )}
         </span>
         {/* <Col style={{ textAlign: "right" }} span={8}> */}
         {chatModes.map((mode, i) => {
