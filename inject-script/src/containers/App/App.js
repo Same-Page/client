@@ -38,10 +38,11 @@ function App(props) {
 	useEffect(() => {
 		// Get account from storage
 		// get config from storage
-		storage.get("autoConnect", autoConnect => {
+		storage.get("realtimeDanmuEnabled", autoConnect => {
+			// storage.get("autoConnect", autoConnect => {
+
 			if (autoConnect == null) {
-				// autoConnect is false by default  in the menu
-				autoConnect = spConfig.autoConnect
+				autoConnect = spConfig.showDanmu
 			}
 			window.autoConnect = autoConnect
 
@@ -79,11 +80,7 @@ function App(props) {
 										},
 										response => {
 											if (response && response.ok) {
-												if (
-													getMessageOffset(
-														response.data
-													)
-												) {
+												if (getMessageOffset(response.data)) {
 													storage.set(unreadKey, true)
 												}
 												// console.log(response.data)
@@ -96,9 +93,7 @@ function App(props) {
 									axios
 										.get(url, { headers: headers })
 										.then(response => {
-											if (
-												getMessageOffset(response.data)
-											) {
+											if (getMessageOffset(response.data)) {
 												storage.set(unreadKey, true)
 											}
 										})
@@ -130,10 +125,7 @@ function App(props) {
 		<span>
 			<Room blacklist={blacklist} isBlacklisted={isBlacklisted} />
 			<ChatboxIframe blacklist={blacklist} />
-			<AnimationDanmu
-				blacklist={blacklist}
-				isBlacklisted={isBlacklisted}
-			/>
+			<AnimationDanmu blacklist={blacklist} isBlacklisted={isBlacklisted} />
 		</span>
 	)
 }

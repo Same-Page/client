@@ -1,7 +1,11 @@
 import React, { Component } from "react"
+import axios from "axios"
+
 import Danmu from "./Danmu"
 import storage from "storage.js"
 import "./AnimationDanmu.css"
+import spConfig from "config"
+import { getDomain } from "utils/url"
 
 // import { stickersUrl } from "config/urls"
 // let invitationStr = " invites you to "
@@ -9,6 +13,67 @@ import "./AnimationDanmu.css"
 // if (lng.indexOf("zh") > -1) {
 //   invitationStr = " 邀请你去 "
 // }
+
+function queueHistoryMessages(roomId, msgs) {
+	let lastM = null
+	msgs.forEach((m, i) => {
+		lastM = m
+		setTimeout(() => {
+			window.queueAnimationDanmu(m)
+		}, i * 1200)
+	})
+	if (lastM) {
+		console.log(lastM)
+		storage.set(roomId + "-msg-last-timestamp", lastM.timestamp)
+	}
+}
+function getHistoryMessage(time) {
+	const roomId = getDomain()
+	let url = `${spConfig.chatApi}/api/room_messages?roomId=${roomId}`
+
+	storage.get("noJoin", noJoin => {
+		noJoin = noJoin || []
+		if (!noJoin.includes(roomId)) {
+			storage.get(roomId + "-msg-last-timestamp", timestamp => {
+				if (timestamp) {
+					url += "&timestamp=" + timestamp
+				}
+				// can't make ajax call in content script since chrome 73
+				// proxy through background script
+				if (window.chrome && window.chrome.extension) {
+					window.chrome.runtime.sendMessage(
+						{
+							makeRequest: true,
+							url: url,
+							options: {
+								method: "GET"
+								// headers: headers,
+							}
+						},
+						response => {
+							if (response && response.ok) {
+								queueHistoryMessages(roomId, response.data)
+							} else {
+								console.error(response)
+							}
+						}
+					)
+				} else {
+					axios
+						.get(url)
+						.then(response => {
+							queueHistoryMessages(roomId, response.data)
+						})
+						.catch(err => {
+							console.error(err)
+						})
+						.then(res => {})
+				}
+			})
+		}
+	})
+}
+
 class AnimationDanmu extends Component {
 	ROW_NUM = 10
 	danmuId = 0 // unique identifier of a danmu, increment locally
@@ -124,15 +189,16 @@ class AnimationDanmu extends Component {
 		}
 	}
 	componentDidMount() {
-		window.addEventListener(
-			"message",
-			this.receiveMsgFromChatboxFrame,
-			false
-		)
+		window.addEventListener("message", this.receiveMsgFromChatboxFrame, false)
 		if (window.chrome && window.chrome.extension) {
 			storage.get("realtimeDanmuEnabled", val => {
+				let showDanmu = true
 				if (val != null) {
 					this.toggleDanmuVisibility(val)
+					showDanmu = val
+				}
+				if (showDanmu) {
+					getHistoryMessage()
 				}
 			})
 			window.chrome.storage.onChanged.addListener((changes, area) => {

@@ -85,23 +85,16 @@ class App extends React.Component {
 	}
 	msgChatboxFrame = (msg, callback) => {
 		if (!chrome.extension) return
-		chrome.tabs.query(
-			{ active: true, currentWindow: true },
-			arrayOfTabs => {
 				// since only one tab should be active and in the current window at once
-				// the return variable should only have one entry
-				var activeTab = arrayOfTabs[0]
-				var activeTabId = activeTab.id
-				// This message is listened by chatbox, but not content.js.
-				// then chatbox pass msg to content.js to resize iframe
-				callback = callback || (() => {})
-				chrome.tabs.sendMessage(
-					activeTabId,
-					{ chatboxMsg: msg },
-					callback
-				)
-			}
-		)
+		chrome.tabs.query({ active: true, currentWindow: true }, arrayOfTabs => {
+			// since only one tab should be active and in the current window at once
+			// the return variable should only have one entry
+			var activeTab = arrayOfTabs[0]
+			var activeTabId = activeTab.id
+			// This message is listened by chatbox, but not content.js.
+			// then chatbox pass msg to content.js to resize iframe
+			chrome.tabs.sendMessage(activeTabId, { chatboxMsg: msg }, callback)
+		})
 	}
 	checkChatboxStatus = () => {
 		// console.log('Check if chatbox open and get online user count');
@@ -113,11 +106,17 @@ class App extends React.Component {
 			}, 3000)
 			if (resp) {
 				if (resp.is_chatbox_open) {
-					this.setState({ toggleChatboxStr: CLOSE_STR })
+					this.setState({
+						toggleChatboxStr: CLOSE_STR
+					})
 				} else {
-					this.setState({ toggleChatboxStr: OPEN_STR })
+					this.setState({
+						toggleChatboxStr: OPEN_STR
+					})
 				}
-				this.setState({ chatboxState: resp.is_chatbox_open })
+				this.setState({
+					chatboxState: resp.is_chatbox_open
+				})
 			} else {
 				// $('#online-user-msg').text('Please try refreshing this page.');
 				// $('#online-user-msg').show();
@@ -126,13 +125,20 @@ class App extends React.Component {
 	}
 	openChatbox = () => {
 		let msg = "open_chatbox"
+
 		this.msgChatboxFrame(msg)
 		if (this.state.chatboxState) {
-			this.setState({ toggleChatboxStr: OPEN_STR })
+			this.setState({
+				toggleChatboxStr: OPEN_STR
+			})
 		} else {
-			this.setState({ toggleChatboxStr: CLOSE_STR })
+			this.setState({
+				toggleChatboxStr: CLOSE_STR
+			})
 		}
-		this.setState({ chatboxState: !this.state.chatboxState })
+		this.setState({
+			chatboxState: !this.state.chatboxState
+		})
 	}
 	render() {
 		if (!this.state.ready) {
@@ -141,7 +147,7 @@ class App extends React.Component {
 		return (
 			<div>
 				<div className="option-body">
-					<div className="option-row">
+					{/* <div className="option-row">
 						<span className="option-title">{AUTO_CONNECT}</span>{" "}
 						<Switch
 							checked={this.state.autoConnect}
@@ -149,16 +155,13 @@ class App extends React.Component {
 								this.onSwitchChange("autoConnect", e)
 							}
 						/>
-					</div>
+					</div> */}
+
 					<div className="option-row">
-						<span className="option-title">
-							{AUTO_OPEN_CHATBOX}
-						</span>{" "}
+						<span className="option-title">{AUTO_OPEN_CHATBOX}</span>{" "}
 						<Switch
 							checked={this.state.autoOpenChatbox}
-							onChange={e =>
-								this.onSwitchChange("autoOpenChatbox", e)
-							}
+							onChange={e => this.onSwitchChange("autoOpenChatbox", e)}
 						/>
 					</div>
 
@@ -166,30 +169,22 @@ class App extends React.Component {
 						<span className="option-title">{SHOW_CHAT_ICON}</span>{" "}
 						<Switch
 							checked={this.state.showChatIcon}
-							onChange={e =>
-								this.onSwitchChange("showChatIcon", e)
-							}
+							onChange={e => this.onSwitchChange("showChatIcon", e)}
 						/>
 					</div>
 
 					<div className="option-row">
-						<span className="option-title">
-							{ENABLE_LIVE_CHAT_DANMU_STR}
-						</span>{" "}
+						<span className="option-title">{ENABLE_LIVE_CHAT_DANMU_STR}</span>{" "}
 						<Switch
 							checked={this.state.realtimeDanmuEnabled}
-							onChange={e =>
-								this.onSwitchChange("realtimeDanmuEnabled", e)
-							}
+							onChange={e => this.onSwitchChange("realtimeDanmuEnabled", e)}
 						/>
 					</div>
 					<div className="option-row">
 						<span className="option-title">{AVATAR_STR}</span>{" "}
 						<Switch
 							checked={this.state.showAvatars}
-							onChange={e =>
-								this.onSwitchChange("showAvatars", e)
-							}
+							onChange={e => this.onSwitchChange("showAvatars", e)}
 						/>
 					</div>
 					{/* <div className="option-row">

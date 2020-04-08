@@ -75,6 +75,7 @@ const _joinRoom = triggeredByChatbox => {
 const _isConnected = () => {
 	return _socket && _socket.readyState === _socket.OPEN
 }
+
 const _sendEvent = msg => {
 	// console.log(msg)
 	if (msg && msg.data && msg.data.content) {
@@ -151,11 +152,11 @@ const _connect = triggeredByChatbox => {
 		}
 		if (msg.name === "chat message") {
 			data.self =
-				data.user.id.toString() ===
-				accountManager.getAccount().id.toString()
+				data.user.id.toString() === accountManager.getAccount().id.toString()
 
 			window.setUserMessage(data.user, data.roomType, data.content)
-			window.queueAnimationDanmu(msg.data)
+			window.queueAnimationDanmu(data)
+			storage.set(data.roomId + "-msg-last-timestamp", Date.now())
 		}
 	}
 

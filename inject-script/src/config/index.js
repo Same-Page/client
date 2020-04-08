@@ -5,11 +5,14 @@ const defaultConfig = {
 	defaultChatView: "site",
 	debug: false,
 	socketUrl: "chat-v6.yiyechat.com/prod",
+	// for getting data from chat cache
+	chatApi: "https://api-v3.yiyechat.com",
 	apiUrl: "https://api-v2.yiyechat.com",
 	// apiUrl: "http://localhost:8080",
 	chatboxSrc: "https://yiyechat.com/extension-v6/",
 
 	autoConnect: false,
+	showDanmu: true,
 	showAvatars: true
 }
 
