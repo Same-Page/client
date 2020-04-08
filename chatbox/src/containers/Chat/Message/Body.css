@@ -1,0 +1,75 @@
+.sp-message-body {
+  max-width: calc(100% - 50px);
+  margin-top: 5px;
+  display: inline-block;
+}
+
+.sp-message-body.file,
+.sp-message-body.text,
+.sp-message-body.url {
+  background: rgba(255, 255, 255);
+  border-radius: 5px;
+  padding: 10px;
+  /* padding-top: 5px; */
+  /* padding-bottom: 5px; */
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  /* border: 1px solid #e0e0e0; */
+  color: black;
+  text-align: left;
+}
+
+.sp-message-body.invite {
+  text-align: left;
+}
+
+.sp-message-body.emoji {
+  font-size: 25px;
+  color: black;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.self .sp-message-body.text {
+  background: #bf0;
+}
+
+.sp-message-body img {
+  /* max-width: 100px; */
+}
+img.sp-message-image {
+  max-width: 100%;
+  max-height: 350px;
+  cursor: pointer;
+}
+.sp-chat-message-avatar {
+  cursor: pointer;
+}
+
+.sp-message-media {
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 10px;
+  /* padding-top: 5px; */
+  /* padding-bottom: 5px; */
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  /* border: 1px solid #e0e0e0; */
+  color: #ffffff;
+  background: #1890ff;
+  text-align: left;
+}
+
+.sp-message-menu .ant-popover-inner-content {
+  padding: 0;
+}
+.sp-message-menu .ant-btn {
+  border: none;
+}
+
+.sp-message-body .sp-invitation-chat a {
+  color: lightcoral;
+}
+.sp-message-body .sp-invitation-help a {
+  color: rgb(59, 160, 255);
+}

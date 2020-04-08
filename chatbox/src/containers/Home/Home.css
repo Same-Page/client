@@ -1,0 +1,71 @@
+.sp-hot-chatrooms-wrapper {
+  display: -webkit-flex; /* Safari */
+  -webkit-flex-wrap: wrap; /* Safari 6.1+ */
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.sp-discover-entry {
+  width: 50%;
+  height: 40%;
+  max-height: 150px;
+  /* max-width: 200px; */
+  /* max-height: 200px; */
+  /* padding: 10px; */
+  position: relative;
+  /* margin: 12px; */
+  color: white;
+  /* text-align: center; */
+  display: inline-block;
+  cursor: pointer;
+
+  background-color: gray;
+  background-size: cover;
+  vertical-align: middle;
+  /* border-bottom: 1px solid white; */
+  padding: 0px;
+}
+
+.sp-room-wrapper {
+  background: rgba(0, 0, 0, 0.502);
+  height: 100%;
+  width: 100%;
+  /* white-space: nowrap; */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* padding: 30px; */
+}
+
+.sp-discover-entry:nth-child(odd) {
+  /* border-right: 1px solid white; */
+}
+.sp-discover-entry div {
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  /* margin: 0; */
+  position: absolute;
+  transform: translate(-50%, -50%);
+
+  overflow: hidden;
+  /* max-width: 90%; */
+  text-overflow: ellipsis;
+  /* padding: 30px; */
+}
+.sp-discover-entry:hover {
+  /* background: white !important; */
+  /* color: black; */
+  /* font-size: x-large; */
+  /* zoom: 1.2; */
+  /* background-color: black; */
+  /* background-blend-mode: darken; */
+
+  /* background-size: cover; */
+  /* background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)); */
+
+  /* background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)); */
+  /* background: #008fff !important; */
+}

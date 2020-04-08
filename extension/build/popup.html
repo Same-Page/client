@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<meta
+			name="viewport"
+			content="width=device-width,initial-scale=1,shrink-to-fit=no"
+		/>
+		<meta name="theme-color" content="#000000" />
+		<link rel="manifest" href="/manifest.json" />
+		<title>Same Page</title>
+		<link href="/popup_menu/css/main.css" rel="stylesheet" />
+	</head>
+	<body>
+		<center style="background:#efefef">
+			<img style="margin:10px;width:48px;height:48px" src="/icon.png" />
+		</center>
+		<noscript>You need to enable JavaScript to run this app.</noscript>
+		<div id="root"></div>
+		<script>
+			setTimeout(function() {
+				var script = document.createElement("script");
+				script.src = "/popup_menu/js/main.js";
+				document.getElementsByTagName("head")[0].appendChild(script);
+			}, 100);
+		</script>
+	</body>
+</html>

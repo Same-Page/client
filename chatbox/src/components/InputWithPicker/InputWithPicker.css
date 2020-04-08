@@ -1,0 +1,26 @@
+.sp-input-with-picker .ant-input-group-addon {
+  border-radius: unset;
+}
+.sp-input-with-picker .ant-input-group-addon:last-child {
+  border-right: 0;
+  border-left: 1px solid lightgray;
+  cursor: pointer;
+}
+.sp-input-with-picker .ant-input-group-addon:first-child {
+  border-left: 0;
+  border-right: 1px solid lightgray;
+}
+.sp-input-with-picker .ant-input {
+  border-left: none;
+  border-right: none;
+}
+
+.sp-input-with-picker .ant-input-group-addon {
+  /* font-size: 20px; */
+  padding: 0px;
+}
+.sp-input-with-picker .ant-input-group-addon button {
+  /* padding: 5px; */
+  border: none;
+  background: none;
+}

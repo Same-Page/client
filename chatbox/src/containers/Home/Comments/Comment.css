@@ -1,0 +1,25 @@
+.sp-comment-url {
+  color: #1890ff;
+  cursor: pointer;
+}
+.sp-home-comment {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: 10px;
+  /* border-top: 1px solid lightgray; */
+}
+/* .sp-home-comment:hover {
+  background: lightgray;
+} */
+.sp-home-comment .sp-comment-message {
+  /* vertical-align: -webkit-baseline-middle; */
+  margin-left: 10px;
+}
+.sp-home-comment .sp-comment-body {
+  display: flex;
+  white-space: normal;
+  margin-top: 5px;
+}

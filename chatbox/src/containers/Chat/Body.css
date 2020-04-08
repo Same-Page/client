@@ -1,0 +1,35 @@
+.room-show-media-false {
+  display: none;
+}
+.sp-message-detail-html {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  margin: auto;
+  border-bottom: 1px solid lightgray;
+  background-color: rgb(250, 249, 222);
+  /* box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); */
+}
+.sp-message-detail-html img,
+.sp-message-detail-html video {
+  max-width: 100%;
+  margin-bottom: 10px;
+}
+.sp-message-detail-html h1 {
+  font-size: 18px;
+}
+.sp-message-detail-html p {
+  font-size: 16px;
+}
+.sp-resizable-bottom-handle {
+  height: 15px !important;
+  bottom: 0px !important;
+}
+
+/* .sp-resizable-bottom-handle:hover {
+  background-color: yellow;
+  border-top: 1px solid yellow;
+  border-bottom: 1px solid yellow;
+} */

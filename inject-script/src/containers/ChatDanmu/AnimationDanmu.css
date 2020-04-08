@@ -1,0 +1,52 @@
+.sp-danmu-wrapper {
+	display: flex;
+	position: fixed;
+	cursor: pointer;
+	z-index: 2147483647;
+}
+.sp-danmu-avatar {
+	/* display: inline-block; */
+	border-radius: 100%;
+	width: 35px;
+	height: 35px;
+	object-fit: cover;
+	border: 1px solid lightgray;
+}
+.sp-danmu-content-text {
+	border: 1px solid lightgray;
+	background-color: white !important;
+	color: black !important;
+	padding: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 20px;
+	line-height: 25px;
+	border-radius: 5px;
+	max-width: 500px;
+	margin-left: 5px;
+	/* border: none; */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-word;
+	/* box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2); */
+	text-align: left;
+}
+.sp-danmu-content-text.self {
+	background-color: #bf0 !important;
+	color: black !important;
+}
+.sp-danmu-content-text.invite {
+	background-color: white !important;
+	color: #1890ff !important;
+	border-color: #1890ff !important;
+}
+.sp-danmu-content-img {
+	width: 100px;
+	height: 100px;
+	margin-top: -10px;
+}
+.inline-emoji {
+	/* font-size: 18px; */
+	/* bottom: -3px; */
+	/* position: relative; */
+}

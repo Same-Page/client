@@ -1,0 +1,65 @@
+.sp-avatar {
+	height: 50px;
+	width: 50px;
+	/* position: fixed; */
+	/* bottom: 0; */
+	border-radius: 100%;
+	background-size: cover;
+	display: inline-block;
+}
+.sp-chat-bubble {
+	padding: 10px;
+	background-color: white;
+	border-radius: 5px;
+	font-size: medium;
+	width: max-content;
+	min-width: 50px;
+	max-width: 250px;
+	position: absolute;
+	bottom: 70px;
+	overflow-wrap: break-word;
+	border: 1px solid #666;
+	text-align: center;
+}
+
+.sp-chat-bubble:after {
+	content: " ";
+	position: absolute;
+	/* width: 29px; */
+	height: 0;
+	left: 25px;
+	right: auto;
+	top: auto;
+	bottom: -12px;
+	border: 6px solid;
+	border-color: white transparent transparent white;
+}
+
+.sp-chat-bubble:before {
+	content: " ";
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 24px;
+	right: auto;
+	top: auto;
+	bottom: -14px;
+	border: 7px solid;
+	border-color: #666 transparent transparent #666;
+}
+
+.sp-user-popover {
+	/* background: white; */
+	padding: 5px;
+	margin-bottom: 35px;
+	color: rgb(255, 19, 19);
+	cursor: pointer;
+	z-index: 2147483647;
+}
+.sp-user-popover .blocked {
+	color: greenyellow;
+}
+.sp-user-popover:hover {
+	/* background: rgba(255, 255, 255, 0.493); */
+	/* color: rgb(0, 38, 255); */
+}

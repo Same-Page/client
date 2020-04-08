@@ -1,0 +1,10 @@
+{
+	"appName": {
+		"message": "Same Page",
+		"description": "The title of the application, displayed in the web store."
+	},
+	"appDesc": {
+		"message": "Live chat with people who are browsing the same content as you!",
+		"description": "The description of the application, displayed in the web store."
+	}
+}
