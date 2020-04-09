@@ -26,8 +26,8 @@
     "videojs-youtube": "^2.6.0"
   },
   "scripts": {
-    "start:ssl": "export HTTPS=true; npm run start",
-    "start": "react-scripts start",
+    "start:no_ssl": "react-scripts start",
+    "start": "export HTTPS=true; react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject-nonono": "react-scripts eject",

@@ -85,7 +85,6 @@ class App extends React.Component {
 	}
 	msgChatboxFrame = (msg, callback) => {
 		if (!chrome.extension) return
-				// since only one tab should be active and in the current window at once
 		chrome.tabs.query({ active: true, currentWindow: true }, arrayOfTabs => {
 			// since only one tab should be active and in the current window at once
 			// the return variable should only have one entry
@@ -93,6 +92,7 @@ class App extends React.Component {
 			var activeTabId = activeTab.id
 			// This message is listened by chatbox, but not content.js.
 			// then chatbox pass msg to content.js to resize iframe
+			callback = callback || (() => {})
 			chrome.tabs.sendMessage(activeTabId, { chatboxMsg: msg }, callback)
 		})
 	}

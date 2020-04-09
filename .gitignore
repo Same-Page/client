@@ -4,4 +4,3 @@ client/extension/build/content-static/*
 client/extension/build.zip
 client/.vscode/launch.json
 *.zip
-extension/build/*
