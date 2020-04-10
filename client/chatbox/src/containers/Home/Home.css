@@ -1,9 +1,0 @@
-.sp-hot-chatrooms-wrapper {
-  display: -webkit-flex; /* Safari */
-  -webkit-flex-wrap: wrap; /* Safari 6.1+ */
-  display: flex;
-  flex-wrap: wrap;
-  padding: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-}

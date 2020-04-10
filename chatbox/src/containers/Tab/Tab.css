@@ -1,0 +1,208 @@
+body {
+  /* background: #eceff1; */
+  /* background-color: rgb(246, 249, 252); */
+}
+body ::-webkit-scrollbar {
+  width: 7px;
+}
+
+/* Track */
+body ::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 1px lightgray;
+}
+
+/* Handle */
+body ::-webkit-scrollbar-thumb {
+  /* background: #1890ff; */
+  background: rgba(0, 0, 0, 0.173);
+  /*-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); */
+}
+body ::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.ant-tabs-bar {
+  color: white;
+  /* background: rgba(0, 0, 0, 0.75); */
+  background: #1890ff;
+
+  margin: 0px;
+}
+.ant-tabs-nav .ant-tabs-tab:hover {
+  background: #40a9ff !important;
+  color: white !important;
+}
+
+.ant-tabs-nav-container {
+  font-size: 18px;
+}
+.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-tab {
+  line-height: 37px;
+}
+.ant-tabs.ant-tabs-card .ant-tabs-card-bar .ant-tabs-nav-container {
+  height: 35px;
+}
+
+.card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab {
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  height: 35px;
+}
+.ant-tabs-bar {
+  border-bottom: none;
+}
+.card-container > .ant-tabs-card > .ant-tabs-bar .ant-tabs-tab-active {
+  /* border-color: #fff; */
+  background: #fff;
+}
+
+.ant-tabs-nav .ant-tabs-tab .anticon {
+  margin: 0;
+  vertical-align: 0;
+}
+
+.ant-tabs-tab-arrow-show {
+  color: white;
+  margin-top: -2px;
+}
+
+.ant-avatar > img {
+  object-fit: cover;
+}
+.ant-avatar {
+  /* avatar is always clickable? NO!*/
+  /* cursor: pointer; */
+}
+.ant-avatar.ant-avatar-icon {
+  /* background: #87d068; */
+}
+.ant-input {
+  border-radius: 0;
+  resize: none;
+  color: #525252;
+}
+textarea.ant-input {
+  line-height: 1.5;
+}
+.ant-divider-horizontal.ant-divider-with-text::before,
+.ant-divider-horizontal.ant-divider-with-text::after {
+  border-top: 1px solid lightgray;
+}
+
+.sp-modal *:not(.ant-btn) {
+  /* animation-duration: 0s !important; */
+}
+.sp-modal .ant-modal-content {
+  /* used by help modal in player tab */
+  position: fixed;
+  height: 75%;
+  /* max-height: 450px; */
+  /* width: 80%; */
+  top: 10% !important;
+  left: 10%;
+  right: 10%;
+}
+.sp-modal .ant-modal-title {
+  margin-right: 20px;
+}
+
+.sp-special-tab {
+  /* covers entire tab except top bar */
+  background: white;
+  background-size: cover;
+  z-index: 10;
+  position: fixed;
+  top: 35px;
+  width: 100%;
+  height: calc(100% - 35px);
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.sp-tab-body {
+  /* covers entire tab except top bar and header*/
+  background: white;
+  z-index: 9; /* other profile has z index 10 */
+  position: fixed;
+  /* top: 80px; */
+  width: 100%;
+  height: calc(100% - 75px);
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sp-back-btn {
+  position: absolute;
+  left: 10px;
+  margin-top: 7px;
+  /* margin-left: 10px; */
+  background: none;
+  border: none;
+  /* font-size: large; */
+  box-shadow: none;
+  color: gray;
+}
+.sp-back-btn:hover {
+  background: none;
+}
+
+.sp-tab-header {
+  border-bottom: 1px solid lightgray;
+  /* padding: 5px; */
+  line-height: 40px;
+  height: 40px;
+  text-align: center;
+  white-space: nowrap;
+}
+.sp-tab-header .ant-btn:not(.ant-btn-primary) {
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+.s .sp-pointer-cursor {
+  cursor: pointer;
+}
+
+.sp-new-message-dot.ant-badge {
+  font-size: unset;
+}
+
+.ant-modal {
+  top: 10%;
+}
+
+.resizable-close {
+  position: absolute;
+  right: 0px;
+  /* padding: 5px; */
+  /* bottom: 0px; */
+  /* border-radius: 100%; */
+  font-size: large;
+}
+.resizable-close .ant-btn {
+  border: none;
+  box-shadow: none;
+  background: #00000075;
+  color: #ffffff;
+  /* background: none; */
+  border-radius: 0;
+}
+
+.ant-btn-danger {
+  background-color: white;
+}
+
+.sp-modal .ant-modal-body {
+  max-height: calc(100% - 55px);
+  overflow-y: auto;
+}
+
+.sp-modal textarea.ant-input {
+  min-height: 75px;
+}
+
+.sp-modal ul {
+  padding-inline-start: 20px;
+}
