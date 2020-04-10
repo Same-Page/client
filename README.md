@@ -1,36 +1,31 @@
-# Same Page
+## [Read English Version](https://github.com/Same-Page/client/blob/master/README_EN.md)
 
-Same page (previously called Chat Anywhere) can add social activities including url based live chat, comment etc. to your website by including just a few lines of code! You can also run your own backend or do all sorts of customization if you want.
+# 一叶
 
-## Project structure
+《一叶》是一款[浏览器插件](https://chrome.google.com/webstore/detail/same-page/bldcellajihanglphncgjmceklbibjkk)，它让你可以在任意网页上实时聊天。你也可以修改源代码，将一叶部署在你自己的网站上。
 
-Both frontend and backend are included in this repository.
+## 项目结构
 
-### Client Folder
+一叶的前端代码都在本项目里。
 
-The client folder includes the chat box and an injection script, both of them are built with create-react-app. The way it works is that once you include the injection script to your website, the script can create an iframe with chat box. This design has two major benefits:
+Client 文件夹含有 chatbox 和 inject-script 两部分，都是用 create-react-app 创建的。
+他们的使用方法是，站长在自己的网站里引入 inject-script，inject-script 运行后会生成一个包含了聊天盒的 iframe。
+这个设计有两个优点：
 
-1. The chat box's file size is quite big because it includes so many features, therefore you probably don't want to load it on every page load. It makes a lot more sense to load the chat box iframe only when user wants to use it.
-2. Iframe provides great isolation of the chat box and your website, no need to worry about CSS or Javascript pollution.
+1. 聊天盒因为功能很多所以文件较大，所以不用在每次加载页面的时候就加载它，而是当用户想要使用的时候才打开。
+2. Iframe 可以起到很好的隔离作用，你的网站和一叶之间不会互相影响，不论是 javascript 还是 css 样式。
 
-The injection script itself is rather small, it's able to
+Inject script 部分的文件比较小，它的功能有：
 
-1. Add a button that creates the iframe with chat box.
-2. Connect to chat socket server and show how many users are on the same page or site.
-3. Show Danmu (scrolling text) for live messages.
+1. 在您的网站上增加一个按钮，点击按钮可以打开含有聊天盒的 iframe。
+2. 自动连接聊天服务器，显示多少人在当前网页或网站，显示实时聊天弹幕。
 
-We include the 2nd and the 3rd functionality to the injection script rather than the chat box because they are very useful.
+## 如何开发与本地运行
 
-### Server Folder
+### 本地运行客户端
 
-The server folder contains a Python based API folder and a Nodejs based chat-socket folder. The live chat functionality is powered by socket.io, a nodejs library, while most other functionalities like updating profile, leaving comment, sending direct mail etc, are all written in Python and put into the API folder.
-
-## How to develop and run locally
-
-### Run the client locally
-
-Remeber that the client contains two pieces, so there are two steps to run client locally.
-First, run the chat box app
+前面提到了客户端分有 inject-script 和 chatbox 两部分，两者都要被运行。
+我们首先运行 chatbox 部分
 
 ```
 cd client/chatbox
@@ -38,7 +33,7 @@ npm install .
 npm start
 ```
 
-The first time you run this will be slower, because it needs to install all the packages needed. The chat box will be running on localhost:3000, but the chat box is not designed to be used by itself, instead, it must be used in an iframe. So the next thing you need to do is to run the injection script app.
+第一次运行需要`npm install .`，之后则不用。项目会运行于 localhost:3000，但聊天盒并不能独立工作，接下来我们运行 injection-script 的部分。
 
 ```
 cd client/injection-script
@@ -46,11 +41,11 @@ npm install .
 npm start
 ```
 
-Now you should see the client running on localhost:3210, the chatbox should also show up there.
+现在如果你去 localhost:3210，就可以看到客户端正常运行了，点击右下角的圆圈打开聊天盒。
 
-The client is talking to the official backend by default. If you want the client to talk to your local backend, it's very easy. Instead of `npm start`, type `npm start:dev`. Then it will be talking to your localhost:8080 for websocket connections for live chat feature and localhost:8081 for ajax calls for all other purposes. So you need to have those running. Please read the next section to learn how to run backend locally.
+客户端默认会和官方的服务器通讯，而不是你的本地后端，你可以更改设定，让客户端和你的本地后端通讯。下面了解一下如何本地运行后端程序。
 
-### Run websocket server locally for live chat
+### 运行 websocket 后端
 
 ```
 cd server/chat-socket
@@ -58,43 +53,49 @@ npm install .
 node index.js
 ```
 
-### Run API backend locally
+### 运行 api 后端
 
 ```
 cd server/api
-(Highly recommend that you create a Python virtual env first)
+(建议使用python虚拟环境)
 pip install -r requirements.txt
 python run.py
 ```
 
-## How to deploy frontend
+## 如何部署前端
 
-### Build
+### 生成客户端文件
 
-Like mentioned before, the client has two parts - chat box and injection script. They need to be built separately.
-To build the chat box.
+Inject-script 和 chatbox 两部分要分别生成。
+生成聊天盒的客户端文件。
 
 ```
 cd client/chatbox
 npm run build
 ```
 
-To build the injection script.
+生成 inject-script 的客户端文件。
 
 ```
-cd client/injection-scirpt
+cd client/inject-scirpt
 npm run build
 ```
 
-The final build is placed in the `/build` folder.
+生成的文件在对应的 build 文件夹里，更多细节可以参考 Facebook 官方的 create-react-app 教程。
 
-### Deploy
+### 部署到你的网站上
 
-To use your own version of injection script, upload your `client/injection-scirpt/build/content-static` folder to your server so it's reachable as `your-website.com/build/content-static`. Then include the scripts by adding following lines to your website.
+将 inject-script 的`client/inject-scirpt/build/content-static`文件夹上传到您的服务器，确保可以以`your-website.com/build/content-static`的形式访问里面的文件. 接下来在您的网站里引入下面两行即可
 
 ```
 <link href="https://your-website.com/build/content-static/css/main.css" rel="stylesheet">
 <script src="https://your-website.com/build/content-static/js/main.js" ></script>
 ```
 
-To use your own version of chat box, upload your `client/chatbox/build/content-static` folder to your server so it's reachable as `your-website.com/build/static`. You need to modify the injection script, specifically the iframe src to point to your own chat box.
+如果聊天盒的部分也要使用您自己生成的版本，相似的，上传您的`client/chatbox/build/`文件夹到您的服务器，确保可以访问`your-website.com/build/static`里面的文件。同时要记得修改 injection script 中设置的 chatbox iframe 的地址指向您自己上传的这个版本，`your-website.com/build/index.html`，也可以在您的网站定义下面的设置。
+
+```
+window.spConfig = {
+  chatboxUrl: 'your-website.com/build/index.html'
+}
+```
