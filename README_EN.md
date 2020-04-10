@@ -92,3 +92,5 @@ To use your own version of injection script, upload your `client/injection-scirp
 ```
 
 To use your own version of chat box, upload your `client/chatbox/build/content-static` folder to your server so it's reachable as `your-website.com/build/static`. You'll need to modify the injection script, specifically the iframe src to point to your own chat box, otherwise it will use the offical build of the chat box.
+
+This doc needs update...
