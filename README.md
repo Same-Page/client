@@ -15,11 +15,7 @@
 
 ## 截图
 
-<img src="https://yiyechat.com/images/basic_chat.png" width="300px" style="border:lightgray 1px solid; margin: 10px;"/>
-
-<img src="https://yiyechat.com/images/media_room.png" width="300px" style="border:lightgray 1px solid; margin: 10px;"/>
-
-<img src="https://yiyechat.com/images/roomlist.png" width="300px" style="border:lightgray 1px solid; margin: 10px;"/>
+<img src="https://yiyechat.com/images/sp-screenshots.png" width="720px"/>
 
 ## 项目结构
 
@@ -40,8 +36,8 @@ Inject script 部分的文件比较小，它的功能有：
 
 ### 本地运行客户端
 
-前面提到了客户端分有 inject-script 和 chatbox 两部分，两者都要启动聊天盒才能正常使用，下面会解释原因。
-我们先运行 chatbox 部分
+前面提到了客户端分有 inject-script 和 chatbox 两部分，两者都要启动聊天盒才能正常使用。
+首先运行 chatbox 部分
 
 ```
 cd client/chatbox
