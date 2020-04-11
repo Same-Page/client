@@ -1,8 +1,15 @@
-## [Read English Version](https://github.com/Same-Page/client/blob/master/README_EN.md)
+#### [Read English Version](https://github.com/Same-Page/client/blob/master/README_EN.md)
 
 # 一叶
 
 《一叶》是一款[浏览器插件](https://chrome.google.com/webstore/detail/same-page/bldcellajihanglphncgjmceklbibjkk)，它让你可以在任意网页上实时聊天。你也可以修改源代码，将一叶部署在你自己的网站上。
+
+主要功能包括有:
+
+- 同网页聊天
+- 同网站聊天
+- 用户创建特定主题的房间聊天
+- 用户之间可以关注，发私信等
 
 ## 项目结构
 
@@ -23,7 +30,7 @@ Inject script 部分的文件比较小，它的功能有：
 
 ### 本地运行客户端
 
-前面提到了客户端分有 inject-script 和 chatbox 两部分，两者要同时运行，聊天盒才能正常使用。
+前面提到了客户端分有 inject-script 和 chatbox 两部分，两者都要启动聊天盒才能正常使用，下面会解释原因。
 我们先运行 chatbox 部分
 
 ```
@@ -32,7 +39,7 @@ npm install .
 npm start
 ```
 
-第一次运行需要先 `npm install .`，之后则不用。项目会运行于 localhost:3000，但聊天盒并不能独立工作，接下来我们运行 injection-script 的部分。
+第一次运行需要先 `npm install .`安装依赖的库，之后则不用。项目会运行于 localhost:3000，但聊天盒并不能独立工作，接下来我们运行 injection-script 的部分。
 
 ```
 cd client/inject-script
@@ -42,8 +49,10 @@ npm start
 
 现在如果你去 localhost:3210，就可以看到客户端正常运行了，点击右下角的圆圈打开聊天盒。
 
-客户端默认会和官方的服务器通讯，而不是你的本地后端，你可以更改设定，让客户端和你的本地后端通讯。详情请见
+客户端默认会和官方的服务器通讯，而不是你的本地后端，你可以更改默认的设定，让客户端和你的本地后端通讯。如何运行后端代码请见后端的代码库
+
 [聊天系统后端](https://github.com/Same-Page/chat-backend)
+
 [基本系统后端](https://github.com/Same-Page/web-backend)
 
 ## 如何部署前端
