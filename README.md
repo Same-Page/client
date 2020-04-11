@@ -2,24 +2,24 @@
 
 # 一叶
 
-《一叶》是一款[浏览器插件](https://chrome.google.com/webstore/detail/same-page/bldcellajihanglphncgjmceklbibjkk)，它让你可以在任意网页上实时聊天。你也可以修改源代码，将一叶部署在你自己的网站上。
+《一叶》是一款[浏览器插件](https://chrome.google.com/webstore/detail/same-page/bldcellajihanglphncgjmceklbibjkk)，它让你可以在任意网页上实时聊天。
+
+你也可以将一叶聊天盒部署在你自己的网站上，一叶的前后端代码都是开源的。
 
 主要功能包括有:
 
 - 同网页聊天
 - 同网站聊天
-- 用户创建特定主题的房间聊天
+- 创建个性化房间
 - 用户之间可以关注，发私信等
 
 ## 截图
 
-同网站/网页聊天
+<img src="https://yiyechat.com/images/basic_chat.png" width="300px" style="border:lightgray 1px solid; margin: 10px;"/>
 
-![同网站聊天](https://yiyechat.com/images/basic_chat.png)
+<img src="https://yiyechat.com/images/media_room.png" width="300px" style="border:lightgray 1px solid; margin: 10px;"/>
 
-多媒体房间
-
-![多媒体房间](https://yiyechat.com/images/media_room.png)
+<img src="https://yiyechat.com/images/roomlist.png" width="300px" style="border:lightgray 1px solid; margin: 10px;"/>
 
 ## 项目结构
 
