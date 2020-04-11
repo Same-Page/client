@@ -11,6 +11,16 @@
 - 用户创建特定主题的房间聊天
 - 用户之间可以关注，发私信等
 
+## 截图
+
+同网站/网页聊天
+
+![同网站聊天](https://yiyechat.com/images/basic_chat.png)
+
+多媒体房间
+
+![多媒体房间](https://yiyechat.com/images/media_room.png)
+
 ## 项目结构
 
 一叶的前端代码在本项目里。
