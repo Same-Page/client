@@ -15,7 +15,7 @@
 
 ## 截图
 
-<img src="https://yiyechat.com/images/sp-screenshots.png" width="720px"/>
+<img src="https://yiyechat.com/images/sp-screenshots.png" />
 
 ## 项目结构
 
