@@ -5,7 +5,7 @@ import Danmu from "./Danmu"
 import storage from "storage.js"
 import "./AnimationDanmu.css"
 import spConfig from "config"
-import { getDomain } from "utils/url"
+import { getDomain, getUrl } from "utils/url"
 
 // import { stickersUrl } from "config/urls"
 // let invitationStr = " invites you to "
@@ -27,49 +27,44 @@ function queueHistoryMessages(roomId, msgs) {
 		storage.set(roomId + "-msg-last-timestamp", lastM.timestamp)
 	}
 }
-function getHistoryMessage(time) {
-	const roomId = getDomain()
+function getHistoryMessage(roomId) {
+	console.debug("getHistoryMessage " + roomId)
 	let url = `${spConfig.chatApi}/api/room_messages?roomId=${roomId}`
 
-	storage.get("noJoin", noJoin => {
-		noJoin = noJoin || []
-		if (!noJoin.includes(roomId)) {
-			storage.get(roomId + "-msg-last-timestamp", timestamp => {
-				if (timestamp) {
-					url += "&timestamp=" + timestamp
+	storage.get(roomId + "-msg-last-timestamp", timestamp => {
+		if (timestamp) {
+			url += "&timestamp=" + timestamp
+		}
+		// can't make ajax call in content script since chrome 73
+		// proxy through background script
+		if (window.chrome && window.chrome.extension) {
+			window.chrome.runtime.sendMessage(
+				{
+					makeRequest: true,
+					url: url,
+					options: {
+						method: "GET"
+						// headers: headers,
+					}
+				},
+				response => {
+					if (response && response.ok) {
+						queueHistoryMessages(roomId, response.data)
+					} else {
+						console.error(response)
+					}
 				}
-				// can't make ajax call in content script since chrome 73
-				// proxy through background script
-				if (window.chrome && window.chrome.extension) {
-					window.chrome.runtime.sendMessage(
-						{
-							makeRequest: true,
-							url: url,
-							options: {
-								method: "GET"
-								// headers: headers,
-							}
-						},
-						response => {
-							if (response && response.ok) {
-								queueHistoryMessages(roomId, response.data)
-							} else {
-								console.error(response)
-							}
-						}
-					)
-				} else {
-					axios
-						.get(url)
-						.then(response => {
-							queueHistoryMessages(roomId, response.data)
-						})
-						.catch(err => {
-							console.error(err)
-						})
-						.then(res => {})
-				}
-			})
+			)
+		} else {
+			axios
+				.get(url)
+				.then(response => {
+					queueHistoryMessages(roomId, response.data)
+				})
+				.catch(err => {
+					console.error(err)
+				})
+				.then(res => {})
 		}
 	})
 }
@@ -191,16 +186,6 @@ class AnimationDanmu extends Component {
 	componentDidMount() {
 		window.addEventListener("message", this.receiveMsgFromChatboxFrame, false)
 		if (window.chrome && window.chrome.extension) {
-			storage.get("realtimeDanmuEnabled", val => {
-				let showDanmu = true
-				if (val != null) {
-					this.toggleDanmuVisibility(val)
-					showDanmu = val
-				}
-				if (showDanmu) {
-					getHistoryMessage()
-				}
-			})
 			window.chrome.storage.onChanged.addListener((changes, area) => {
 				if ("realtimeDanmuEnabled" in changes) {
 					const newVal = changes["realtimeDanmuEnabled"]["newValue"]
@@ -208,6 +193,27 @@ class AnimationDanmu extends Component {
 				}
 			})
 		}
+
+		storage.get("realtimeDanmuEnabled", val => {
+			let showDanmu = spConfig.showDanmu
+			if (val != null) {
+				this.toggleDanmuVisibility(val)
+				showDanmu = val
+			}
+			if (showDanmu) {
+				storage.get("noJoin", noJoin => {
+					noJoin = noJoin || []
+					const siteRoomId = getDomain()
+					const pageRoomId = getUrl()
+					if (!noJoin.includes(siteRoomId)) {
+						getHistoryMessage(siteRoomId)
+					}
+					if (!noJoin.includes(pageRoomId)) {
+						getHistoryMessage(pageRoomId)
+					}
+				})
+			}
+		})
 	}
 	render() {
 		return (

@@ -4,6 +4,7 @@ import Draggable from "react-draggable"
 import storage from "storage.js"
 import samePageIcon from "icon.png"
 import MailIcon from "@material-ui/icons/Mail"
+import spConfig from "config"
 
 const SHOW_CHAT_ICON_BY_DEFAULT = true
 let dragging = false
@@ -15,6 +16,10 @@ function ChatIcon({ userCount }) {
 	// const userCountStr = () => {
 	// 	return userCount.join(" | ")
 	// }
+	let className = "sp-chat-icon-wrapper"
+	if (spConfig.icon && spConfig.icon.verticalCenter) {
+		className += " " + "vertical-center"
+	}
 	useEffect(() => {
 		storage.get("showChatIcon", showChatIcon => {
 			if (showChatIcon == null) {
@@ -58,22 +63,18 @@ function ChatIcon({ userCount }) {
 			<Draggable
 				onStart={() => {
 					dragging = false
-					// alert("onStart")
 				}}
 				onDrag={() => {
 					dragging = true
-					// alert("onDrag")
 				}}
 				onStop={e => {
-					// alert("onStop")
-
 					if (!dragging) {
 						window.toggleChatbox()
 					}
 					dragging = false
 				}}
 			>
-				<span title="点击打开聊天盒" className="sp-chat-icon-wrapper">
+				<span title="点击打开聊天盒" className={className}>
 					{iconContent}
 				</span>
 			</Draggable>

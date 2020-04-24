@@ -67,6 +67,9 @@
 	text-align: center;
 	line-height: 32px;
 }
+.sp-chat-icon-wrapper.vertical-center {
+	bottom: 50%;
+}
 .sp-chat-icon-wrapper svg {
 	vertical-align: unset;
 }

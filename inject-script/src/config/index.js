@@ -25,7 +25,12 @@ if (process.env.REACT_APP_LOCAL_SOCKET) {
 	defaultConfig.socketUrl = "localhost:8765"
 }
 
-// TODO: only override attributes, don't replace entire object
-window.spConfig = window.spConfig || defaultConfig
+let spConfig = { ...defaultConfig }
+if (window.spConfig) {
+	console.log(window.spConfig)
+	spConfig = { ...defaultConfig, ...window.spConfig }
+	console.log(spConfig)
+}
+window.spConfig = spConfig
 
-export default window.spConfig
+export default spConfig
